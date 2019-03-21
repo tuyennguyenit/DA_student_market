@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include template/head.ejs %>
+  <!-- Bootstrap core CSS -->
+  <link href="/assets/css/bootstrap.css" rel="stylesheet">
+  <!--external css-->
+  <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+      
+  <!-- Custom styles for this template -->
+  <link href="/assets/css/style.css" rel="stylesheet">
+  <link href="/assets/css/style-responsive.css" rel="stylesheet">
+
+  <script type="text/javascript">
+  function deleteFolder(obj)
+  {
+  	alert(obj);
+  }
+  </script>
+</head>
+<body>
+
+	<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+     <p> <a class="navbar-brand" href="/">Todolist <sub>By Me</sub></a></p>
+    </div>  
+
+     <ul class="nav navbar-nav navbar-right">
+      <li><a href="/login" ><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
+    </ul> 
+  </div>
+</nav>
+  
+<body onload="getTime()">
+
+<!-- **********************************************************************************************************************************************************
+MAIN CONTENT
+*********************************************************************************************************************************************************** -->
+
+<div class="container">
+
+  <div id="showtime"></div>
+    <div class="col-lg-4 col-lg-offset-4">
+      <div class="lock-screen">
+        <h2 style="color:white;">404</h2>
+     
+        <h3 style="color:white;">OOPS... Somethind went wrong!!     <br> 
+            <% if(message)
+              { %>
+                <p><%=message%></p>
+            <%} %>  
+            <% 
+            if(typeof(folder)=='undefined'){
+               var a='/'
+            }%>
+            <a href="<%=a%>" class="btn btn-round btn-danger">Take me home</a>
+        </h3>
+            
+        <h3><a data-toggle="modal" href="#myModal"><i class="fa fa-lock"></i></a></h3>
+        <div class="container">
+       
+      </div>
+        
+           
+        
+        
+      </div><!--/lock-screen -->
+    </div><!-- /col-lg-4 -->
+
+</div><!-- /container -->
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+
+<!--BACKSTRETCH-->
+<!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+<script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
+<script>
+  $.backstretch("assets/img/login-bg.jpg", {speed: 500});
+</script>
+
+<script>
+  function getTime()
+  {
+      var today=new Date();
+      var h=today.getHours();
+      var m=today.getMinutes();
+      var s=today.getSeconds();
+      // add a zero in front of numbers<10
+      m=checkTime(m);
+      s=checkTime(s);
+      document.getElementById('showtime').innerHTML=h+":"+m+":"+s;
+      t=setTimeout(function(){getTime()},500);
+  }
+
+  function checkTime(i)
+  {
+      if (i<10)
+      {
+          i="0" + i;
+      }
+      return i;
+  }
+</script>
+
+
+
+</body>
+</html>

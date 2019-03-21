@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include template/head.ejs %>
+  
+</head>
+<body ng-app="">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+     <p> <a class="navbar-brand" href="#">Todolist <sub>By me</sub></a></p>
+    </div>
+    <!--<ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Page 1-1</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+    </ul>-->
+
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#" data-toggle="modal" data-target="#signUpModal"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a  href="#" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+   
+       
+  </div>
+</nav>
+  
+
+
+
+ <!--Login Modal -->
+  <div class="modal fade" id="loginModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Login</h4>
+        </div>
+        <div class="modal-body">
+
+           <form action="/signin" method="POST" role="form">
+                <div class="form-group">
+                  <label for="email">Email address:</label>
+                  <input type="email" class="form-control" id="email" name="email" ng-model="formEmail.text">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Password:</label>
+                  <input type="password" class="form-control" id="pwd" name="password" ng-model="formPass.text" >
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox"> Remember me</label>
+                </div>
+                <button type="submit" class="btn btn-default"  ng-disabled="(!formEmail.text)||(!formPass.text)"  >Login</button>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div><!--Login Modal>
+
+   <--SignUp Modal -->
+  <div class="modal fade" id="signUpModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Sign Up</h4>
+        </div>
+        <div class="modal-body">
+
+          <form action="/signup" method="POST"  role="form" >
+                <div class="form-group">
+                  <label for="email">Email address:</label>
+                  <input type="email" class="form-control" id="email" name="email" ng-model="emailLogin.text">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Password:</label>
+                  <input type="password" class="form-control" id="pwd" name="password" ng-model="passLogin.text">
+                </div>
+                <div class="form-group">
+                  <label for="pwd">Confirm Password:</label>
+                  <input type="password" class="form-control" id="pwd"  ng-model="passLogin1.text">
+                </div>
+                  <!--sai khi mật khẩu k trùng nhau và mật khẩu 2 chưa nhập-->
+                  <div ng-show="(passLogin.text != passLogin1.text) && (passLogin1.text)"><i style="color:red">password wrong!</i> </div>
+              <button type="submit" class="btn btn-default" ng-disabled="(!emailLogin.text )||(passLogin.text != passLogin1.text)||(!passLogin.text)||(!passLogin1.text)">Sign up</button>
+              <button type="reset" class="btn btn-default">Resert</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div><!--SignUp Modal>-->
+  <% if(typeof(message)!='undefined')
+  { %>
+  <div class= "row"> 
+  <div class="container col-md-offset-4 col-md-4">
+  <div class="alert alert-info">
+    <strong>Info!</strong> <p><%=message%></p>
+  </div> 
+</div>
+</div>
+<%} %>
+<div class="container col-md-offset-4">
+  <h3>Organize and save your tasks with Todolist</h3>
+  <p class="col-md-offset-4">By Me</p>
+</div>
+
+
+</body>
+</html>
+

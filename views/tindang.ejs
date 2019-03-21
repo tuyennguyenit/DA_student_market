@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>user Đăng tin</title>
+</head>
+<body>
+  <h5>xem đăng tin</h5>
+ <% for(i=0;i<tindang.length;i++) {%>
+ <p> <%=tindang[i].tieuDe%> </p>
+ <%}%>
+<h5>tạo tin đăng</h5>
+
+<form action="/tindang" method="POST">
+  
+  tieude:   <input type="text" name="tieuDe" >
+  mo ta:      <input type="text" name="moTaChiTiet" >
+ 
+  <input type="submit" value="dang tin">
+</form>
+
+<h5>sửa tin đăng</h5>
+
+    <form action="/tindang/edit" method="POST">
+      
+    tieude:   <input type="text" name="tieuDe" >
+    mo ta:      <input type="text" name="moTaChiTiet" >
+                <input type="text" name="_idTinDang">
+    <input type="submit" value="dang tin">
+    </form>
+
+<h5>xóa</h5>
+<a href="http://localhost:3000/tindang/delete/5c930cffb64a45272439aed7">link</a>
+
+</body>
+</html>
