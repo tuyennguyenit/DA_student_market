@@ -4,10 +4,10 @@ var Schema= mongoose.Schema;
 var itemSchema=new Schema({
   noiDungBaoCao:String,
   id_TinDang:String,
-  chiTiet:String,
   sDT:String,
   email:String,
-  trangThai:String
+  trangThai:String,
+  tieuDe:String
 });
  
 var items= mongoose.model("baocaotins",itemSchema);//2.Todos:đổi thành tên bảng

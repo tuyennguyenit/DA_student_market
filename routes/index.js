@@ -589,11 +589,10 @@ router.get("/tindang/delete/:_idTinDang", function(req, res) {
  * ?view ở đâu
  */
 // hiển thị dm cha cho admin
-router.get("/dmchasa", function(req, res) {
+router.get("/dmchas", function(req, res) {
   DM_Cha.find({}, function(err, folders) {
     if (err) throw err;
-    console.log(folders);
-    res.render("dmcha", { lst_DMCha_R: folders });
+    res.render("danhmuc", { lst_DMCha_R: folders });
   });
 });
 
@@ -601,7 +600,6 @@ router.get("/dmchasa", function(req, res) {
 router.post("/dmcha", function(req, res) {
   console.log("call to create dmcha");
   var tenDMCha = req.body.tenDMCha;
-
   DM_Cha.findOne({ tenDMCha: tenDMCha }, function(err, dmcha) {
     if (err) throw err;
     else {
@@ -614,10 +612,10 @@ router.post("/dmcha", function(req, res) {
           if (err) throw err;
           console.log("DM cha created!");
         });
-        res.render("dmcha", { mes_DMCha_C: "Create DM cha Successfully" });
+        res.redirect('/dmchas')
       } else {
         console.log("user exists");
-        res.render("dmcha", { mes_DMCha_C: "DM cha already exists." });
+        res.render("danhmuc", { mes_DMCha_C: "DM cha already exists." });
       }
     }
   });
@@ -675,15 +673,24 @@ router.get("/dmchas", function(req, res) {
 /**
  * !bảng dm_con biến model:DM_Con
  * TODOS CRUD danh mục con cho admin/user
- * ?view ở đâu,có nên bỏ MoTa
+ * ?view ở danhmuc
  */
 
-//  hiển thị dm con
+//  hiển thị tất cả dm con
 router.get("/dmcons", function(req, res) {
   DM_Con.find({}, function(err, folders) {
     if (err) throw err;
     console.log(folders);
-    res.render("dmcha", { lst_DMCon_R: folders });
+    res.render("danhmuc", { lst_DMCon_R: folders });
+  });
+});
+//hiển thị danh mục con theo danh mục cha
+router.get("/dmcons/:tencha", function(req, res) {
+  var tencha= req.params.tencha
+  DM_Con.find({tenDMCha:tencha}, function(err, folders) {
+    if (err) throw err;
+    console.log(folders);
+    res.render("danhmuc", { lst_DMCon_R: folders });
   });
 });
 // admin: thêm danh mục
@@ -695,18 +702,17 @@ router.post("/dmcon", function(req, res) {
       if (dmcon == null) {
         var newDMCon = DM_Con({
           tenDMCon: tenDMCon,
-          tenDMCha: req.body.tenDMCha,
-          moTa: []
+          tenDMCha: req.body.tenDMCha
         });
         // save the dm con
         newDMCon.save(function(err) {
           if (err) throw err;
           console.log("DM con created!");
         });
-        res.render("dmcha", { mes_DMCha_C: "Create DM cha Successfully" });
+        res.redirect('/dmcons');
       } else {
         console.log("user exists");
-        res.render("dmcha", { mes_DMCha_C: "DM cha already exists." });
+        res.render("danhmuc", { mes_DMCon_C: "DM cha already exists." });
       }
     }
   });
@@ -731,12 +737,12 @@ router.post("/dmcon/edit", function(req, res) {
               return res.status(500).json(err);
             } else {
               //chuyển router
-              res.redirect("/dmcons");//
+              res.redirect("/dmcons");
             }
           }
         );
       } else {
-        res.render("dmcha", { mes_DMCha_U: "danh mục bị trùng" });//
+        res.render("danhmuc", { mes_DMCha_U: "danh mục bị trùng" });//
       }
     }
   });
@@ -747,7 +753,7 @@ router.get("/dmcon/delete/:id_DMCon", function(req, res) {
     if (err) {
       console.log("Error in delete" + err);
     } else {
-      res.redirect("/dmchas");//
+      res.redirect("/dmcons");//
     }
   });
 });
@@ -764,25 +770,23 @@ router.get("/dmcon/delete/:id_DMCon", function(req, res) {
 router.post("/bctindang", function(req, res) {
   var noiDungBaoCao=req.body.noiDungBaoCao
   var id_TinDang=req.body.id_TinDang
-  var chiTiet=req.body.chiTiet
   var sDT=req.body.sDT
   var email=req.body.email
+  var tieuDe=req.body.tieuDe
   var newbcTin = BC_Tin({
     noiDungBaoCao:noiDungBaoCao,
     id_TinDang:id_TinDang,
-    chiTiet:chiTiet,
     sDT:sDT,
     email:email,
-    trangThai:'chưa duyệt'
+    trangThai:'chưa duyệt',
+    tieuDe:tieuDe
   });
-  // save the user
   newbcTin.save(function(err, a) {
     if (err) {
-      console.log( err);
       throw err;
     }
   });
-  res.redirect("/tindang");//!chuyen ve trang nao?
+  res.redirect("/bctindangs");
 });
 
 //admin: hiển thị tất cả các báo cáo
@@ -790,16 +794,15 @@ router.get('/bctindangs', function(req, res) {
  
   BC_Tin.find({}, function(err, items) {
  if (err) throw err;
- console.log(items);
- res.render('bctindang', {items:items}); //!
+ res.render('bctindang', {lst_BCTin:items}); 
 });
 });
 
 //admin: update trạng thái báo cáo
 router.post('/bctindang/edit', function(req, res) {
-  var _id=req.body.
+  
   BC_Tin.update({
-     _id:req.body.id_bctindang
+     _id:req.body.id_BCTin
      
 }, {
   trangThai:req.body.trangThai
@@ -808,7 +811,7 @@ router.post('/bctindang/edit', function(req, res) {
         return res.status(500).json(err);
     } else {
      //chuyển router
-      res.redirect('/bctindang') //!
+      res.redirect('/bctindangs') 
     }
 }
 
@@ -816,6 +819,14 @@ router.post('/bctindang/edit', function(req, res) {
 });
 
 //admin: xóa báo cáo
+router.get("/bctindang/delete/:id_bctindang", function(req, res) {
+  BC_Tin.remove({ _id: req.params.id_bctindang }, function(err) {
+    if (err) {
+    } else {
+      res.redirect("/bctindangs");//
+    }
+  });
+});
 
 //admin: xoá tất cả các báo cáo có trạng thái=đã duyệt
 

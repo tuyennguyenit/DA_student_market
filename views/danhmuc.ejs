@@ -1,0 +1,68 @@
+
+<h3 style="color:red">admin- quản lý danh mục cha</h3>
+<h4>read</h4>
+
+<% if(typeof lst_DMCha_R !== 'undefined'){
+    for(i=0;i<lst_DMCha_R.length;i++){%>
+        <div>
+            <span><%=lst_DMCha_R[i]._id%></span>
+            <span><b><%=lst_DMCha_R[i].tenDMCha%></b></span>
+            <span><a href="/dmcha/delete/<%=lst_DMCha_R[i]._id%>">xóa</a></span>
+        </div>
+ 
+<%}}%>
+
+<h4>create</h4>
+<form action="/dmcha" method="post">
+    Tên danh mục cha: <input type="text" name="tenDMCha">
+    <input type="submit" value="adđ">
+</form>
+<% if(typeof mes_DMCha_C !=='undefined'){%>
+    <div><%=mes_DMCha_C%></div>
+<%}%>
+
+<h4>Update</h4>
+<form action="/dmcha/edit" method="post">
+    
+    id sữa <input type="text" name="id_DMCha"> 
+     sửa Tên thành: <input type="text" name="tenDMCha">
+     <input type="submit" value="update">
+</form>
+<h4>delete</h4>
+<i>xóa bằng link</i>
+
+<!--danh mục con-->
+<h3 style="color:red">admin- quản lý danh mục con</h3>
+<h4>Read all</h4>
+<%if(typeof lst_DMCon_R!=='undefined'){
+for(i=0;i<lst_DMCon_R.length;i++){%>
+<div>
+    <span><%=lst_DMCon_R[i]._id%></span>
+    <span><b><%=lst_DMCon_R[i].tenDMCha%></b></span>||
+    <span><b><%=lst_DMCon_R[i].tenDMCon%></b></span>
+    <span><a href="/dmcon/delete/<%=lst_DMCon_R[i]._id%>">xóa</a></span>
+</div>
+
+<%}}%>
+<h4>create</h4>
+<form action="/dmcon" method="post">
+    Tên danh mục cha: <input type="text" name="tenDMCha">
+    Tên danh mục con  <input type="text" name="tenDMCon">
+    <input type="submit" value="adđ">
+</form>
+<% if(typeof mes_DMCon_C !=='undefined'){%>
+    <div><%=mes_DMCon_C%></div>
+<%}%>
+<h4>Update</h4>
+<form action="/dmcon/edit" method="post">
+    
+    id sữa <input type="text" name="id_DMCon"> 
+     sửa Tên thành: <input type="text" name="tenDMCon">
+     <input type="submit" value="update">
+</form>
+<%if(typeof mes_DMCha_U!=='undefined'){%>
+ <div> <%=mes_DMCha_U%></div>
+<%}%>
+<h4>delete</h4>
+<i>xóa bằng link</i>
+

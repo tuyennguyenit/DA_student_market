@@ -3,8 +3,7 @@ var Schema= mongoose.Schema;
  
 var itemSchema=new Schema({
    tenDMCon: String,
-   tenDMCha:String,
-   moTa:[{moTa:String}]
+   tenDMCha:String
 });
  
 var items= mongoose.model("dm_cons",itemSchema);
