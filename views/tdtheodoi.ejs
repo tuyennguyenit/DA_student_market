@@ -1,0 +1,19 @@
+<h3> user- theo dõi Tin Đăng</h3>
+<h4>read: hiển thị tin đăng mà user theo dõi</h4>
+<% if(typeof tdTheoDoi!=='undefined'){
+    for(i=0;i<tdTheoDoi.length;i++){
+%>
+    <div>
+        <span><%=tdTheoDoi[i].email_User%></span>
+        <span><%=tdTheoDoi[i].id_TinDangTheoDoi%></span>
+        <span><a href="/tdtheodoi/delete/<%=tdTheoDoi[i]._id%>">xóa</a></span>
+    </div>
+
+<%}}%>
+<h4>create:</h4>
+<form action="/tdtheodoi" method="post">
+    idTin đăng:<input type="text" name="id_tdTheoDoi">
+    <input type="submit" value="add">
+</form>
+<h4>delete:</h4>
+<i>xóa ở trên</i>

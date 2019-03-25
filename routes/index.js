@@ -8,7 +8,9 @@ var Folder = require.main.require("./models/folder");
 var TinDang = require.main.require("./models/tindang");
 var DM_Cha = require.main.require("./models/dMChaModel");
 var DM_Con = require.main.require("./models/dMConModel");
-var BC_Tin=require.main.require("./models/baocaoTinModel")
+var BC_Tin=require.main.require("./models/baocaoTinModel");
+var UserTheoDoi= require.main.require("./models/userTheoDoiModel");
+var TinDangTheoDoi=require.main.require("./models/tinDangTheoDoiModel");
 // Connect to DB
 var dbConfig = require.main.require("./db");
 var mongoose = require("mongoose");
@@ -495,7 +497,7 @@ router.get("/members/delete/:folderName/:id", function(req, res) {
 router.get("/tindang", function(req, res) {
   if (req.session.email != null) {
     var email = req.session.email;
-  TinDang.find({ email_User: "111@gmail.com" }, function(err, tindang) {
+  TinDang.find({ email_User: email }, function(err, tindang) {
     console.log("TCL: tindang", tindang);
     if (err) throw err;
         //chọn danh mục cha
@@ -584,7 +586,7 @@ router.get("/tindang/delete/:_idTinDang", function(req, res) {
 //báo cáo 1 tin đăng...
 
 /**
- * !bảng dm_cha : biến DM_Cha
+ * !bảng dm_cha : biến DM_Cha -view:danhmuc
  * TODO CRUD danh mục cha cho admin/user
  * ?view ở đâu
  */
@@ -671,7 +673,7 @@ router.get("/dmchas", function(req, res) {
   });
 });
 /**
- * !bảng dm_con biến model:DM_Con
+ * !bảng dm_con biến model:DM_Con ,view:danhmuc
  * TODOS CRUD danh mục con cho admin/user
  * ?view ở danhmuc
  */
@@ -760,7 +762,7 @@ router.get("/dmcon/delete/:id_DMCon", function(req, res) {
 //user: sử dụng danh mục con
 
 /**
- * !bảng baocaotins : biến BC_Tin
+ * !bảng baocaotins : biến BC_Tin ,view:bctindang
  * TODOS CRUD báo cáo tin đăng cho user
  * TODOS thể hiện duyệt báo cáo admin
  * ?trạng thái: đã duyệt ,chưa duyệt
@@ -817,7 +819,6 @@ router.post('/bctindang/edit', function(req, res) {
 
 );
 });
-
 //admin: xóa báo cáo
 router.get("/bctindang/delete/:id_bctindang", function(req, res) {
   BC_Tin.remove({ _id: req.params.id_bctindang }, function(err) {
@@ -827,10 +828,114 @@ router.get("/bctindang/delete/:id_bctindang", function(req, res) {
     }
   });
 });
+//admin: xoá tất cả các báo cáo có trạng thái=duyệt-Sai
 
-//admin: xoá tất cả các báo cáo có trạng thái=đã duyệt
+/**
+ * ! bảng usertheodois  -biến:UserTheoDoi -view :
+ *  TODOS CRUD user theo dõi cho user
+ *  ?view
+ */
+//user: hiển thị tất cả các user theo dõi theo từng user
+router.get("/usertheodois", function(req, res) {
+        UserTheoDoi.find({email_User:"111@gmail.com"}, function(err, folders) {
+          if (err) throw err;
+          res.render("usertheodoi", { userTheoDoi: folders });
+        });
+  });
+
+//user: theo dõi 1 user => kiểm tra trùng
+router.post('/usertheodoi', function(req, res) {
+  var email = "111@gmail.com";
+  var id_UserTheoDoi =req.body.id_UserTheoDoi;
+   
+  UserTheoDoi.findOne({ id_UserTheoDoi: id_UserTheoDoi,email_User:email }, function(err, user) {
+    if (err) throw err;
+    else
+    {
+     if(user==null)
+     {
+        var newUser = UserTheoDoi({
+            email_User: email,
+            id_UserTheoDoi: id_UserTheoDoi              
+        });
+         newUser.save(function(err) {
+         if (err) throw err;
+         });
+         res.redirect('/usertheodois');
+     }
+     else
+     {  
+          res.redirect('/usertheodois');
+     }
+    }
+  });
+  });
+  
+//user: xóa theo dõi 1 user
+router.get('/usertheodoi/delete/:IDName', function(req, res) {
+  var email="111@gmail.com"
+
+   UserTheoDoi.remove({ email_User: email, _id:req.params.IDName }, function(err) {
+    if (err) {
+    }
+    else {
+    res.redirect('/usertheodois')        
+    }
+    });
+});
 
 
+ /**
+  * !bảng  tintheodois -biến: TinDangTheoDoi ,-view:
+  * TODOS CRUD tin đăng theo dõi cho user
+  * ?view
+  */
+//user: hiển thị tất cả các tin đăng theo dõi theo từng user
+router.get("/tdtheodois", function(req, res) {
+  TinDangTheoDoi.find({email_User:"111@gmail.com"}, function(err, folders) {
+    if (err) throw err;
+    res.render("tdtheodoi", { tdTheoDoi: folders });
+  });
+});
+//user: theo dõi 1 tin đăng
+router.post('/tdtheodoi', function(req, res) {
+  var email = "111@gmail.com";
+  var id_TinDangTheoDoi =req.body.id_tdTheoDoi;
+   
+  TinDangTheoDoi.findOne({ id_TinDangTheoDoi: id_TinDangTheoDoi,email_User:email }, function(err, user) {
+    if (err) throw err;
+    else
+    {
+     if(user==null)
+     {
+        var newUser = TinDangTheoDoi({
+            email_User: email,
+            id_TinDangTheoDoi: id_TinDangTheoDoi              
+        });
+         newUser.save(function(err) {
+         if (err) throw err;
+         });
+         res.redirect('/tdtheodois');
+     }
+     else
+     {  
+          res.redirect('/tdtheodois');
+     }
+    }
+  });
+  });
+//user: xóa theo dõi 1 tin đăng
+router.get('/tdtheodoi/delete/:IDName', function(req, res) {
+  var email="111@gmail.com"
+
+   TinDangTheoDoi.remove({ email_User: email, _id:req.params.IDName }, function(err) {
+    if (err) {
+    }
+    else {
+    res.redirect('/tdtheodois')        
+    }
+    });
+});
 
 
 

@@ -1,0 +1,19 @@
+<h3> User- theo dõi user</h3>
+<h4>read: hiển thị user</h4>
+<% if(typeof userTheoDoi!=='undefined'){
+    for(i=0;i<userTheoDoi.length;i++){
+%>
+    <div>
+        <span><%=userTheoDoi[i].email_User%></span>
+        <span><%=userTheoDoi[i].id_UserTheoDoi%></span>
+        <span><a href="/usertheodoi/delete/<%=userTheoDoi[i]._id%>">xóa</a></span>
+    </div>
+
+<%}}%>
+<h4>create:</h4>
+<form action="/usertheodoi" method="post">
+    idUsser:<input type="text" name="id_UserTheoDoi">
+    <input type="submit" value="add">
+</form>
+<h4>delete:</h4>
+<i>xóa ở trên</i>
