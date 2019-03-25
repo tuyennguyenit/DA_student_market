@@ -10,13 +10,24 @@
   <h5>xem đăng tin</h5>
  <% for(i=0;i<tindang.length;i++) {%>
  <p> <%=tindang[i].tieuDe%> </p>
+ <p><%=tindang[i].dmcha%></p>
+ <img src="/upload/<%=tindang[i].anh1%>"  class="img-circle" width="260">
  <%}%>
 <h5>tạo tin đăng</h5>
 
-<form action="/tindang" method="POST">
+<form action="/tindang" method="POST" enctype="multipart/form-data">
+  <!--hiển thị danh mục cha-->
+  <select name="dmcha">
+    <%for(i=0;i<lst_DMCha_R.length;i++){%>
+      <option><%=lst_DMCha_R[i].tenDMCha%></option>
+    <%}%>
+  </select>
   
+
   tieude:   <input type="text" name="tieuDe" >
-  mo ta:      <input type="text" name="moTaChiTiet" >
+  mo ta:    <input type="text" name="moTaChiTiet" >
+  <h4>choose file:</h4> <input type="file" name="file"  class="form-control-file border"> <br>
+   
  
   <input type="submit" value="dang tin">
 </form>
@@ -25,9 +36,10 @@
 
     <form action="/tindang/edit" method="POST">
       
-    tieude:   <input type="text" name="tieuDe" >
-    mo ta:      <input type="text" name="moTaChiTiet" >
-                <input type="text" name="_idTinDang">
+    tieude:   <input type="text" name="tieuDe">
+    mo ta:    <input type="text" name="moTaChiTiet">
+     id         <input type="text" name="_idTinDang">
+        
     <input type="submit" value="dang tin">
     </form>
 

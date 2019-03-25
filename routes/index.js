@@ -8,7 +8,7 @@ var Folder = require.main.require("./models/folder");
 var TinDang = require.main.require("./models/tindang");
 var DM_Cha = require.main.require("./models/dMChaModel");
 var DM_Con = require.main.require("./models/dMConModel");
-
+var BC_Tin=require.main.require("./models/baocaoTinModel")
 // Connect to DB
 var dbConfig = require.main.require("./db");
 var mongoose = require("mongoose");
@@ -72,7 +72,7 @@ router.post("/signup", function(req, res) {
   });
 });
 
-// router=====================================
+// router
 router.get("/login", function(req, res) {
   res.render("login");
 });
@@ -111,6 +111,9 @@ router.post("/signin", function(req, res) {
   });
 });
 
+/**
+ * !bảng users: biến User
+ */
 //get profile
 router.get("/profile", function(req, res) {
   console.log("call to folders.." + req.session.email);
@@ -135,7 +138,8 @@ var storage = multer.diskStorage({
     cb(null, "./public/upload"); //đường đẫn
   },
   filename: function(req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, Date.now()+'-'+file.originalname);
+    //file originalname:tên mặc định trước upload
   }
 });
 
@@ -143,13 +147,13 @@ var upload = multer({ storage: storage });
 
 //upload image profile
 router.post("/profile/upload", upload.single("file"), function(req, res) {
-  console.log(req.file.originalname);
   User.update(
     {
       email: req.session.email
     },
     {
-      avatar: req.file.originalname
+      avatar: req.file.filename //filename:tên sau khi upload có kèm theo date.now()
+      
     },
     function(err, folders) {
       if (err) {
@@ -164,6 +168,7 @@ router.post("/profile/upload", upload.single("file"), function(req, res) {
     }
   );
 });
+//!xóa upload file cũ đi
 
 //edit profile
 router.post("/profile/edit", function(req, res) {
@@ -191,6 +196,7 @@ router.post("/profile/edit", function(req, res) {
   );
 });
 
+////?
 //Get Folders
 router.get("/folders", function(req, res) {
   console.log("call to folders.." + req.session.email);
@@ -487,11 +493,21 @@ router.get("/members/delete/:folderName/:id", function(req, res) {
  */
 //Get TinDang cho từng user
 router.get("/tindang", function(req, res) {
+  if (req.session.email != null) {
+    var email = req.session.email;
   TinDang.find({ email_User: "111@gmail.com" }, function(err, tindang) {
     console.log("TCL: tindang", tindang);
     if (err) throw err;
-    res.render("tindang", { tindang: tindang });
+        //chọn danh mục cha
+        DM_Cha.find({}, function(err, folders) {
+          if (err) throw err;
+          res.render("tindang", { tindang: tindang,lst_DMCha_R: folders });
+        });
+   // res.render("tindang", { tindang: tindang });
   });
+}else {
+  res.render("error", { message: "Login to continue" });
+}
 });
 //get TinDang cho tất cả user
 router.get("/tindangs", function(req, res) {
@@ -506,16 +522,17 @@ router.get("/tindangs", function(req, res) {
 //get tindang theo sap xep
 
 //Create tindang
-router.post("/tindang", function(req, res) {
+router.post("/tindang",upload.single("file"), function(req, res) {
   var tieuDe = req.body.tieuDe;
   var moTaChiTiet = req.body.moTaChiTiet;
 
-  console.log("call to create tindang---------" + req.session.email);
   var email = "111@gmail.com";
   var newTinDang = TinDang({
     tieuDe: tieuDe,
     moTaChiTiet: moTaChiTiet,
-    email_User: email
+    email_User: email,
+    anh1: req.file.filename,
+    dmcha:req.body.dmcha
   });
   // save the user
   newTinDang.save(function(err, a) {
@@ -571,8 +588,8 @@ router.get("/tindang/delete/:_idTinDang", function(req, res) {
  * TODO CRUD danh mục cha cho admin/user
  * ?view ở đâu
  */
-// hiển thị dm cha
-router.get("/dmchas", function(req, res) {
+// hiển thị dm cha cho admin
+router.get("/dmchasa", function(req, res) {
   DM_Cha.find({}, function(err, folders) {
     if (err) throw err;
     console.log(folders);
@@ -649,11 +666,16 @@ router.get("/dmcha/delete/:id_DMCha", function(req, res) {
 });
 
 //user: sử dụng danh mục cha
-
+router.get("/dmchas", function(req, res) {
+  DM_Cha.find({}, function(err, folders) {
+    if (err) throw err;
+    res.render("tindang", { lst_DMCha_R: folders });
+  });
+});
 /**
  * !bảng dm_con biến model:DM_Con
  * TODOS CRUD danh mục con cho admin/user
- * ?view ở đâu
+ * ?view ở đâu,có nên bỏ MoTa
  */
 
 //  hiển thị dm con
@@ -730,6 +752,72 @@ router.get("/dmcon/delete/:id_DMCon", function(req, res) {
   });
 });
 //user: sử dụng danh mục con
+
+/**
+ * !bảng baocaotins : biến BC_Tin
+ * TODOS CRUD báo cáo tin đăng cho user
+ * TODOS thể hiện duyệt báo cáo admin
+ * ?trạng thái: đã duyệt ,chưa duyệt
+ */
+
+//user: thêm 1 báo cáo
+router.post("/bctindang", function(req, res) {
+  var noiDungBaoCao=req.body.noiDungBaoCao
+  var id_TinDang=req.body.id_TinDang
+  var chiTiet=req.body.chiTiet
+  var sDT=req.body.sDT
+  var email=req.body.email
+  var newbcTin = BC_Tin({
+    noiDungBaoCao:noiDungBaoCao,
+    id_TinDang:id_TinDang,
+    chiTiet:chiTiet,
+    sDT:sDT,
+    email:email,
+    trangThai:'chưa duyệt'
+  });
+  // save the user
+  newbcTin.save(function(err, a) {
+    if (err) {
+      console.log( err);
+      throw err;
+    }
+  });
+  res.redirect("/tindang");//!chuyen ve trang nao?
+});
+
+//admin: hiển thị tất cả các báo cáo
+router.get('/bctindangs', function(req, res) { 
+ 
+  BC_Tin.find({}, function(err, items) {
+ if (err) throw err;
+ console.log(items);
+ res.render('bctindang', {items:items}); //!
+});
+});
+
+//admin: update trạng thái báo cáo
+router.post('/bctindang/edit', function(req, res) {
+  var _id=req.body.
+  BC_Tin.update({
+     _id:req.body.id_bctindang
+     
+}, {
+  trangThai:req.body.trangThai
+}, function (err, folders) {
+    if (err) {
+        return res.status(500).json(err);
+    } else {
+     //chuyển router
+      res.redirect('/bctindang') //!
+    }
+}
+
+);
+});
+
+//admin: xóa báo cáo
+
+//admin: xoá tất cả các báo cáo có trạng thái=đã duyệt
 
 
 

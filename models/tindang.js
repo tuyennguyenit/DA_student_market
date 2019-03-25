@@ -6,8 +6,9 @@ var Schema = mongoose.Schema;
 var tindangSchema = new Schema({
   email_User:  String ,
   tieuDe:String,
-  moTaChiTiet:String
- 
+  moTaChiTiet:String,
+  anh1:String,
+  dmcha:String
 });
 
 var User = mongoose.model('tindang', tindangSchema);
