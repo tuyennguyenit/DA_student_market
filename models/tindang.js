@@ -8,7 +8,15 @@ var tindangSchema = new Schema({
   tieuDe:String,
   moTaChiTiet:String,
   anh1:String,
-  dmcha:String
+  dmcha:String, 
+  dmCon:String,
+  diaChi:String,  //tinh thanh
+  gia:Number,     
+  loaiTinDang: String, //ban ,mua
+  trangThai:String, //an hien
+  daDuyet:String, //da duyet,chưa duyet
+  thoiGianDang:String,
+  thoiHan:String
 });
 
 var User = mongoose.model('tindang', tindangSchema);

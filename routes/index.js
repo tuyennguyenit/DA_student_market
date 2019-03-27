@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var path = require("path");
+const request = require('request');
+var fs = require('fs');
 
 //require Model
 var User = require.main.require("./models/user");
@@ -490,22 +492,26 @@ router.get("/members/delete/:folderName/:id", function(req, res) {
 /**
  * !bảng tindang: biến TinDang -view: tindang.ejs
  * TODO CRUD tin đăng cho USER
+ * TODO CRUD tin đăng cho ADMIN
  * ?
- *
  */
 //Get TinDang cho từng user
 router.get("/tindang", function(req, res) {
   if (req.session.email != null) {
     var email = req.session.email;
   TinDang.find({ email_User: email }, function(err, tindang) {
-    console.log("TCL: tindang", tindang);
     if (err) throw err;
         //chọn danh mục cha
         DM_Cha.find({}, function(err, folders) {
-          if (err) throw err;
-          res.render("tindang", { tindang: tindang,lst_DMCha_R: folders });
+          //chọn tỉnh
+          request('https://thongtindoanhnghiep.co/api/city', function (error, response, items) {
+            if (!error && response.statusCode == 200) {
+              var info = JSON.parse(items)
+              res.render("tindang", { tindang: tindang,lst_DMCha_R: folders,obj:info.LtsItem });
+            }
+          })
+         
         });
-   // res.render("tindang", { tindang: tindang });
   });
 }else {
   res.render("error", { message: "Login to continue" });
@@ -523,20 +529,40 @@ router.get("/tindangs", function(req, res) {
 //get tinDang theo tìm kiếm
 //get tindang theo sap xep
 
-//Create tindang
+//!Create tindang
 router.post("/tindang",upload.single("file"), function(req, res) {
   var tieuDe = req.body.tieuDe;
   var moTaChiTiet = req.body.moTaChiTiet;
+  var thoiHan='Không Thời Hạn'
+  if(req.body.thoiHan !==''){
+    thoiHan= req.body.thoiHan
+  }
 
+  var tinh=req.body.tinh;
+  var huyen=req.body.huyen;
+  var xa=req.body.xa;
+  var soNha=req.body.soNha;
+  var diaChi=soNha+','+xa+','+huyen+','+tinh
   var email = "111@gmail.com";
+
+  var dateTime = Date()
+  date = dateTime.split(' ', 4).join(' ');
   var newTinDang = TinDang({
     tieuDe: tieuDe,
     moTaChiTiet: moTaChiTiet,
     email_User: email,
     anh1: req.file.filename,
-    dmcha:req.body.dmcha
+    dmcha:req.body.dmcha,
+
+    dmCon:req.body.dmCon,
+    diaChi:diaChi,  
+    gia:req.body.gia,     
+    loaiTinDang: req.body.loaiTinDang,
+    trangThai:"hiện",
+    daDuyet:"Chưa Duyệt", 
+    thoiGianDang:date,
+    thoiHan:thoiHan
   });
-  // save the user
   newTinDang.save(function(err, a) {
     if (err) {
       console.log("loi roi" + err);
@@ -544,10 +570,64 @@ router.post("/tindang",upload.single("file"), function(req, res) {
     }
     console.log("Tin Đăng created!!" + a);
   });
-
-  //chuyển router
   res.redirect("/tindang");
 });
+//!-lấy danh mục cha
+router.get("/getdmchas", function(req, res) {
+  DM_Cha.find({}, function(err, cha) {
+        res.render("resviews/getdmcha", { lst_DMCon_R: cha });
+  });
+});
+//!-lấy danh mục con 
+router.get("/getdmcons/:tencha", function(req, res) {
+  var tencha= req.params.tencha
+  DM_Cha.findOne({_id:tencha}, function(err, cha) {
+    if(cha!=null){
+      DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+        res.render("resviews/getdmcon", { lst_DMCon_R: folders });
+        })
+    }
+    else
+    res.render("resviews/getdmcon")
+   
+  });
+});
+//!-lấy địa chỉ- tên tỉnh
+router.get('/gettinhs', function(req, res){
+  request('https://thongtindoanhnghiep.co/api/city', function (error, response, items) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(items)
+      res.render('resviews/gettinhs',{obj:info.LtsItem})
+    }
+  })
+});
+//!-lấy địa chỉ -quận huyện
+router.get('/getqhs/:idH', function(req, res){
+      var link='https://thongtindoanhnghiep.co/api/city/'+req.params.idH+'/district'
+      request(link, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body)
+     res.render('resviews/getqh',{obj:info})
+    }
+    else res.render('resviews/getqh');
+  })
+});
+//!-lấy địa chỉ phường xã
+router.get('/getphuongxas/:idP', function(req, res){
+  console.log("TCL: phuongxa")
+      var link='https://thongtindoanhnghiep.co/api/district/'+req.params.idP+'/ward'
+      request(link, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body)
+     res.render('resviews/getphuongxa',{obj:info})
+    }
+    else
+    res.render('resviews/getphuongxa')
+  })
+});
+
+
+
 
 //sửa 1 tin đăng
 router.post("/tindang/edit", function(req, res) {
@@ -570,17 +650,28 @@ router.post("/tindang/edit", function(req, res) {
     }
   );
 });
-
-//xóa 1 tin đăng
+//test xoa
+router.get('/testxoaanh',function(req,res){
+   var link='public/upload/'+'1553662541612-aa.gif' ;
+  fs.unlink(link, function (err) {})
+})
+//xóa 1 tin đăng => xóa ảnh upload
 router.get("/tindang/delete/:_idTinDang", function(req, res) {
-  TinDang.remove({ _id: req.params._idTinDang }, function(err) {
-    if (err) {
-      console.log("Error in delete" + err);
-    } else {
-      //chuyển router
-      res.redirect("/tindang");
-    }
-  });
+  TinDang.findOne({_id:req.params._idTinDang},function(err,item){
+    //xóa ảnh
+    var link='public/upload/'+item.anh1;
+    fs.unlink(link, function (err) {
+      //xóa tin đăng
+      TinDang.remove({ _id: req.params._idTinDang }, function(err) {
+        if (err) {
+          console.log("Error in delete" + err);
+        } else {
+          res.redirect("/tindang");
+        }
+      });
+    });
+  })
+  
 });
 
 //báo cáo 1 tin đăng...
@@ -686,7 +777,7 @@ router.get("/dmcons", function(req, res) {
     res.render("danhmuc", { lst_DMCon_R: folders });
   });
 });
-//hiển thị danh mục con theo danh mục cha
+//?hiển thị danh mục con theo danh mục cha
 router.get("/dmcons/:tencha", function(req, res) {
   var tencha= req.params.tencha
   DM_Con.find({tenDMCha:tencha}, function(err, folders) {
@@ -802,10 +893,8 @@ router.get('/bctindangs', function(req, res) {
 
 //admin: update trạng thái báo cáo
 router.post('/bctindang/edit', function(req, res) {
-  
   BC_Tin.update({
-     _id:req.body.id_BCTin
-     
+     _id:req.body.id_BCTin    
 }, {
   trangThai:req.body.trangThai
 }, function (err, folders) {
@@ -815,9 +904,7 @@ router.post('/bctindang/edit', function(req, res) {
      //chuyển router
       res.redirect('/bctindangs') 
     }
-}
-
-);
+})
 });
 //admin: xóa báo cáo
 router.get("/bctindang/delete/:id_bctindang", function(req, res) {

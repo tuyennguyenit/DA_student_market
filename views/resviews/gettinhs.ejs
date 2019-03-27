@@ -1,0 +1,6 @@
+<option >Chọn Tỉnh Thành</option>
+<%if(typeof obj!=='undefined'){
+    for(i=0;i<obj.length;i++){    
+%>
+    <option value="<%=obj[i].ID%>"><%=obj[i].Title%></option>
+<%}}%>

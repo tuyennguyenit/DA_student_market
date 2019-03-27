@@ -4,33 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="http://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="crossorigin="anonymous"></script>
   <title>user Đăng tin</title>
 </head>
 <body>
+
+
   <h5>xem đăng tin</h5>
  <% for(i=0;i<tindang.length;i++) {%>
  <p> <%=tindang[i].tieuDe%> </p>
  <p><%=tindang[i].dmcha%></p>
  <img src="/upload/<%=tindang[i].anh1%>"  class="img-circle" width="260">
+ <span><a href="/tindang/delete/<%=tindang[i]._id%>">xóa</a></span>
  <%}%>
-<h5>tạo tin đăng</h5>
 
+<h5>tạo tin đăng</h5>
 <form action="/tindang" method="POST" enctype="multipart/form-data">
-  <!--hiển thị danh mục cha-->
-  <select name="dmcha">
-    <%for(i=0;i<lst_DMCha_R.length;i++){%>
-      <option><%=lst_DMCha_R[i].tenDMCha%></option>
-    <%}%>
+  <select name="dmcha" id="dmcha" onchange="funCha()">
+  <!--danh mục-->
+  <option>danh mục</option>
+    <% if(typeof lst_DMCha_R!=='undefined'){
+        for(i=0;i<lst_DMCha_R.length;i++){%>
+      <option value="<%=lst_DMCha_R[i]._id%>"><%=lst_DMCha_R[i].tenDMCha%></option>
+    <%}}%>
   </select>
+
+  <select name="dmCon" id="dmCon" >
+    <option>danh mục con</option>
+  </select>
+  <!--địa chỉ-->
+  tỉnh: :<select name="tinh" id="tinh" onchange="funHuyen()">
+           <option>chọn tỉnh</option>
+         </select>
+  huyện: :<select name="huyen" id="huyen" onchange="funXa()">
+            <option>chọn huyện</option>
+          </select>
+  xã: :<select name="xa" id="xa" >
+        <option>chọn xã</option>
+      </select>
+  tên nhà/đường: <input type="text" name="soNha" id="soNha">
+
+<!--khác-->
+  gia: <input type="number" name="gia">
+  loaiTinDang: <select name="loaiTinDang">
+                    <option value="Tin Bán">Tin bán</option>
+                    <option vale="Tin Mua">Tin Mua</option>
+                </select>
+
   
 
   tieude:   <input type="text" name="tieuDe" >
   mo ta:    <input type="text" name="moTaChiTiet" >
   <h4>choose file:</h4> <input type="file" name="file"  class="form-control-file border"> <br>
+   <!--thời hạn-->
    
- 
+   Có Thời hạn <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="yesCheck"> không thời hạn <input type="radio" onclick="javascript:yesnoCheck();" name="yesno" id="noCheck"><br>
+    <div id="ifYes" style="display:none">
+        Nhập thời gian: <input type='date' id='yes' name='thoiHan'><br>
+    </div>
+
   <input type="submit" value="dang tin">
-</form>
+</form> <!--end form-->
 
 <h5>sửa tin đăng</h5>
 
@@ -44,7 +78,38 @@
     </form>
 
 <h5>xóa</h5>
-<a href="http://localhost:3000/tindang/delete/5c930cffb64a45272439aed7">link</a>
+<i >xóa ở trên</i>
 
 </body>
 </html>
+
+<script>
+ function funCha(){
+  var x = document.getElementById("dmcha").value; 
+
+  var link="getdmcons/"+x;
+  //alert(link)
+  $('#dmCon').load(link); 
+ }
+ 
+ //load
+ $('#tinh').load('gettinhs'); 
+//function quân huyện
+ function funHuyen(){
+  var x = document.getElementById("tinh").value;
+  var link="getqhs/"+x;
+  $('#huyen').load(link); 
+ }
+ function funXa(){
+  var x = document.getElementById("huyen").value; 
+  var link="getphuongxas/"+x;
+  $('#xa').load(link); 
+ }
+//fun thời hạn
+function yesnoCheck() {
+    if (document.getElementById('yesCheck').checked) {
+        document.getElementById('ifYes').style.display = 'block';
+    }
+    else document.getElementById('ifYes').style.display = 'none';
+}
+</script>
