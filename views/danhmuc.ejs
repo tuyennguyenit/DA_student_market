@@ -13,8 +13,9 @@
 <%}}%>
 
 <h4>create</h4>
-<form action="/dmcha" method="post">
+<form action="/dmcha" method="post"  enctype="multipart/form-data">
     Tên danh mục cha: <input type="text" name="tenDMCha">
+    ảnh: <h4>choose file:</h4> <input type="file" name="file"  class="form-control-file border"> <br>
     <input type="submit" value="adđ">
 </form>
 <% if(typeof mes_DMCha_C !=='undefined'){%>

@@ -5,8 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+const Passport=require('passport')
+const LocalStrategy=require('passport-local').Strategy
+const fs=require('fs')
 
-var sessionOptions = {secret: "secret",
+var sessionOptions = {
+  secret: "secret",
+  cookie:{
+    maxAge: 1000*60*5
+  },
   resave : true,
   saveUninitialized : true};
  
@@ -33,8 +40,42 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', routes);
+
+app.use(Passport.initialize())
+app.use(Passport.session())
+
+//!sign in -authenticate
+app.route('/login1')
+.get((req,res) => res.render('login1'))
+.post(Passport.authenticate('local',{failureRedirect: '/loginloi',successRedirect:'/loginOK'}))
+var User = require.main.require("./models/user");
+Passport.use(new LocalStrategy(
+  ( email, password,done )=>{
+		User.findOne({email:email,password:password},function(err,user){
+      if(err) throw err
+      else{
+        if(user){
+          return done(null,user)//chứng thực ok
+        }
+        else
+        return done(null,false); //chứng thực lỗi
+      }
+    })
+  }
+));
+
+
+
+
+Passport.serializeUser((user,done)=>{
+  done(null,user) 
+})
+Passport.deserializeUser((user,done)=>{
+  done(null,user) 
+})
+app.get('/loginOK',(req,res)=>res.send("bạn đã đăng nhập thành công"))
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

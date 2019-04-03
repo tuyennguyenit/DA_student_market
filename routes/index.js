@@ -4,6 +4,7 @@ var path = require("path");
 const request = require('request');
 var fs = require('fs');
 
+
 //require Model
 var User = require.main.require("./models/user");
 var Folder = require.main.require("./models/folder");
@@ -19,24 +20,86 @@ var mongoose = require("mongoose");
 var cookieParser = require("cookie-parser");
 mongoose.connect(dbConfig.url, { useMongoClient: true });
 var session = require("express-session");
+// router
+router.get("/login1", function(req, res) {
+  res.render("login");
+});
+router.get("/login-register", function(req, res) {
+  res.render("login-register");
+});
+router.get("/signup", function(req, res) {
+  res.render("signup");
+});
+router.get("/index1", function(req, res) {
+  res.render("index1");
+});
+router.get("/loginloi", function(req, res) {
+  res.render("login", { message: "Login Failed" });
+});
+router.get('/404',function(req,res){
+  res.render('404');
+})
+router.get('/505',function(req,res){
+  res.render('505');
+})
+router.get('/test0',function(req,res){
+  res.render('tindang1')
+})
+router.get('/gallery',function(req,res){
+  DM_Cha.find({},function(err,folders){
+    res.render('gallery1',{ folders: folders });
+  })
+})
+router.get('/gallery/:id_DMCha',function(req,res){
+  var id_DMCha=req.params.id_DMCha
+  DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+    DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+			console.log("TCL: folders", folders)
+      if (err) throw err;
+      TinDang.find({dmcha:id_DMCha}, function(err, tindang) {
+			console.log("TCL: tindang", tindang)
+      res.render("galleryChird1", { folders: folders,tindang:tindang,id_DMCha:id_DMCha});
+      })
+    });
+  })
+})
+router.get('/gallery/:id_DMCha/:id_DMCon',function(req,res){
+  var id_DMCha=req.params.id_DMCha
+  DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+    DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+      TinDang.find({dmCon:req.params.id_DMCon}, function(err, tindang) {
+				console.log("TCL: tindang", tindang)
+        if (err) throw err;
+        res.render("galleryChird1", {  folders: folders,tindang: tindang,id_DMCha:id_DMCha });
+      });
+    })
+  })   
+})
+router.get('/chitiettd/:idTinDang',function(req,res){
+  var id= req.params.idTinDang
+  TinDang.findOne({_id:id},function(err,item){
+    if (err) throw err
+    item.diaChi='Huế nhá'
+    res.render('chitiettd',{tindang:item})
+  })
+  
+})
+
+
+
+
+
 
 /**
  * router
  */
 //Home
 router.get("/", function(req, res) {
-  console.log("call to index...");
-  if (req.session.email == null) {
-    res.render("login");
-  } else {
-    Folder.find({ email: req.session.email }, function(err, folders) {
+    TinDang.find({ }, function(err, folders) {
       if (err) throw err;
-
-      // object of all the users
-      console.log(folders);
-      res.render("folders", { folders: folders });
+      res.render("tindang", { folders: folders });
     });
-  }
+  
 });
 
 //Logout
@@ -76,22 +139,10 @@ router.post("/signup", function(req, res) {
   });
 });
 
-// router
-router.get("/login", function(req, res) {
-  res.render("login");
-});
-router.get("/signup", function(req, res) {
-  res.render("signup");
-});
-router.get("/index1", function(req, res) {
-  res.render("index1");
-});
 
-//End router
 
 //Sign In
 router.post("/signin", function(req, res) {
-  console.log("call to signin post");
   var un = req.body.email;
   var pwd = req.body.password;
   var exists = User.findOne({ email: un, password: pwd }, function(err, user) {
@@ -114,6 +165,23 @@ router.post("/signin", function(req, res) {
     }
   });
 });
+//?login
+router.post("/login", function(req, res) {
+  var un = req.body.email;
+  var pwd = req.body.password;
+  var exists = User.findOne({ email: un, password: pwd }, function(err, user) {
+    if (err) throw err;
+    else {
+      if (user == null) {
+        res.render("login-register", { mesLog: "Login Failed" });
+      } else {
+        req.session.email = un;
+        res.redirect('/gallery')
+      }
+    }
+  });
+});
+
 
 /**
  * !bảng users: biến User
@@ -514,7 +582,7 @@ router.get("/tindang", function(req, res) {
         });
   });
 }else {
-  res.render("error", { message: "Login to continue" });
+  res.render("tindang", { mes: "Login to continue" });
 }
 });
 //get TinDang cho tất cả user
@@ -525,7 +593,22 @@ router.get("/tindangs", function(req, res) {
     res.render("tindang", { tindang: tindang });
   });
 });
-//get tinDang theo loại cho tất cả user
+//post tinDang theo dm cha cho tất cả user 
+//?nếu dùng post: thì cho gửi params có dấu
+//?nếu dùng get : thì phải sửa lại cấu trúc là truyền bằng id
+router.post("/tindangs/dmcha", function(req, res) {
+  TinDang.find({dmcha:req.body.tencha}, function(err, tindang) {
+    if (err) throw err;
+    res.render("tindang", { tindang: tindang });
+  });
+});
+//get tinDang dmcon cho tất cả user
+router.post("/tindangs/dmcon", function(req, res) {
+  TinDang.find({dmcon:req.body.tencon}, function(err, tindang) {
+    if (err) throw err;
+    res.render("tindang", { tindang: tindang });
+  });
+});
 //get tinDang theo tìm kiếm
 //get tindang theo sap xep
 
@@ -575,6 +658,7 @@ router.post("/tindang",upload.single("file"), function(req, res) {
 //!-lấy danh mục cha
 router.get("/getdmchas", function(req, res) {
   DM_Cha.find({}, function(err, cha) {
+				
         res.render("resviews/getdmcha", { lst_DMCon_R: cha });
   });
 });
@@ -592,7 +676,7 @@ router.get("/getdmcons/:tencha", function(req, res) {
    
   });
 });
-//!-lấy địa chỉ- tên tỉnh
+//!-lấy địa chỉ-full tên tỉnh
 router.get('/gettinhs', function(req, res){
   request('https://thongtindoanhnghiep.co/api/city', function (error, response, items) {
     if (!error && response.statusCode == 200) {
@@ -601,7 +685,7 @@ router.get('/gettinhs', function(req, res){
     }
   })
 });
-//!-lấy địa chỉ -quận huyện
+//!-lấy địa chỉ -full quận huyện
 router.get('/getqhs/:idH', function(req, res){
       var link='https://thongtindoanhnghiep.co/api/city/'+req.params.idH+'/district'
       request(link, function (error, response, body) {
@@ -612,7 +696,7 @@ router.get('/getqhs/:idH', function(req, res){
     else res.render('resviews/getqh');
   })
 });
-//!-lấy địa chỉ phường xã
+//!-lấy địa chỉ -full phường xã
 router.get('/getphuongxas/:idP', function(req, res){
   console.log("TCL: phuongxa")
       var link='https://thongtindoanhnghiep.co/api/district/'+req.params.idP+'/ward'
@@ -690,7 +774,7 @@ router.get("/dmchas", function(req, res) {
 });
 
 // admin: thêm danh mục cha
-router.post("/dmcha", function(req, res) {
+router.post("/dmcha",upload.single("file"), function(req, res) {
   console.log("call to create dmcha");
   var tenDMCha = req.body.tenDMCha;
   DM_Cha.findOne({ tenDMCha: tenDMCha }, function(err, dmcha) {
@@ -698,7 +782,8 @@ router.post("/dmcha", function(req, res) {
     else {
       if (dmcha == null) {
         var newDMCha = DM_Cha({
-          tenDMCha: tenDMCha
+          tenDMCha: tenDMCha,
+          anh1:req.file.filename
         });
         // save the dm cha
         newDMCha.save(function(err) {
@@ -747,13 +832,18 @@ router.post("/dmcha/edit", function(req, res) {
 
 // admin: xóa dm cha
 router.get("/dmcha/delete/:id_DMCha", function(req, res) {
-  DM_Cha.remove({ _id: req.params.id_DMCha }, function(err) {
-    if (err) {
-      console.log("Error in delete" + err);
-    } else {
-      res.redirect("/dmchas");
-    }
-  });
+  DM_Cha.findOne({_id:req.params.id_DMCha},function(err,item){
+    var link='public/upload/'+item.anh1;
+    fs.unlink(link, function (err) {
+      DM_Cha.remove({ _id: req.params.id_DMCha }, function(err) {
+        if (err) {
+          console.log("Error in delete" + err);
+        } else {
+          res.redirect("/dmchas");
+        }
+      });
+    });
+  })
 });
 
 //user: sử dụng danh mục cha
