@@ -6,7 +6,7 @@ var itemSchema=new Schema({
   id_TinDang:String,
   sDT:String,
   email:String,
-  trangThai:String,
+  trangThai:String, 
   tieuDe:String
 });
  

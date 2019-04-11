@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="meta description">
 
-    <title>Single Product :: Ruby - Jewelry Store e-Commerce Bootstrap 4 Template</title>
+    <title>Dashboard :: Ruby - Jewelry Store e-Commerce Bootstrap 4 Template</title>
 
     <!--=== Favicon ===-->
     <link rel="shortcut icon" href="/_assets/img/favicon.ico" type="image/x-icon"/>
@@ -318,10 +318,10 @@
         <div class="row">
             <div class="col-12 text-center">
                 <div class="page-title-content">
+                    <h1>Dashboard</h1>
                     <ul class="breadcrumb">
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="shop-full-wide.html">Shop</a></li>
-                        <li><a href="single-product.html" class="active"> <%if(typeof tindang!=='undefined'){%><%=tindang.tieuDe%> <%}%> </a></li>
+                        <li><a href="login-register.html" class="active">Dashboard</a></li>
                     </ul>
                 </div>
             </div>
@@ -332,248 +332,97 @@
 
 <!--== Page Content Wrapper Start ==-->
 <div id="page-content-wrapper" class="p-9">
-    <div class="ruby-container">
+    <div class="container">
         <div class="row">
-            <!-- Single Product Page Content Start -->
             <div class="col-lg-12">
-                <div class="single-product-page-content">
+                <!-- My Account Page Start -->
+                <div class="myaccount-page-wrapper">
+                    <!-- My Account Tab Menu Start -->
                     <div class="row">
-                        <!-- Product Thumbnail Start -->
-                        <div class="col-lg-5">
-                            <div class="product-thumbnail-wrap">
-                                <div class="product-thumb-carousel owl-carousel">
-                                    <div class="single-thumb-item">
-                                        <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb.jpg"
-                                                                           alt="Product"/></a>
-                                    </div>
+                        <div class="col-lg-3">
+                            <div class="myaccount-tab-menu nav" role="tablist">
+                                <a href="/info"  ><i class="fa fa-dashboard"></i>
+                                    Thông Tin cá Nhân</a>
 
-                                    <div class="single-thumb-item">
-                                        <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb-2.jpg"
-                                                                           alt="Product"/></a>
-                                    </div>
+                                    <a href="/info/tindadang" class="active"  ><i class="fa fa-cart-arrow-down"></i> Tin Đang Đăng</a>
 
-                                    <div class="single-thumb-item">
-                                        <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb-3.jpg"
-                                                                           alt="Product"/></a>
-                                    </div>
-
-                                    <div class="single-thumb-item">
-                                        <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb-4.jpg"
-                                                                           alt="Product"/></a>
-                                    </div>
-
-                                    <div class="single-thumb-item">
-                                        <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb-5.jpg"
-                                                                           alt="Product"/></a>
-                                    </div>
-                                </div>
+                                    <a href="/info/tinchoduyet"><i class="fa fa-cloud-download"></i> Tin Chờ Duyệt</a>
+    
+                                    <a href="/info/tindaluu"   data-toggle="tab"><i class="fa fa-credit-card"></i> Tin Đã Lưu</a>
+    
+                                    <a href="#address"><i class="fa fa-map-marker"></i> Người Theo Dõi</a>
+    
+                                    <a href="#account-info"><i class="fa fa-user"></i> Tin Nhắn</a>
+    
+                                    <a href="/signout"><i class="fa fa-sign-out"></i> Logout</a>
                             </div>
                         </div>
-                        <!-- Product Thumbnail End -->
+                        <!-- My Account Tab Menu End -->
 
-                        <!-- Product Details Start -->
-                        <div class="col-lg-7 mt-5 mt-lg-0">
-                            <div class="product-details">
-                                <h2><a href="single-product.html"><%=tindang.tieuDe%></a></h2>
+                        <!-- My Account Tab Content Start -->
+                        <div class="col-lg-9 mt-5 mt-lg-0">
+                            <div class="tab-content" id="myaccountContent">
+                                <!-- Single Tab Content Start -->
+                                <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
+                                <div class="myaccount-content">
+                                <h3>Tin Đang Đăng</h3>
 
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
+                                <div class="myaccount-table table-responsive text-center">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tiêu Đề</th>
+                                            <th>Ngày Đăng</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Hành Động</th>
+                                        </tr>
+                                        </thead>
 
-                                <span class="price"><%=tindang.gia%>&nbsp (đ)</span>
-
-                                <div class="product-info-stock-sku">
-                                    <span class="product-stock-status">In Stock</span>
-                                    <span class="product-sku-status ml-5"><strong>SKU</strong> MH03</span>
-                                </div>
-
-                                <p class="products-desc"><%=tindang.moTaChiTiet%>.</p>
-                                <div class="shopping-option-item">                                  
-                                <i class="fa fa-map-marker fa-1x"></i><b>Địa Chỉ:</b> <%=tindang.diaChi%>
-                                <div> <i class="fa fa-map-marker fa-1x"></i><b>Loại Tin:</b> <%=tindang.loaiTinDang%></div>
-                                <div><i class="fa fa-map-marker fa-1x"></i><b>Thời Hạn: </b><%=tindang.thoiHan%></div>
-                                </div>
-
-                                <div class="product-quantity d-flex align-items-center">
-                                    <div class="quantity-field">
-                                        <label >Số Lượng</label>
-                                        <input type="number" value="1"/>
-                                    </div>
-
-                                    <a href="single-product.html" class="btn btn-add-to-cart">Liên hệ Người bán</a>
-                                </div>
-
-                                <div class="product-btn-group">
-                                    <a href="single-product.html" class="btn btn-add-to-cart btn-whislist">+ Add to
-                                        Wishlist</a>
-                                    <a href="single-product.html" class="btn btn-add-to-cart btn-whislist">+ Add to
-                                        Compare</a>
+                                        <tbody>
+                                        <%if(typeof(tindang)!=='undefined' && tindang.length>0){
+                                            for(i=0;i<tindang.length;i++){
+                                        %>
+                                        <tr>
+                                            <td><%=i+1%></td>
+                                            <td><%=tindang[i].tieuDe%></td>
+                                            <td><%=tindang[i].thoiGianDang%></td>
+                                            <td><%=tindang[i].trangThai%></td>
+                                            <td><a href="cart.html" class="btn-add-to-cart">Xem</a>
+                                                <a href="cart.html" class="btn-add-to-cart">Sửa</a>
+                                                <a href="cart.html" class="btn-add-to-cart">Xóa</a>
+                                            </td>
+                                        </tr>
+                                        <%}}%>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Product Details End -->
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <!-- Product Full Description Start -->
-                            <div class="product-full-info-reviews">
-                                <!-- Single Product tab Menu -->
-                                <nav class="nav" id="nav-tab">
-                                    <a class="active" id="description-tab" data-toggle="tab" href="#description">Description</a>
-                                    <a id="reviews-tab" data-toggle="tab" href="#reviews">Reviews</a>
-                                </nav>
-                                <!-- Single Product tab Menu -->
-
-                                <!-- Single Product tab Content -->
-                                <div class="tab-content" id="nav-tabContent">
-                                    <div class="tab-pane fade show active" id="description">
-                                        <p> <b>Thông báo tránh lừa đảo:</b>Stay comfortable and stay in the race no matter what the weather's up to. The
-                                            Bruno Compete Hoodie's water-repellent exterior shields you from the
-                                            elements, while advanced fabric technology inside wicks moisture to keep you
-                                            dry.Stay comfortable and stay in the race no matter what the weather's up
-                                            to. The Bruno Compete Hoodie's water-repellent exterior shields you from the
-                                            elements, while advanced fabric technology inside wicks moisture to keep you
-                                            dry.Stay comfortable and stay in the race no matter what the weather's up
-                                            to. The Bruno Compete Hoodie's water-repellent exterior shields you from the
-                                            elements, while advanced fabric technology inside wicks moisture to keep you
-                                            dry.</p>
-
-                                        <ul>
-                                            <li>Adipisicing elitEnim, laborum.</li>
-                                            <li>Lorem ipsum dolor sit</li>
-                                            <li>Dolorem molestiae quod voluptatem! Sint.</li>
-                                            <li>Iure obcaecati odio pariatur quae saepe!</li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="tab-pane fade" id="reviews">
-                                        <div class="row">
-                                            <div class="col-lg-7">
-                                                <div class="product-ratting-wrap">
-                                                    <div class="pro-avg-ratting">
-                                                        <h4><%=lst_BCTin.length%> <span>(báo cáo)</span></h4>
-                                                        <span>Based on 9 Comments</span>
-                                                    </div>
-                                                    <div class="ratting-list">
-                                                        <div class="sin-list float-left">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <span>(5)</span>
-                                                        </div>
-                                                        <div class="sin-list float-left">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <span>(3)</span>
-                                                        </div>
-                                                        <div class="sin-list float-left">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <span>(1)</span>
-                                                        </div>
-                                                        <div class="sin-list float-left">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <span>(0)</span>
-                                                        </div>
-                                                        <div class="sin-list float-left">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <i class="fa fa-star-o"></i>
-                                                            <span>(0)</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="rattings-wrapper">
-                                                    <%if(typeof(lst_BCTin)!=='undefined'){
-                                                        for(i=0;i<lst_BCTin.length;i++){ 
-                                                    %>
-                                                        <!--báo cáo-->
-                                                        <div class="sin-rattings">
-                                                            <div class="ratting-author">
-                                                                <h3><%=lst_BCTin[i].sDT%></h3>
-                                                                <div class="ratting-star">
-                                                                    <i class="fa fa-flag"></i>                                                                  
-                                                                    <span>
-                                                                        <%=lst_BCTin[i].tieuDe=="luadao"?"lừa đảo":lst_BCTin[i].tieuDe=="trunglap"?"Trùng Lặp":"khác"%>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <p><%=lst_BCTin[i].noiDungBaoCao%></p>
-                                                        </div>
-                                                        <!--end báo cáo-->
-                                                        <%}}%>
-
-                                                    </div>
-                                                    <div class="ratting-form-wrapper fix">
-                                                        <h3>Báo cáo Bài Đăng này</h3>
-                                                        <form action="/bctindang" method="post">
-                                                            <div class="ratting-form row">
-                                                                <div class="col-12 mb-4">
-                                                                    <h5>Tiêu Đề:</h5>
-                                                                    <select name="tieuDe">
-                                                                        <option  value="luadao">Lừa Đảo</option>
-                                                                        <option  value="trunglap">Trùng Lặp</option>
-                                                                        <option  value="hangdaban">Hàng đã Bán</option>
-                                                                        <option  value="khonglienlacduoc">Không liên lạc được</option>
-                                                                        <option  value="khongdungthucte">Không đúng thực tế</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-md-6 col-12 mb-4">
-                                                                    <label for="name">Số Điện Thoại:</label>
-                                                                    <input id="name" placeholder="Name" type="text" name="sDT">
-                                                                </div>
-                                                                <div class="col-md-6 col-12 mb-4">
-                                                                    <label for="email">Email:</label>
-                                                                    <input id="email" placeholder="Email" type="text" name="email">
-                                                                </div>
-                                                                <div class="col-12 mb-4">
-                                                                    <label for="your-review">Your Review:</label>
-                                                                    <textarea  id="your-review"
-                                                                              placeholder="Write a review" name="noiDungBaoCao"></textarea>
-                                                                </div>
-                                                                <input type="hidden" name="id_TinDang" value="<%=tindang._id%>">
-                                                                <div class="col-12">
-                                                                    <input value="add review" type="submit">
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                   
+                                            
+                                            <!--thông báo-->
+                                         
+                                            <% if(typeof(mespass)!='undefined')
+                                            { %>
+                                            <br>
+                                            <div class="alert alert-warning">
+                                                <b>Oh snap!</b> <%=mespass%>
                                             </div>
-                                        </div>
+                                            <%} %> 
                                     </div>
-                                </div>
-                                <!-- Single Product tab Content -->
+                                    </div>
+                              
+                                <!-- Single Tab Content End //end chi tiết tài khoản-->
+
+                                
+                               
                             </div>
-                            <!-- Product Full Description End -->
                         </div>
+                        <!-- My Account Tab Content End -->
                     </div>
                 </div>
+                <!-- My Account Page End -->
             </div>
-            <!-- Single Product Page Content End -->
         </div>
     </div>
 </div>
@@ -746,51 +595,3 @@
 </body>
 
 </html>
-
-
-
-
-chi tiết tin đăng
-<%if(typeof tindang!=='undefined') {%>
-    <div><%=tindang.tieuDe%></div>
-    <div><%=tindang.moTaChiTiet%></div>
-    <div><%=tindang.anh1%></div>
-    <div><%=tindang.diaChi%></div>
-    <div><%=tindang.gia%></div>
-    <div><%=tindang.loaiTinDang%></div>
-    <div><%=tindang.thoiGianDang%></div>
-    <div><%=tindang.thoiHan%></div>
-
-    báo cáo tin đăng
-
-<h4>create</h4>
-<form action="/bctindang" method="post">
-    tiêu đề : <select name="tieuDe">
-                <option  value="luadao">Lừa Đảo</option>
-                <option  value="trunglap">Trùng Lặp</option>
-                <option  value="hangdaban">Hàng đã Bán</option>
-                <option  value="khonglienlacduoc">Không liên lạc được</option>
-                <option  value="khongdungthucte">Không đúng thực tế</option>
-              </select>
-   
-    
-    <br>
-    noiDungBaoCao: <input type="text" name="noiDungBaoCao"> <br>
-    id_TinDang : <input type="hidden" name="id_TinDang" value="<%=tindang._id%>"> <br>
-    sDT: <input type="text" name="sDT"> <br>
-    email : <input type="text" name="email"> <br>
-    <input type="submit" value="adđ">
-</form>
-<% if(typeof mes_DMCha_C !=='undefined'){%>
-    <div><%=mes_DMCha_C%></div>
-<%}%>
-
-hiển thị tin báo cáo
-<%if(typeof(lst_BCTin)!=='undefined'){
-    for(i=0;i<lst_BCTin.length;i++){ 
-%>
-    <%=lst_BCTin[i].tieuDe%>
-    <%=lst_BCTin[i].noiDungBaoCao%>
-    <br>
-<%}}}%>
-

@@ -543,8 +543,8 @@
                                             <span class="price">$<%=tindang[i].gia%></span>
                                             <p class="products-desc"><%=tindang[i].moTaChiTiet%></p>
                                             <a href="/chitiettd/<%=tindang[i]._id%>" class="btn btn-add-to-cart">Chi Tiết</a>
-                                            <a href="single-product.html" class="btn btn-add-to-cart btn-whislist">+
-                                                Wishlist</a>
+                                            <a href="/tindaluu/<%=tindang[i]._id%>" class="btn btn-add-to-cart btn-whislist">+
+                                                Lưu Tin</a>
                                             <a href="single-product.html" class="btn btn-add-to-cart btn-compare">+
                                                 Compare</a>
                                         </div>
@@ -554,10 +554,15 @@
                                     <span data-toggle="tooltip" data-placement="left" title="Quick View"><i
                                             class="fa fa-compress"></i></span>
                                             </button>
-                                            <a href="#" data-toggle="tooltip" data-placement="left"
-                                               title="Add to Wishlist"><i
-                                                    class="fa fa-heart-o"></i></a>
-                                            <a href="#" data-toggle="tooltip" data-placement="left" title="Compare"><i
+                                            <!--form lưu tin-->
+                                                    <form action="/tindaluu" method="post" id="formluutin">
+                                                        <input type="hidden" name="id" value="<%=tindang[i]._id%>">
+                                                        <input type="hidden" name="tieuDe" value="<%=tindang[i].tieuDe%>">
+                                                        <input type="hidden" name="nguoiDang" value="<%=tindang[i].email_User%>">
+                                                        <a  href="javascript:{}" onclick="document.getElementById('formluutin').submit();" data-toggle="tooltip" data-placement="left"
+                                                        title="Lưu Tin"><i class="fa fa-heart-o"></i></a>
+                                                    </form>
+                                            <a data-toggle="tooltip" data-placement="left" title="Compare"><i
                                                     class="fa fa-tags"></i></a>
                                         </div>
                                         <span class="product-bedge">New</span>

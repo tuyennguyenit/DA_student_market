@@ -1,0 +1,19 @@
+<%if(typeof(tindang)!=="undefined" && tindang.length>0){
+    for(i=0;i<tindang.length;i++){
+%>
+    <span><%=tindang[i].tieuDe%></span>
+    <span><%=tindang[i].moTaChiTiet%></span>
+        <!--duyet tin-->
+    <form action="/admin/tindang/edit" method="post">
+        <input type="hidden" name="_id" value="<%=tindang[i]._id%>">
+       Duyệt: <select name="duyet">
+                <option value="1"> yes</option>
+                <option value="2"> no</option>
+              </select>
+        <input type="submit" value="duyet">
+    </form>
+    <br>
+
+    <a href="/admin/tindang/delete/<%=tindang[i]._id%>"> xoa</a>
+<%}}%>
+
