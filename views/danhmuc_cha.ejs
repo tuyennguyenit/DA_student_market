@@ -30,6 +30,7 @@
 
     <!-- Modernizer JS -->
     <script src="/_assets/js/vendor/modernizr-2.8.3.min.js"></script>
+   
 
 
     <!--[if lt IE 9]>
@@ -383,7 +384,7 @@
                                                     <%}%>
                                                 <br><br><br>
                                                 <div class="cart-table table-responsive">
-                                                  <table class="table table-bordered">
+                                                  <table class="table table-bordered" id="table_1" class="display">
                                                         <thead>
                                                             <tr>
                                                                 <th class="pro-thumbnail">STT</th>
@@ -847,6 +848,15 @@
 
 <!--=== Active Js ===-->
 <script src="/_assets/js/active.js"></script>
+ <!--datatable-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#table_1').DataTable();
+} );
+</script>
 </body>
 
 </html>

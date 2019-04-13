@@ -344,33 +344,23 @@
                                 <div class="product-thumb-carousel owl-carousel">
                                     <div class="single-thumb-item">
                                         <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb.jpg"
+                                                                           src="/upload/<%=tindang.anh1%>"
                                                                            alt="Product"/></a>
                                     </div>
 
                                     <div class="single-thumb-item">
                                         <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb-2.jpg"
+                                                                           src="/upload/<%=tindang.anh1%>"
                                                                            alt="Product"/></a>
                                     </div>
 
                                     <div class="single-thumb-item">
                                         <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb-3.jpg"
+                                                                           src="/upload/<%=tindang.anh1%>"
                                                                            alt="Product"/></a>
                                     </div>
 
-                                    <div class="single-thumb-item">
-                                        <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb-4.jpg"
-                                                                           alt="Product"/></a>
-                                    </div>
-
-                                    <div class="single-thumb-item">
-                                        <a href="single-product.html"><img class="img-fluid"
-                                                                           src="/_assets/img/single-pro-thumb-5.jpg"
-                                                                           alt="Product"/></a>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -406,10 +396,13 @@
                                 <div class="product-quantity d-flex align-items-center">
                                     <div class="quantity-field">
                                         <label >Số Lượng</label>
-                                        <input type="number" value="1"/>
+                                        <input type="number" value="1" disabled/>
                                     </div>
-
-                                    <a href="single-product.html" class="btn btn-add-to-cart">Liên hệ Người bán</a>
+                                    <form action="/info" method="post">
+                                        <input type="hidden" name="email_User" value="<%=tindang.email_User%>">
+                                        <button type="submit" class="btn btn-add-to-cart">Liên hệ Người bán</button>
+                                    </form>
+                                   
                                 </div>
 
                                 <div class="product-btn-group">

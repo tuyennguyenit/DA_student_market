@@ -383,13 +383,13 @@
                                                     <%}%>
                                                 <br><br><br>
                                                 <div class="cart-table table-responsive">
-                                                  <table class="table table-bordered">
+                                                  <table class="table table-bordered" id="table_1">
                                                         <thead>
                                                             <tr>
                                                                 <th class="pro-thumbnail">STT</th>
                                                                 <th class="pro-title">Tên Danh Mục Con</th>
                                                                 <th class="pro-title">Tên Danh Mục Cha</th>
-                                                                <th class="pro-quantity">ảnh</th>
+                                                            
                                                                 <th class="pro-edit">edit</th>
                                                                 <th class="pro-remove">Remove</th>
                                                             </tr>
@@ -403,8 +403,7 @@
                                                                 <td class="pro-title"><a href="#"><%=i+1%></a></td>                                                             
                                                                 <td class="pro-quantity"><span class="text-success"><%=lst_DMCon_R[i].tenDMCon%></span></td>
                                                                 <td class="pro-quantity"><span class="text-success"><%=lst_DMCon_R[i].tenDMCha%></span></td>
-                                                                <td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="/upload/"
-                                                                alt="Product"/></a></td>
+                                                               
                                                                 <td class="pro-edit"><a href=""  data-toggle="modal" data-target="#modalEdit<%=i+1%>"><i class="fa fa-edit"></i></a></td>
                                                                 <td class="pro-remove"><a href="/dmcon/delete/<%=lst_DMCon_R[i]._id%>"><i class="fa fa-trash-o"></i></a></td>
                                                         </tr>
@@ -853,6 +852,15 @@
 
 <!--=== Active Js ===-->
 <script src="/_assets/js/active.js"></script>
+ <!--datatable-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#table_1').DataTable();
+} );
+</script>
 </body>
 
 </html>

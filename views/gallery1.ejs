@@ -359,7 +359,7 @@
         <div class="single-category-products">
             <div class="row">
                 <div class="col-lg-6 mt-5 mt-lg-0">                                    
-                    <a href="/gallery/<%=folders[i]._id%>" class="product-category-name-warp d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp d-flex">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -367,7 +367,7 @@
                 </div>
                 <%if(i+1<folders.length){i=i+1%>
                 <div class="col-lg-6 order-first order-lg-last">
-                    <a href="/gallery/<%=folders[i]._id%>" class="product-category-name-warp d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp d-flex">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -384,7 +384,7 @@
             <%if(i+1<folders.length){i=i+1%>
                 <!--begin-->
                 <div class="col-lg-6 mb-5 mb-lg-0">
-                    <a href="#" class="product-category-name-warp women d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp women d-flex">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -394,7 +394,7 @@
             <%}%>    
             <%if(i+1<folders.length){i=i+1%>
                 <div class="col-lg-3 mb-5 mb-lg-0">
-                    <a href="#" class="product-category-name-warp women d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp women d-flex">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -403,7 +403,7 @@
             <%}%> 
             <%if(i+1<folders.length){i=i+1%>   
                 <div class="col-lg-3 mb-5 mb-lg-0">
-                    <a href="#" class="product-category-name-warp women d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp women d-flex">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -421,7 +421,7 @@
                 <div class="col-lg-3 mt-5 mt-lg-0">                  
                 </div>
                 <div class="col-lg-6 order-first order-lg-last">
-                    <a href="#" class="product-category-name-warp clothing d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp clothing d-flex">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -440,7 +440,7 @@
                     <div class="row">
                     <%if(i+1<folders.length){i=i+1%>   
                         <div class="col-lg-6 mb-5 mb-lg-0">
-                            <a href="#" class="product-category-name-warp jewelry d-flex">
+                            <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp jewelry d-flex">
                                 <div class="category-title-box d-flex">
                                     <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                                 </div>
@@ -449,7 +449,7 @@
                         <%}%>
                         <%if(i+1<folders.length){i=i+1%>   
                         <div class="col-lg-6 mb-5 mb-lg-0">
-                            <a href="#" class="product-category-name-warp jewelry d-flex">
+                            <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp jewelry d-flex">
                                 <div class="category-title-box d-flex">
                                     <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                                 </div>
@@ -460,7 +460,7 @@
                 </div>
                 <%if(i+1<folders.length){i=i+1%>   
                 <div class="col-lg-6 mb-5 mb-lg-0">
-                    <a href="#" class="product-category-name-warp jewelry d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp jewelry d-flex">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -475,6 +475,90 @@
 </div>
 <!--== Products Area End ==-->
 
+<!--== Search Area Start ==-->
+<section id="newsletter-area" class="p-9">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <!-- Section Title Start -->
+                <div class="section-title">
+                    <h2>Bộ Lọc Tìm kiếm </h2>
+                    <p>Chúng Tôi sẽ giúp bạn tìm kiếm bài đăng phù hợp</p>
+                </div>
+                <!-- Section Title End -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 m-auto">
+                <div class="newsletter-form-wrap">
+                    <form id="subscribe-form" action="/search/baidang" method="get">
+                         <div class="single-input-item">
+                                <label for="country" class="required">Danh Mục Chính</label>
+                                    <select name="dmcha" id="dmcha" onchange="funCha()" class="form-control" >
+                                    <!--danh mục-->
+                                    <option>danh mục</option>
+                                    <% if(typeof lst_DMCha_R!=='undefined'){
+                                        for(i=0;i<lst_DMCha_R.length;i++){%>
+                                        <option value="<%=lst_DMCha_R[i]._id%>"><%=lst_DMCha_R[i].tenDMCha%></option>         
+                                        <%}}%>                     
+                                    </select>
+                             </div>
+                    
+                             <div class="single-input-item">
+                                <label for="country" class="required">Danh Mục Con</label>
+                                <select name="dmCon" id="dmCon" class="form-control" >
+                                    <option>danh mục con</option>                               
+                                </select>
+                            </div>
+
+                           
+                            <div class="single-input-item">
+                                <label for="country" class="required">Tỉnh Thành</label>
+                                <select name="tinh" id="tinh" onchange="funHuyen()" class="form-control">
+                                    <option value="">-</option>                                   
+                                </select>
+                            </div>
+
+                            <div class="single-input-item">
+                                <label for="country" class="required">Quận / Huyện</label>
+                                <select  name="huyen" id="huyen" onchange="funXa()"class="form-control">
+                                    <option value="">-</option>                                   
+                                </select>
+                            </div>
+
+                            <div class="single-input-item">
+                                <label for="country" class="required">Phường / Xã</label>
+                                <select name="xa" id="xa"class="form-control">
+                                    <option value="">-</option>                                   
+                                </select>
+                            </div>
+
+                          
+
+                            <div class="single-input-item">
+                                <label for="country" class="required">Loại Tin Đăng</label>
+                                <select name="loaiTinDang" id="country" class="form-control">
+                                    <option value="1">Tin Bán</option>     
+                                    <option value="2">Tin Mua</option>                                                          
+                                </select>
+                            </div>
+
+                           
+                           
+
+                          
+                        <button type="submit" class="btn-long-arrow">Tìm Kiếm</button>
+                        <div id="result"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--== search Area End ==-->
+
+
 <!--== Newsletter Area Start ==-->
 <section id="newsletter-area" class="p-9">
     <div class="container">
@@ -482,7 +566,7 @@
             <div class="col-lg-12 text-center">
                 <!-- Section Title Start -->
                 <div class="section-title">
-                    <h2>Join The Newsletter</h2>
+                    <h2>Nhận mail </h2>
                     <p>Sign Up for Our Newsletter</p>
                 </div>
                 <!-- Section Title End -->
@@ -492,7 +576,7 @@
         <div class="row">
             <div class="col-lg-8 m-auto">
                 <div class="newsletter-form-wrap">
-                    <form id="subscribe-form" action="https://d29u17ylf1ylz9.cloudfront.net/ruby-v2/ruby/assets/php/subscribe.php" method="post">
+                    <form id="subscribe-form" action="" method="post">
                         <input id="subscribe" type="email" name="email" placeholder="Enter your Email  Here" required/>
                         <button type="submit" class="btn-long-arrow">Subscribe</button>
                         <div id="result"></div>
@@ -667,7 +751,41 @@
 <script src="_assets/js/plugins.js"></script>
 
 <!--=== Active Js ===-->
-<script src="_assets/js/active.js"></script>
+
 </body>
 
 </html>
+
+
+<script>
+ function funCha(){
+  var x = document.getElementById("dmcha").value; 
+  var link="getdmcons/"+x;
+  //alert(link)
+  $('#dmCon').load(link); 
+ }
+ 
+ //load
+ $('#dmcha').load('getdmchas'); 
+ $('#tinh').load('gettinhs'); 
+
+//function quân huyện
+ function funHuyen(){
+  var x = document.getElementById("tinh").value;
+  var link="getqhs/"+x;
+  $('#huyen').load(link); 
+ }
+ function funXa(){
+  var x = document.getElementById("huyen").value; 
+  var link="getphuongxas/"+x;
+  $('#xa').load(link); 
+ }
+
+</script>
+
+<style>
+select#dmcha ,select#dmCon,select#tinh,select#huyen,select#xa,select#country,input#yes{
+    height: 50px;
+    font-size: 14px;
+}
+</style>

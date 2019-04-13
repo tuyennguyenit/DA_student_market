@@ -8,8 +8,13 @@ var tindangSchema = new Schema({
   tieuDe:String,
   moTaChiTiet:String,
   anh1:String,
+  anh2:String,
+  anh3:String,
   dmcha:String, 
   dmCon:String,
+  tinh:String,    //tinh thanh
+  huyen:String,   //tinh thanh
+  xa:String,      //tinh thanh
   diaChi:String,  //tinh thanh
   gia:Number,     
   loaiTinDang: String, //ban ,mua

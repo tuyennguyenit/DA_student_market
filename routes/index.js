@@ -54,14 +54,19 @@ router.get('/test0',function(req,res){
 router.get('/info',function(req,res){
   if (req.session.email != null) {
     User.find({ email: req.session.email }, function(err, user) {
-			console.log("TCL: user", user)
       if (err) res.render('500');
-      
       res.render("user", { user: user });
     });
   } else {
     res.render("404", { message: "Login to continue" });
   }
+})
+//user: lấy thông tin cá nhân của user khác
+router.post('/info',function(req,res){
+    User.find({ email: req.body.email_User }, function(err, user) {
+      if (err) res.render('500');
+      res.render("user_khac", { user: user });
+    });
 })
 
 //admin:lấy thông tin cá nhân 
@@ -273,11 +278,13 @@ router.post('/tindaluu', function(req, res) {
 /**
  * !KHÁCH
  */
+
 router.get('/gallery',function(req,res){
   DM_Cha.find({},function(err,folders){
     res.render('gallery1',{ folders: folders });
   })
 })
+//lấy toàn bộ tin đăng cho theo danh mục cha
 router.get('/gallery/:id_DMCha',function(req,res){
   var id_DMCha=req.params.id_DMCha
   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
@@ -289,18 +296,249 @@ router.get('/gallery/:id_DMCha',function(req,res){
     });
   })
 })
-router.get('/gallery/:id_DMCha/:id_DMCon',function(req,res){
+//phân trang thường theo danh mục cha
+router.get('/gallery/:id_DMCha/:page', (req, res, next) => {
+    var id_DMCha=req.params.id_DMCha
+    let perPage = 1;
+    let page = req.params.page || 1;
+    DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+      DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+        TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).skip((perPage * page) - perPage) .limit(perPage) .exec((err, tindang) => {
+          TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).count((err, count) => {
+            if (err) return next(err);
+            res.render('galleryChird1', {
+              id_DMCha:id_DMCha,
+              folders:folders,
+              current: page,
+              tindang:tindang,
+              id_DMCha:id_DMCha,
+              pages: Math.ceil(count / perPage),
+              loaiTrang:0
+            })
+          })
+      }) 
+    });    
+  }) 
+})
+
+//sắp xếp tăng dần theo ngày đăng=> chỉ cần dựa vào id .sort({_id:1})
+router.get('/gallery/:id_DMCha/indate/:page', (req, res, next) => {
   var id_DMCha=req.params.id_DMCha
+  let perPage = 1;
+  let page = req.params.page || 1;
   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
     DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
-      TinDang.find({dmCon:req.params.id_DMCon}, function(err, tindang) {
-				console.log("TCL: tindang", tindang)
-        if (err) throw err;
-        res.render("galleryChird1", {  folders: folders,tindang: tindang,id_DMCha:id_DMCha });
-      });
+      TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).sort({_id:1}).skip((perPage * page) - perPage) .limit(perPage) .exec((err, tindang) => {
+        TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).count((err, count) => {
+          if (err) return next(err);
+          res.render('galleryChird1', {
+            id_DMCha:id_DMCha,
+            folders:folders,
+            current: page,
+            tindang:tindang,
+            id_DMCha:id_DMCha,
+            pages: Math.ceil(count / perPage),
+            loaiTrang:2
+          })
+        })
     })
-  })   
+  });    
+}) 
 })
+//sắp xếp giảm dần theo ngày đăng
+router.get('/gallery/:id_DMCha/descdate/:page', (req, res, next) => {
+  var id_DMCha=req.params.id_DMCha
+  let perPage = 3;
+  let page = req.params.page || 1;
+  DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+    DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+      TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).sort({_id:-1}).skip((perPage * page) - perPage) .limit(perPage) .exec((err, tindang) => {
+        TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).count((err, count) => {
+          if (err) return next(err);
+          res.render('galleryChird1', {
+            id_DMCha:id_DMCha,
+            folders:folders,
+            current: page,
+            tindang:tindang,
+            id_DMCha:id_DMCha,
+            pages: Math.ceil(count / perPage),
+            loaiTrang:3
+          })
+        })
+    })
+  });    
+}) 
+})
+//sắp xếp tăng theo giá
+router.get('/gallery/:id_DMCha/ingia/:page', (req, res, next) => {
+  var id_DMCha=req.params.id_DMCha
+  let perPage = 1;
+  let page = req.params.page || 1;
+  DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+    DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+      TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).sort({gia:1}).skip((perPage * page) - perPage) .limit(perPage) .exec((err, tindang) => {
+        TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).count((err, count) => {
+          if (err) return next(err);
+          res.render('galleryChird1', {
+            id_DMCha:id_DMCha,
+            folders:folders,
+            current: page,
+            tindang:tindang,
+            id_DMCha:id_DMCha,
+            pages: Math.ceil(count / perPage),
+            loaiTrang:4
+          })
+        })
+    })
+  });    
+}) 
+})
+//sắp xếp giảm theo giá
+router.get('/gallery/:id_DMCha/descgia/:page', (req, res, next) => {
+  var id_DMCha=req.params.id_DMCha
+  let perPage = 1;
+  let page = req.params.page || 1;
+  DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+    DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+      TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).sort({gia:-1}).skip((perPage * page) - perPage) .limit(perPage) .exec((err, tindang) => {
+        TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1"}).count((err, count) => {
+          if (err) return next(err);
+          res.render('galleryChird1', {
+            id_DMCha:id_DMCha,
+            folders:folders,
+            current: page,
+            tindang:tindang,
+            id_DMCha:id_DMCha,
+            pages: Math.ceil(count / perPage),
+            loaiTrang:5
+          })
+        })
+    })
+  });    
+}) 
+})
+
+//sắp theo tin bán
+router.get('/gallery/:id_DMCha/tinban/:page', (req, res, next) => {
+  var id_DMCha=req.params.id_DMCha
+  let perPage = 1;
+  let page = req.params.page || 1;
+  DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+    DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+      TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1",loaiTinDang:"tinban"}).skip((perPage * page) - perPage) .limit(perPage) .exec((err, tindang) => {
+        TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1",loaiTinDang:"tinban"}).count((err, count) => {
+          if (err) return next(err);
+          res.render('galleryChird1', {
+            id_DMCha:id_DMCha,
+            folders:folders,
+            current: page,
+            tindang:tindang,
+            id_DMCha:id_DMCha,
+            pages: Math.ceil(count / perPage),
+            loaiTrang:6
+          })
+        })
+    })
+  });    
+}) 
+})
+//sắp xếp theo tin mua
+router.get('/gallery/:id_DMCha/tinmua/:page', (req, res, next) => {
+  var id_DMCha=req.params.id_DMCha
+  let perPage = 1;
+  let page = req.params.page || 1;
+  DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+    DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+      TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1",loaiTinDang:"tinmua"}).skip((perPage * page) - perPage) .limit(perPage) .exec((err, tindang) => {
+        TinDang.find({dmcha:id_DMCha,daDuyet:"1",trangThai:"1",loaiTinDang:"tinmua"}).count((err, count) => {
+          if (err) return next(err);
+          res.render('galleryChird1', {
+            id_DMCha:id_DMCha,
+            folders:folders,
+            current: page,
+            tindang:tindang,
+            id_DMCha:id_DMCha,
+            pages: Math.ceil(count / perPage),
+            loaiTrang:7
+          })
+        })
+    })
+  });    
+}) 
+})
+// router.get('/gallery/:id_DMCha/:id_DMCon',function(req,res){
+//   var id_DMCha=req.params.id_DMCha
+//   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+//     DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+//       TinDang.find({dmCon:req.params.id_DMCon}, function(err, tindang) {
+// 				console.log("TCL: tindang", tindang)
+//         if (err) throw err;
+//         res.render("galleryChird1", {  folders: folders,tindang: tindang,id_DMCha:id_DMCha });
+//       });
+//     })
+//   })   
+// })
+//theo loai danh muc con
+router.get('/gallery/:id_DMCha/:id_DMCon/:page', (req, res, next) => {
+  var id_DMCha=req.params.id_DMCha
+  let perPage = 1;
+  let page = req.params.page || 1;
+  DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+    DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+      TinDang.find({dmCon:req.params.id_DMCon,daDuyet:"1",trangThai:"1"}).skip((perPage * page) - perPage) .limit(perPage) .exec((err, tindang) => {
+        TinDang.find({dmCon:req.params.id_DMCon,daDuyet:"1",trangThai:"1"}).count((err, count) => {
+          if (err) return next(err);
+          res.render('galleryChird1', {
+            id_DMCha:id_DMCha,
+            folders:folders,
+            current: page,
+            tindang:tindang,
+            id_DMCon:req.params.id_DMCon,
+            pages: Math.ceil(count / perPage),
+            loaiTrang:1
+          })
+        })
+    }) 
+  });    
+}) 
+})
+/**
+ * !Tìm Kiếm
+ * todos tìm kiếm bài đăng dựa theo các tiêu chí: dm,tỉnh thành,loại tin
+ * ? dùng session lưu lại kq để cho dễ về sau
+ */
+router.get('/search/baidang', (req, res, next) => {
+  //lay thong tin
+  var query = require('url').parse(req.url,true).query;
+  var id_DMCha=query.dmcha
+  var id_DMCon=query.dmCon
+  var tinh=query.tinh
+  var huyen=query.huyen
+  var xa=query.xa
+  var loaiTinDang=query.loaiTinDang
+
+  let perPage = 9;
+  let page = req.params.page || 1;
+  DM_Cha.findOne({_id:id_DMCha},function(err,cha){
+    DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
+      TinDang.find({dmCon:id_DMCon,daDuyet:"1",trangThai:"1"}).skip((perPage * page) - perPage) .limit(perPage) .exec((err, tindang) => {
+        TinDang.find({dmCon:id_DMCon,daDuyet:"1",trangThai:"1"}).count((err, count) => {
+          if (err) return next(err);
+          res.render('galleryChird1', {
+            id_DMCha:id_DMCha,
+            folders:folders,
+            current: page,
+            tindang:tindang,
+            id_DMCon:req.params.id_DMCon,
+            pages: Math.ceil(count / perPage),
+            loaiTrang:"timkiem"
+          })
+        })
+    }) 
+  });    
+}) 
+})
+
 //chi tiết 1 tin đăng
 router.get('/chitiettd/:idTinDang',function(req,res){
   var id= req.params.idTinDang
@@ -308,16 +546,24 @@ router.get('/chitiettd/:idTinDang',function(req,res){
     if (err)  res.redirect('/404')
     else{
        //?hiện tên quận huyện xã
-       item.diaChi='Huế nhá'
-       //tìm các báo cáo tin đăng này
-       BC_Tin.find({id_TinDang:id}, function(err, items1) {
-       if (err) throw err;
-       res.render('chitiettd', {lst_BCTin:items1,tindang:item}); 
-       });
-    }
-       
+       var linkxa='https://thongtindoanhnghiep.co/api/ward/'+item.xa
+       request(linkxa, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          var info = JSON.parse(body)			
+          item.diaChi=item.diaChi+","+info.QuanHuyenTitle+","+info.Title+",Tỉnh"+info.TinhThanhTitle
+          if(item.loaiTinDang==="1") item.loaiTinDang="Tin Bán"
+          else item.loaiTinDang="Tin Mua";
+          if(item.thoiHan===",") item.thoiHan="Không Thời Hạn"
+          
+          //tìm các báo cáo tin đăng này
+          BC_Tin.find({id_TinDang:id}, function(err, items1) {
+          if (err) throw err;
+          res.render('chitiettd', {lst_BCTin:items1,tindang:item}); 
+          })   
+       };
+      })
+    }   
   })
-  
 })
 
 
@@ -560,6 +806,13 @@ router.post("/profile/edit", function(req, res) {
 //admin: xem tất cả các user thành viên
 router.get("/admin/users",function(req,res){
   User.find({},function(req,items){
+    //xử lý dữ liệu loại tài khoản, trang thái
+    for(i=0;i<items.length;i++){
+      if(items[i].loaiTaiKhoan==="1") items[i].loaiTaiKhoan="User-Thường"
+      if(items[i].loaiTaiKhoan==="3") items[i].loaiTaiKhoan="ADMIN"
+      if(items[i].trangThai==="1") items[i].trangThai="active"
+      if(items[i].trangThai==="0") items[i].trangThai="lock"
+    }
     res.render("admin_users",{users:items})
   })
 })
@@ -950,10 +1203,10 @@ router.post("/tindangs/dmcon", function(req, res) {
 //get tindang theo sap xep
 
 //!Create tindang
-router.post("/tindang",upload.single("file"), function(req, res) {
+router.post("/tindang",upload.any(), function(req, res) {
   var tieuDe = req.body.tieuDe;
   var moTaChiTiet = req.body.moTaChiTiet;
-  var thoiHan='Không Thời Hạn'
+  var thoiHan='0'
   if(req.body.thoiHan !==''){
     thoiHan= req.body.thoiHan
   }
@@ -961,8 +1214,7 @@ router.post("/tindang",upload.single("file"), function(req, res) {
   var tinh=req.body.tinh;
   var huyen=req.body.huyen;
   var xa=req.body.xa;
-  var soNha=req.body.soNha;
-  var diaChi=soNha+','+xa+','+huyen+','+tinh
+  var diaChi=req.body.soNha;
   var email = "111@gmail.com";
 
   var dateTime = Date()
@@ -971,10 +1223,13 @@ router.post("/tindang",upload.single("file"), function(req, res) {
     tieuDe: tieuDe,
     moTaChiTiet: moTaChiTiet,
     email_User: email,
-    anh1: req.file.filename,
+    anh1: req.files[0].filename,
+    anh2: req.files[1].filename,
+    anh3: req.files[2].filename,
     dmcha:req.body.dmcha,
 
     dmCon:req.body.dmCon,
+    tinh:tinh,huyen:huyen,xa:xa,
     diaChi:diaChi,  
     gia:req.body.gia,     
     loaiTinDang: req.body.loaiTinDang,
@@ -1097,15 +1352,22 @@ router.get("/admin/tindang/delete/:_idTinDang", function(req, res) {
   TinDang.findOne({_id:req.params._idTinDang},function(err,item){
     //xóa ảnh
     var link='public/upload/'+item.anh1;
+    var link1='public/upload/'+item.anh2;
+    var link2='public/upload/'+item.anh3;
+
     fs.unlink(link, function (err) {
-      //xóa tin đăng
-      TinDang.remove({ _id: req.params._idTinDang }, function(err) {
-        if (err) {
-          console.log("Error in delete" + err);
-        } else {
-          res.redirect("/tindang");
-        }
-      });
+      fs.unlink(link1,function(err){
+        fs.unlink(link2,function(err){
+          //xóa tin đăng
+          TinDang.remove({ _id: req.params._idTinDang }, function(err) {
+            if (err) {
+              console.log("Error in delete" + err);
+            } else {
+              res.redirect("/tindang");
+            }
+          });
+        })
+      })
     });
   }) 
 });
