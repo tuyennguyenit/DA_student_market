@@ -14,6 +14,8 @@ var DM_Con = require.main.require("./models/dMConModel");
 var BC_Tin=require.main.require("./models/baocaoTinModel");
 var UserTheoDoi= require.main.require("./models/userTheoDoiModel");
 var TinDangTheoDoi=require.main.require("./models/tinDangTheoDoiModel");
+var Mail=require.main.require("./models/mail")
+var Carousel=require.main.require("./models/carousel")
 // Connect to DB
 var dbConfig = require.main.require("./db");
 var mongoose = require("mongoose");
@@ -52,7 +54,8 @@ router.get('/test0',function(req,res){
  */
 //user:lấy thông tin cá nhân 
 router.get('/info',function(req,res){
-  if (req.session.email != null) {
+  var email=req.session.email
+  if (email != null) {
     User.find({ email: req.session.email }, function(err, user) {
       if (err) res.render('500');
       res.render("user", { user: user });
@@ -63,9 +66,10 @@ router.get('/info',function(req,res){
 })
 //user: lấy thông tin cá nhân của user khác
 router.post('/info',function(req,res){
-    User.find({ email: req.body.email_User }, function(err, user) {
+  var email=req.body.email_User
+    User.find({ email:email }, function(err, user) {
       if (err) res.render('500');
-      res.render("user_khac", { user: user });
+      res.render("user_khac", { user: user,email_User:email });
     });
 })
 
@@ -194,6 +198,17 @@ router.get('/info/tindadang',function(req,res){
   else
   res.render("404", { message: "Login to continue" });
 })
+//user khác:xem tin đang đăng của user khác
+router.post('/info/khac/tindadang',function(req,res){
+  var email=req.body.email_User
+    TinDang.find({ email_User: email }, function(err, tindang) {
+      if (err) res.render('500');
+      if(tindang.n!==0){
+        res.render('user_khac_tindang',{tindang:tindang,email_User:email});
+      }else    
+      res.render('user_khac_tindang',{mes:"không có tin  nào"});
+    })
+})
 //tin chờ duyệt
 router.get('/info/tinchoduyet',function(req,res){
   var email=req.session.email
@@ -223,6 +238,19 @@ router.get('/info/tindaluu',function(req,res){
   var email=req.session.email
   if(email!=null){
     TinDangTheoDoi.find({email_User:email}, function(err, listIDTin) {
+			console.log("TCL: listIDTin", listIDTin)
+      if (err) throw err;
+        res.render('user_info_tintheodoi',{listIDTin:listIDTin})
+    }); 
+  }
+  else
+  res.render("404", { message: "Login to continue" });
+})
+//user: xóa tin mà mình theo dõi
+router.get('/info/delete/tindaluu/:id',function(req,res){
+  var email=req.session.email
+  if(email!=null){
+    TinDangTheoDoi.remove({email_User:email,_id:req.params.id}, function(err, listIDTin) {
       if (err) throw err;
       res.render('user_info_tintheodoi',{listIDTin:listIDTin})
     }); 
@@ -281,7 +309,16 @@ router.post('/tindaluu', function(req, res) {
 
 router.get('/gallery',function(req,res){
   DM_Cha.find({},function(err,folders){
-    res.render('gallery1',{ folders: folders });
+    //lấy carousel
+    Carousel.find({},function(req,items){
+      res.render('gallery1',{ folders: folders,carousel:items });
+    })
+  })
+})
+//search
+router.get('/search',function(req,res){
+  DM_Cha.find({},function(err,folders){
+      res.render('search',{ folders: folders });
   })
 })
 //lấy toàn bộ tin đăng cho theo danh mục cha
@@ -543,7 +580,7 @@ router.get('/search/baidang', (req, res, next) => {
 router.get('/chitiettd/:idTinDang',function(req,res){
   var id= req.params.idTinDang
   TinDang.findOne({_id:id},function(err,item){
-    if (err)  res.redirect('/404')
+    if (!item)  res.render('404')
     else{
        //?hiện tên quận huyện xã
        var linkxa='https://thongtindoanhnghiep.co/api/ward/'+item.xa
@@ -587,7 +624,7 @@ router.get("/", function(req, res) {
 router.get("/signout", function(req, res) {
   console.log("call to index...");
   req.session.destroy();
-  res.render("login");
+  res.render("login-register");
 });
 
 //Sign Up
@@ -660,10 +697,14 @@ router.post("/login", function(req, res) {
         if(user.loaiTaiKhoan=="3"){
           req.session.email = un;
           req.session.admin = un;
-          res.redirect('/gallery')
+          req.session.ID=user._id
+          req.session.US=user
+          res.redirect('/admin/info')
         } else{
           req.session.email = un;
-          res.redirect('/gallery')
+          req.session.ID=user._id
+          req.session.US=user
+          res.redirect('/info')
         }
         
       }
@@ -1177,12 +1218,20 @@ router.get("/tindangs", function(req, res) {
   });
 });
 //admin:get TinDang chưa duyệt cho tất cả cho admin
-router.get("/admin/tindangs", function(req, res) {
+router.get("/admin/tindangs/chuaduyet", function(req, res) {
   TinDang.find({daDuyet:"0"}, function(err, tindang) {
     if (err) throw err;
-    res.render("admin_tindang", { tindang: tindang });
+    res.render("admin_tindang_chuaduyet", { tindang: tindang });
   });
 });
+//admin:get TinDang đã duyệt cho admin
+router.get("/admin/tindangs/daduyet", function(req, res) {
+  TinDang.find({daDuyet:"1"}, function(err, tindang) {
+    if (err) throw err;
+    res.render("admin_tindang_daduyet", { tindang: tindang });
+  });
+})
+
 //post tinDang theo dm cha cho tất cả user 
 //?nếu dùng post: thì cho gửi params có dấu
 //?nếu dùng get : thì phải sửa lại cấu trúc là truyền bằng id
@@ -1215,14 +1264,15 @@ router.post("/tindang",upload.any(), function(req, res) {
   var huyen=req.body.huyen;
   var xa=req.body.xa;
   var diaChi=req.body.soNha;
-  var email = "111@gmail.com";
-
+  var email = req.session.email;
+  var id_User=req.session.ID;
   var dateTime = Date()
   date = dateTime.split(' ', 4).join(' ');
   var newTinDang = TinDang({
     tieuDe: tieuDe,
     moTaChiTiet: moTaChiTiet,
     email_User: email,
+    id_User:id_User,
     anh1: req.files[0].filename,
     anh2: req.files[1].filename,
     anh3: req.files[2].filename,
@@ -1245,7 +1295,7 @@ router.post("/tindang",upload.any(), function(req, res) {
     }
     console.log("Tin Đăng created!!" + a);
   });
-  res.redirect("/tindang");
+  res.redirect("/info/tinchoduyet");
 });
 //!-lấy danh mục cha
 router.get("/getdmchas", function(req, res) {
@@ -1309,7 +1359,7 @@ router.get('/getphuongxas/:idP', function(req, res){
 router.post("/tindang/edit", function(req, res) {
   TinDang.update(
     {
-      email: req.session.email,
+      email_User: req.session.email,
       _id: req.body._idTinDang
     },
     {
@@ -1326,27 +1376,66 @@ router.post("/tindang/edit", function(req, res) {
     }
   );
 });
-
-//admin: duyệt 1 tin đăng
-router.post("/admin/tindang/edit", function(req, res) {
-
+//user: chỉnh sửa trạng thái bài đăng
+router.post("/tindang/trangthai/edit", function(req, res) {
   TinDang.update(
     {
-      _id: req.body._id
+      email_User: req.session.email,
+      _id: req.body._idTinDang
     },
     {
-      daDuyet:req.body.duyet
+      trangThai: req.body.trangThai  
     },
     function(err, folders) {
       if (err) {
         return res.status(500).json(err);
       } else {
         //chuyển router
-        res.redirect("/admin/tindangs");
+        res.redirect("/tindang");
       }
     }
   );
 });
+
+//admin: duyệt 1 tin đăng
+router.post("/admin/tindang/edit", function(req, res) {
+
+  var daDuyet=req.body.duyet
+  var mess=""
+  if(daDuyet=="0"){
+    mess="Bài đăng của bạn không được duyệt do phi phạm quy định"
+  } else{
+    mess="Bài đăng của bạn đã được duyệt"
+  }
+  TinDang.update(
+    {
+      _id: req.body._id
+    },
+    {
+      daDuyet:daDuyet
+    },
+    function(err, folders) {
+      if (err) return res.status(500).json(err);
+        //gửi mail cho user
+        var dateTime = Date()
+        date = dateTime.split(' ', 4).join(' ');
+        var newMail = Mail({
+          id_UserGui:"ADMIN",
+          id_UserNhan:folders.id_User,
+          tieuDe:"Thông Báo",
+          noiDung:mess,
+          thoigianGui:date,
+          thoiGianDoc:"0",
+          daXoa1:"0",  
+          daXoa2:"0"    
+        });
+        // save the user
+        newMail.save(function(err) {
+          res.redirect("/admin/tindangs");       
+    }
+  );
+  });
+})
 //admin:xóa 1 tin đăng
 router.get("/admin/tindang/delete/:_idTinDang", function(req, res) {
   TinDang.findOne({_id:req.params._idTinDang},function(err,item){
@@ -1361,16 +1450,32 @@ router.get("/admin/tindang/delete/:_idTinDang", function(req, res) {
           //xóa tin đăng
           TinDang.remove({ _id: req.params._idTinDang }, function(err) {
             if (err) {
-              console.log("Error in delete" + err);
             } else {
-              res.redirect("/tindang");
+              //gửi mail
+              var mess="rất tiếc chúng tôi đã xóa bài đăng của bạn do vi phạm quy định"
+              var dateTime = Date()
+              date = dateTime.split(' ', 4).join(' ');
+              var newMail = Mail({
+                id_UserGui:"ADMIN",
+                id_UserNhan:item.id_User,
+                tieuDe:"Thông Báo",
+                noiDung:mess,
+                thoigianGui:date,
+                thoiGianDoc:"0",
+                daXoa1:"0",  
+                daXoa2:"0"    
+              });
+              // save the user
+              newMail.save(function(err) {
+                res.redirect("/admin/tindangs/daduyet");   
+              })            
             }
-          });
+          })
         })
       })
-    });
+    })
   }) 
-});
+})
 //test xoa
 router.get('/testxoaanh',function(req,res){
    var link='public/upload/'+'1553662541612-aa.gif' ;
@@ -1387,7 +1492,7 @@ router.get("/tindang/delete/:_idTinDang", function(req, res) {
         if (err) {
           console.log("Error in delete" + err);
         } else {
-          res.redirect("/tindang");
+          res.redirect("/info/tindadang");
         }
       });
     });
@@ -1659,51 +1764,88 @@ router.get("/bctindang/delete/:id_bctindang", function(req, res) {
  */
 //user: hiển thị tất cả các user theo dõi theo từng user
 router.get("/usertheodois", function(req, res) {
-        UserTheoDoi.find({email_User:"111@gmail.com"}, function(err, folders) {
-          if (err) throw err;
-          res.render("usertheodoi", { userTheoDoi: folders });
-        });
-  });
+  if(req.session.email){
+    UserTheoDoi.find({email_User:req.session.email}, function(err, folders) {
+      if (err) throw err;
+      res.render("usertheodoi", { userTheoDoi: folders });
+    });
+    } 
+    else{
+      res.render("404")
+    }     
+ });
+
+ //user khác: hiển thị tất cả user theo dõi của từng user
+ router.post("/usertheodois", function(req, res) {
+   
+  if(req.body.id){
+    UserTheoDoi.find({id:req.body.id}, function(err, folders) {
+      if (err) throw err;
+      res.render("user_khac_nguoitheodoi", { userTheoDoi: folders });
+    });
+    } 
+    else{
+      res.render("404")
+    }     
+ });
 
 //user: theo dõi 1 user => kiểm tra trùng
 router.post('/usertheodoi', function(req, res) {
-  var email = "111@gmail.com";
-  var id_UserTheoDoi =req.body.id_UserTheoDoi;
-   
-  UserTheoDoi.findOne({ id_UserTheoDoi: id_UserTheoDoi,email_User:email }, function(err, user) {
-    if (err) throw err;
-    else
-    {
-     if(user==null)
-     {
-        var newUser = UserTheoDoi({
-            email_User: email,
-            id_UserTheoDoi: id_UserTheoDoi              
-        });
-         newUser.save(function(err) {
-         if (err) throw err;
-         });
-         res.redirect('/usertheodois');
-     }
-     else
-     {  
-          res.redirect('/usertheodois');
-     }
-    }
-  });
-  });
+  if(req.session.email){
+    var email = req.session.email;
+    var id=req.session.US._id
+    var id_UserTheoDoi =req.body.id_UserTheoDoi;
+    var name =req.body.name;
+    var sDT =req.body.sDT;
+    var mail=req.body.mail;
+   // var id=req.body.id
+    UserTheoDoi.findOne({ id_UserTheoDoi: id_UserTheoDoi,email_User:email }, function(err, user) {
+      if (err) throw err;
+      else
+      {
+       if(user==null)
+       {
+          var newUser = UserTheoDoi({
+              email_User: email,
+              id_UserTheoDoi: id_UserTheoDoi ,
+              name:name,
+              sDT:sDT,
+              mail:mail,
+              id:id             
+          });
+           newUser.save(function(err) {
+           if (err) throw err;
+           });
+           res.redirect('/usertheodois');
+       }
+       else
+       {  
+            res.redirect('/usertheodois');
+       }
+      }
+    });
+  }
+  else{
+    res.render("404")
+  } 
+});
   
 //user: xóa theo dõi 1 user
 router.get('/usertheodoi/delete/:IDName', function(req, res) {
-  var email="111@gmail.com"
-
-   UserTheoDoi.remove({ email_User: email, _id:req.params.IDName }, function(err) {
-    if (err) {
-    }
-    else {
-    res.redirect('/usertheodois')        
-    }
-    });
+  if(req.session.email){
+    var email=req.session.email
+    UserTheoDoi.remove({ email_User: email, _id:req.params.IDName }, function(err) {
+      if (err) {
+      }
+      else {
+      res.redirect('/usertheodois')        
+      }
+      });
+  }
+  else
+  {  
+       res.redirect('/usertheodois');
+  }
 });
 
 
@@ -1758,6 +1900,348 @@ router.get('/tdtheodoi/delete/:IDName', function(req, res) {
     }
     });
 });
+
+//!chat
+
+router.get('/chat',(req,res)=>{
+  res.render('chat')
+})
+router.get('/chati',(req,res)=>{
+  res.render('chat/index')
+})
+
+
+//!mail
+router.get('/mail',function(req,res){
+  res.render('mail')
+})
+router.get('/mail_create',function(req,res){
+  //lấy id người theo dõi
+  if(req.session.email){
+    UserTheoDoi.find({email_User:req.session.email}, function(err, folders) {
+      if (err) throw err;
+      res.render('mail_create',{ userTheoDoi: folders })
+    });
+    } 
+    else{
+      res.render("404")
+    }     
+})
+//tao mail
+router.post('/guimail', function(req, res) {
+  if (req.session.ID != null) {
+  var dateTime = Date()
+  date = dateTime.split(' ', 4).join(' ');
+  var idUserNhan=req.body.id_UserNhan
+  //kiểm tra id người nhận có tồn tại
+    User.findOne({_id:idUserNhan},function(err,iuser){
+      if(iuser){
+        var newMail = Mail({
+          id_UserGui:req.session.ID,
+          id_UserNhan:idUserNhan,
+          nameUserGui:req.session.US.name,
+          nameUserNhan:iuser.name,
+          tieuDe:req.body.tieuDe,
+          noiDung:req.body.noiDung,
+          thoigianGui:date,
+          thoiGianDoc:"0",
+          daXoa1:"0",  
+          daXoa2:"0"    
+        });
+        // save the user
+        newMail.save(function(err) {
+        if (err) throw err;});
+        //res.render('mail',{"mesGuiMail" :"Gui mail thanh cong "});
+        res.redirect("/mails_dagui")
+      }
+    
+    })
+  } else{
+    res.render("404", { mes: "Login to continue" });
+  }
+})
+// //?hiển thị mail (mal đến , mail đã gửi , thùng rác)
+// router.get('/mails/:id', function(req, res) {
+// 	if(session.ID!==null){
+
+//   }
+//   var id=req.params.id;
+//   Mail.find({id_UserNhan:id,daXoa2:"0"}, function(err, mailden) {
+//     Mail.find({id_UserGui:id,daXoa1:"0"}, function(err, mailgui) {
+//       Mail.find({$or : [
+//         {id_UserNhan:id,daXoa2:"1"},
+//         {id_UserGui:id,daXoa1:"1"},
+//     ]}, function(err, thungrac) {
+//         if (err) throw err;
+//         res.render('mail', {mailden:mailden,mailgui:mailgui,thungrac:thungrac});
+//       });
+//     })
+//   });
+// });
+//mail : đến
+router.get('/mails_den', function(req, res) {
+	if(req.session.ID!==null){
+    var id=req.session.ID;
+    Mail.find({id_UserNhan:id,daXoa2:"0"}, function(err, mailden) {
+      Mail.find({id_UserGui:id,daXoa1:"0"}, function(err, mailgui) {
+        Mail.find({$or : [
+          {id_UserNhan:id,daXoa2:"1"},
+          {id_UserGui:id,daXoa1:"1"},
+      ]}, function(err, thungrac) {
+          if (err) throw err;
+          res.render('mail_den', {mailden:mailden,mailgui:mailgui,thungrac:thungrac});
+        });
+      })
+    });
+  } else{
+    res.render("404", { mes: "Login to continue" });
+  }
+});
+//mail: đã gửi
+router.get('/mails_dagui', function(req, res) {
+	if(req.session.ID!==null){
+    var id=req.session.ID;
+  Mail.find({id_UserNhan:id,daXoa2:"0"}, function(err, mailden) {
+    Mail.find({id_UserGui:id,daXoa1:"0"}, function(err, mailgui) {
+      Mail.find({$or : [
+        {id_UserNhan:id,daXoa2:"1"},
+        {id_UserGui:id,daXoa1:"1"},
+    ]}, function(err, thungrac) {
+        if (err) throw err;
+        res.render('mail_dagui', {mailden:mailden,mailgui:mailgui,thungrac:thungrac});
+      });
+    })
+  });
+  }else{
+    res.render("404", { mes: "Login to continue" });
+  }
+  
+});
+//mail: thùng rác
+router.get('/mails_thungrac', function(req, res) {
+	if(req.session.ID!==null){
+    var id=req.session.ID;
+    Mail.find({id_UserNhan:id,daXoa2:"0"}, function(err, mailden) {
+      Mail.find({id_UserGui:id,daXoa1:"0"}, function(err, mailgui) {
+        Mail.find({$or : [
+          {id_UserNhan:id,daXoa2:"1"},
+          {id_UserGui:id,daXoa1:"1"},
+      ]}, function(err, thungrac) {
+          if (err) throw err;
+          res.render('mail_thungrac', {mailden:mailden,mailgui:mailgui,thungrac:thungrac});
+        });
+      })
+    });
+  }else{
+    res.render("404", { mes: "Login to continue" });
+  }
+});
+
+
+//đọc mail
+
+router.get("/mail/read/:id",function(req,res){
+  var dateTime = Date()
+  date = dateTime.split(' ', 4).join(' ');
+  Mail.update({ _id:req.params.id},{
+    thoiGianDoc:date
+  }, function (err, folders) {
+        if (err) {
+            return res.status(500).json(err);
+        } else {
+          res.redirect('/mails_den')
+        }
+      }
+    );
+})
+
+//?hiển thị mail đến
+router.get('/mails/:id_UserNhan', function(req, res) { 
+  Mail.find({id_UserNhan:req.params.id_UserNhan}, function(err, items) {
+    if (err) throw err;
+    res.render('mail', {mails:items});
+  });
+});
+
+//?hiển thị mail đã gửi
+router.get('/mails/:id_UserGui', function(req, res) { 
+  Mail.find({id_UserGui:req.params.id_UserGui}, function(err, items) {
+    if (err) throw err;
+    res.render('mail', {mails:items});
+  });
+});
+//đưa mail den vào thùng rác
+router.get('/mail/editden_vao/:id', function(req, res) {
+  Mail.update({ _id:req.params.id},{
+  daXoa2:"1"
+}, function (err, folders) {
+    if (err) {
+        return res.status(500).json(err);
+    } else {
+      res.redirect('/mails_den')
+    }
+  }
+  );
+});
+//đưa mail gui vào thùng rác
+router.get('/mail/editgui_vao/:id', function(req, res) {
+  Mail.update({ _id:req.params.id},{
+  daXoa1:"3"
+}, function (err, folders) {
+    if (err) {
+        return res.status(500).json(err);
+    } else {
+      res.redirect('/mails_dagui')
+    }
+  }
+  );
+});
+
+//đưa mail den ra thùng rác
+router.get('/mail/edit_ra/:id', function(req, res) {
+  if(req.session.ID!=null){
+    Mail.update({ _id:req.params.id,id_UserNhan:req.session.ID},{
+      daXoa2:"0"
+    }, function (err, folders) {
+        if (err) {
+            return res.status(500).json(err);
+        } else {
+          res.redirect('/mails_thungrac')
+        }
+      }
+    );
+  }
+  else{
+    res.render("404", { message: "Login to continue" })
+  }
+
+});
+
+
+//đưa mail den  thùng rác xóa hẳn 
+router.get('/mail/edit_xoa/:id', function(req, res) {
+  if(req.session.ID!=null){
+    Mail.update({ _id:req.params.id},{
+      daXoa2:"3"
+    }, function (err, folders) {
+        if (err) {
+            return res.status(500).json(err);
+        } else {
+          res.redirect('/mails_thungrac')
+        }
+      }
+      );
+  } else{
+    res.render("404", { message: "Login to continue" })
+  }
+});
+//đưa mail gui thùng rác xóa hẳn 
+router.get('/mail/editgui_xoa/:id', function(req, res) {
+  Mail.update({ _id:req.params.id},{
+  daXoa1:"3"
+}, function (err, folders) {
+    if (err) {
+        return res.status(500).json(err);
+    } else {
+      res.redirect('/mails_thungrac')
+    }
+  }
+  );
+});
+
+//admin:xóa mail 60 ngày
+router.get('/admin/mail/delete', function(req, res) {
+  Mail.remove({ daXoa1:"3",daXoa2:"3"
+}, function (err, folders) {
+    if (err) {
+        return res.status(500).json(err);
+    } else {
+      res.redirect('/mails')
+    }
+  }
+  );
+});
+//user gửi mail cho người bất kì khi vào xem trang ng khác
+router.get("/user/mail/:id_UserNhan", function(req,res){
+  if(req.session.email){
+    res.render("user_mail_nguoitheodoi",{id_UserNhan:req.params.id_UserNhan})
+  } else
+  res.render("404")
+})
+
+//admin: carosel 
+//xem carosel
+router.get("/admin/carousel",function(req,res){
+  Carousel.find({},function(req,items){
+    res.render("admin_carousel",{items:items})
+  })
+})
+//thêm 1 ảnh
+router.post('/admin/carousel/create',upload.single("file"), function(req, res) {
+  
+      var newcarousel = Carousel({
+          carouselIMG1:req.file.filename,
+          theH4:req.body.theH4,
+          theH2:req.body.theH2,
+          theP:req.body.theP,
+          theLink:req.body.theLink,
+          theA:req.body.theA,
+          viTri:req.body.vt        
+         });
+       
+         newcarousel.save(function(err) {
+         if (err) throw err;    
+        // res.render('admin_carousel',{items:items});    
+         });
+         res.redirect("/admin/carousel");
+    
+   
+  });
+//sửa
+router.post("/admin/carousel/edit", function(req, res) {
+  Carousel.update(
+    {
+      _id: req.body.id
+    },
+    {
+      theH4:req.body.theH4,
+      theH2:req.body.theH2,
+      theP:req.body.theP,
+      theLink:req.body.theLink,
+      theA:req.body.theA      
+    },
+    function(err, folders) {
+      if (err) {
+        return res.status(500).json(err);
+      } else {
+        res.redirect("/admin/carousel");
+      }
+    }
+  );
+});
+  
+//xóa
+router.get("/admin/carousel/delete/:id", function(req, res) {
+  Carousel.findOne({_id:req.params.id},function(err,item){
+    var link='public/upload/'+item.carouselIMG1;
+    fs.unlink(link, function (err) {
+      Carousel.remove({ _id: req.params.id }, function(err) {
+        if (err) {
+        } else {
+          res.redirect("/admin/carousel");
+        }
+      });
+    });
+  })
+});
+
+
+
+
+
+
+
+
 
 
 

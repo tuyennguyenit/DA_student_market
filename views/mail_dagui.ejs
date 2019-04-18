@@ -341,22 +341,21 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="myaccount-tab-menu nav" role="tablist">
-                                <a href="#dashboad" class="active" ><i class="fa fa-dashboard"></i>
+                                <a href="#dashboad"  ><i class="fa fa-dashboard"></i>
                                     Thông Tin cá Nhân</a>
-                                  <form id="form_ttcn" action="/info/khac/tindadang" method="post">
-                                    <input type="hidden" value="<%=user[0].email%>" name="email_User">
-                                    <a href="javascript:{}" onclick="document.getElementById('form_ttcn').submit();" ><i class="fa fa-cart-arrow-down"></i> Tin Đang Đăng</a>
-                                  </form>
-                                  
-                                    <form action="/usertheodois" method="post" id="form_info1">
-                                        <input type="hidden"name="id" value="<%=user[0]._id%>">
-                                         <a href="javascript:{}" onclick="document.getElementById('form_info1').submit();" ><i class="fa fa-map-marker"></i>
-                                            Người Theo Dõi</a>
-                                  </form>
+                                    <a href="/tindang"  ><i class="fa fa-upload"></i> Tạo Tin Đăng</a>
+
+                                    <a href="/info/tindadang"  ><i class="fa fa-cart-arrow-down"></i> Tin Đang Đăng</a>
+
+                                    <a href="/info/tinchoduyet"><i class="fa fa-cloud-download"></i> Tin Chờ Duyệt</a>
     
-                                    <a href="/user/mail/<%=user[0]._id%>"><i class="fa fa-user"></i> Nhắn Tin</a>
+                                    <a href="/info/tindaluu"   ><i class="fa fa-credit-card"></i> Tin Đã Lưu</a>
     
-                                    
+                                    <a href="#address"><i class="fa fa-map-marker"></i> Người Theo Dõi</a>
+    
+                                    <a href="/mails" class="active"><i class="fa fa-user"></i> Tin Nhắn</a>
+    
+                                    <a href="/signout"><i class="fa fa-sign-out"></i> Logout</a>
                             </div>
                         </div>
                         <!-- My Account Tab Menu End -->
@@ -367,76 +366,104 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
                                     <div class="myaccount-content">
-                                    <h3>Chi Tiết Tài Khoản </h3>
+                                    <h3>Hộp Thư </h3>
                            
-                                        <div class="account-details-form">
-                                       
-                                            
-                                        <%if(typeof user!=='undefined'){%>
-                                        <!--cơ bản-->
-                                            <span class="col-md-4">
-                                            </span>
-                                            <img src="/upload/<%=user[0].avatar%>" alt="Avatar" style="width:200px; border-radius: 50%">
-                                            <br><br>
-                                            <div class="row">
-                                                <div class="col-md-1">
+                                         <!-- mail Content Start -->
+                                            <div class="login-register-wrapper">
+                                                <!-- Login & Register tab Menu -->
+                                                <nav class="nav login-reg-tab-menu">
+                                                    <a  id="login-tab"  href="/mails_den">Thư Đến</a> 
+                                                    <a class="active" id="register-tab"  href="/mails_dagui/">Thư Đã Gửi</a>                                                       
+                                                    <a id="register-tab"  href="/mail_create">Soạn Thư</a>
+                                                    <a id="register-tab" href="/mails_thungrac">Thùng Rác</a>
+                                                </nav>
+                                                <hr>
+                                                <!-- Login & Register tab Menu -->
+                            
+                                                <div class="tab-content" id="login-reg-tabcontent">
+
+                                                  <!--thư đến-->
+                                                    <div class="tab-pane fade show active" id="login" role="tabpanel">
+                                                        <div class="">
+                                                           
+
+                                                           <% if(typeof mailgui !== 'undefined'){%>
+
+                                                            <br><br><br>
+                                                            <div class="cart-table table-responsive">
+                                                              <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="pro-thumbnail">STT</th>
+                                                                        <th class="pro-title">Tên Mail</th>
+                                                                      
+                                                                        <th class="pro-quantity">thời điểm gửi</th>
+                                                                        <th class="pro-quantity">người Nhận</th>
+                                                                        <th class="pro-edit">xem</th>
+                                                                        <th class="pro-remove">xóa</th>
+                                                                    </tr>
+                                                                </thead>
+                                                        <tbody>
+                                                        <%   for(i=0;i<mailgui.length;i++){%>
+
+                                                          <tr>
+                                                                  <td class="pro-title"><a href="#"><%=i+1%></a></td>                                                             
+                                                                  
+                                                                  <td class="pro-quantity"><span class="text-success"><%=mailgui[i].tieuDe%></span></td>
+                                                                
+                                                                  <td class="pro-quantity"><span class="text-success"><%=mailgui[i].thoigianGui%></span></td>
+                                                                  <td class="pro-quantity"><span class="text-success"><%=mailgui[i].id_UserNhan%></span></td>
+                                                                  <td class="pro-edit"><a href="/mail/read/<%=mailgui[i]._id%>"  data-toggle="modal" data-target="#modalEdit<%=i+1%>"><i class="fa fa-eye"></i></a></td>
+                                                                  <td class="pro-remove"><a href="/mail/editden_vao/<%=mailgui[i]._id%>"><i class="fa fa-trash-o"></i></a></td>
+                                                          </tr>
+
+                                                              <!--modal xem mail-->
+                                                                <div class="modal" id="modalEdit<%=i+1%>">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+
+                                                                            <!-- Modal Header -->
+                                                                            <div class="modal-header">
+                                                                            <h4 class="modal-title">Nội Dung Thư</h4>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                            </div>
+
+                                                                            <!-- Modal body -->
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                     
+                                                                                     <div>Tiêu Đề:<%=mailgui[i].tieuDe%></div>
+                                                                                     <div><i><%=mailgui[i].thoigianGui%></i></div>
+                                                                                      <hr>
+                                                                                     <div>Nội Dung:<%=mailgui[i].noiDung%></div>
+                                                                                     <br>
+                                                                                     <div>Người Gửi:<%=mailgui[i].id_UserGui%></div>
+                                                                                    
+
+                                                                            </div>
+
+                                                                            <!-- Modal footer -->
+                                                                            <div class="modal-footer">
+                                                                           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                          <%}%>
+                                                        </tbody>
+                                                        </table>
+
+                                                        <%}%>
+
+                                                        </div>
+                                                    </div>
+                                                  <!--end thư đến-->  
+
+                                                    
                                                 </div>
-                                                <div class="col-md-1">
-                                                    <form action="/usertheodoi" method="post">
-                                                        <input type="hidden" name="id_UserTheoDoi" value="<%=user[0]._id%>">
-                                                         <input type="hidden" name="name" value="<%=user[0].name%>">
-                                                         <input type="hidden" name="sDT" value="<%=user[0].sDT%>">
-                                                         <input type="hidden" name="mail" value="<%=user[0].email%>">
-                                                         <input type="hidden" name="id" value="<%=user[0]._id%>">
-                                                        <span><button type="submit" class="btn btn-add-to-cart"><i class="fa fa-thumbs-up fa-x">Theo Dõi</i></button></span>
-                                                    </form>
-                                                </div>
                                             </div>
-                                                
-                                            
-                                            <div class="single-input-item">
-                                                <label for="display-name" class="required">Tên Hiển Thị</label>
-                                                <input type="text" id="display-name" placeholder="..." value="<%=user[0].name%>" readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Email </label>
-                                                <input type="email" id="email" placeholder="..." value="<%=user[0].email%>"  readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Địa Chỉ Liên Hệ </label>
-                                                <input type="text" id="email" placeholder="..." value="<%=user[0].diaChi%>" readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Số Điện Thoại  </label>
-                                                <input type="number" id="email" placeholder="..." value="<%=user[0].sDT%>" readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Ngày Sinh  </label>
-                                                <input type="text" id="email" placeholder="..." value="<%=user[0].ngaySinh%>" readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Giới Tính  </label>
-                                                <select name="gioiTinh">
-                                                    <%if (user[0].gioiTinh=='1'){%>
-                                                    <option value="1" selected> Nam</option>
-                                                    <option value="2">Nữ</option>
-                                                    <%}else{%>
-                                                    <option value="1" > Nam</option>
-                                                    <option value="2" selected>Nữ</option>
-                                                    <%}%>
-                                                </select>
-                                                
-                                            </div>
-                                          
-                                        
-                                            <%}%>
-                                            
-                                    </div>
+                                          <!-- mailr Content End -->
                                     </div>
                                 </div>
                                 <!-- Single Tab Content End //end chi tiết tài khoản-->
@@ -802,4 +829,94 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<head>
+  <script src="https://cloud.tinymce.com/5/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'textarea' });</script>
+</head>
+
+----
+read -mail đến
+<hr>
+
+<%if(typeof(mailgui)!=="undefined" && mailgui.length>0){
+    for(i=0;i<mailgui.length;i++){
+%>
+    <span><%=mailgui[i].tieuDe%></span>
+    <span><%-mailgui[i].noiDung%></span>
+    <span><%=mailgui[i].thoigianGui%></span>
+    <span><%=mailgui[i].thoiGianDoc%></span>
+    <span><a href="/mail/read/<%=mailgui[i]._id%>">đọc</></span>
+    <span><a href="/mail/editden_vao/<%=mailgui[i]._id%>">xóa</a></span>
+    <br>
+<%}}%>
+<br><br>
+read-mail gửi
+<hr>
+<%if(typeof(mailgui)!=="undefined" && mailgui.length>0){
+    for(i=0;i<mailgui.length;i++){
+%>
+    <span><%=mailgui[i].tieuDe%></span>
+    <span><%-mailgui[i].noiDung%></span>
+    <span><%=mailgui[i].thoiGianGui%></span>
+    <span><a href="/mail/editgui_vao/<%=mailgui[i]._id%>">xóa</a></span>
+    <br>
+<%}}%>
+<br><br>
+read-thùng rác
+<hr>
+<%if(typeof(thungrac)!=="undefined" && thungrac.length>0){
+    for(i=0;i<thungrac.length;i++){
+%>
+    <span><%=thungrac[i].tieuDe%></span>
+    <span><%-thungrac[i].noiDung%></span>
+    <span><%=thungrac[i].thoiGianGui%></span>
+    <span><a href="/mail/edit_xoa/<%=thungrac[i]._id%>">xóa</a></span>
+    <span><a href="/mail/edit_ra/<%=thungrac[i]._id%>">phục hồi</a></span>
+    <br>
+<%}}%>
+<hr>
+Create
+
+<form action="/guimail" method="post">
+
+id Người gữi
+<input type="text" name="id_UserGui">
+id người nhận
+<input type="text" name="id_UserNhan">
+tiêu đề
+<input type="text" name="tieuDe">
+nội dung
+<input type="text"name="noiDung" > 
+ <textarea1  >nhập vào...!</textarea1>
+<input type="submit" value="Gửi mail">
+</form>
+
+tin nhắn đến
+
+
+
+delete- xóa theo link
 

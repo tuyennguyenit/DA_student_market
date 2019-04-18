@@ -30,6 +30,8 @@
 
     <!-- Modernizer JS -->
     <script src="/_assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!--datable-->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 
 
     <!--[if lt IE 9]>
@@ -321,7 +323,7 @@
                     <h1>Dashboard</h1>
                     <ul class="breadcrumb">
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="login-register.html" class="active">Dashboard</a></li>
+                        <li><a href="login-register.html" class="active">Tin đang Đăng</a></li>
                     </ul>
                 </div>
             </div>
@@ -368,7 +370,7 @@
                                 <h3>Tin Đang Đăng</h3>
 
                                 <div class="myaccount-table table-responsive text-center">
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered " id="DataTable" >
                                         <thead class="thead-light">
                                         <tr>
                                             <th>STT</th>
@@ -387,10 +389,29 @@
                                             <td><%=i+1%></td>
                                             <td><%=tindang[i].tieuDe%></td>
                                             <td><%=tindang[i].thoiGianDang%></td>
-                                            <td><%=tindang[i].trangThai%></td>
-                                            <td><a href="cart.html" class="btn-add-to-cart">Xem</a>
-                                                <a href="cart.html" class="btn-add-to-cart">Sửa</a>
-                                                <a href="cart.html" class="btn-add-to-cart">Xóa</a>
+                                            <%if(tindang[i].trangThai=="0"){%>
+                                                 <td>đang ẩn</td>
+                                            <%}else{%>
+                                                 <td>đang hoạt động</td>
+                                            <%}%>
+                                           
+                                            <td><a href="/chitiettd/<%=tindang[i]._id%>" class="btn-add-to-cart">Xem</a>
+                                            <br><br>
+                                                <%if(tindang[i].trangThai=="0"){%>
+                                                    <form  action="/tindang/trangthai/edit" method="post" id="form_trangthaihien">
+                                                         <input type="hidden" name="_idTinDang" value="<%=tindang[i]._id%>">
+                                                         <input type="hidden" name="trangThai" value="1">
+                                                         <a href="javascript:{}" onclick="document.getElementById('form_trangthaihien').submit();" class="btn-add-to-cart">Hiện</a>
+                                                    </form>                                                  
+                                                <%}else{%>
+                                                     <form  action="/tindang/trangthai/edit" method="post" id="form_trangthaian">
+                                                         <input type="hidden" name="_idTinDang" value="<%=tindang[i]._id%>">
+                                                         <input type="hidden" name="trangThai" value="0">
+                                                         <a href="javascript:{}" onclick="document.getElementById('form_trangthaian').submit();" class="btn-add-to-cart">Ẩn</a>
+                                                    </form>
+                                                <%}%>
+                                               <br>
+                                                <a href="/tindang/delete/<%=tindang[i]._id%>" class="btn-add-to-cart">Xóa</a>
                                             </td>
                                         </tr>
                                         <%}}%>
@@ -592,6 +613,13 @@
 
 <!--=== Active Js ===-->
 <script src="/_assets/js/active.js"></script>
+ <!--datable-->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script>
+$(document).ready( function () {
+    $('#DataTable').DataTable();
+} );
+</script>
 </body>
 
 </html>

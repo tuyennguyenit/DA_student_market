@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 
 var tindangSchema = new Schema({
   email_User:  String ,
+  id_User:String,
   tieuDe:String,
   moTaChiTiet:String,
   anh1:String,

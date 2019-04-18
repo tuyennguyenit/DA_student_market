@@ -9,6 +9,9 @@ const Passport=require('passport')
 const LocalStrategy=require('passport-local').Strategy
 const fs=require('fs')
 
+
+
+
 var sessionOptions = {
   secret: "secret",
   cookie:{
@@ -118,17 +121,43 @@ module.exports = app;
 
 var server = http.createServer(app);
 
-/**
+
+
+
+/** sử dụng cái này thì ko thể dùng đc socketio
  * Listen on provided port, on all network interfaces.
  */
-var server = app.listen((process.env.PORT || 3000), function () {
 
-  var host = server.address().address
-  var port = server.address().port
+// var server = app.listen((process.env.PORT || 3000), function () {
 
-  console.log("app listening at http://%s:%s", host, port)
+//   var host = server.address().address
+//   var port = server.address().port
 
+//   console.log("app listening at http://%s:%s", host, port)
+
+// });
+//!chat
+var server  = require('http').createServer(app);
+var io      = require('socket.io').listen(server);
+//dùng cái này thì ko chạy đc heroku
+server.listen('3000', () => {
+  console.log('Server listening on Port 3000');
+})
+
+io.on('connection',function(client){
+  console.log('Client connected...');
+  client.on('join',function(data){
+      console.log(data);
+  });
+  client.on('messages',function(data){
+      client.emit('thread',data);
+      client.broadcast.emit('thread',data);
+  })
 });
+
+//!--end chat
+
+
 
 server.on('error', onError);
 

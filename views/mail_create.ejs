@@ -341,22 +341,21 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="myaccount-tab-menu nav" role="tablist">
-                                <a href="#dashboad" class="active" ><i class="fa fa-dashboard"></i>
+                                <a href="#dashboad"  ><i class="fa fa-dashboard"></i>
                                     Thông Tin cá Nhân</a>
-                                  <form id="form_ttcn" action="/info/khac/tindadang" method="post">
-                                    <input type="hidden" value="<%=user[0].email%>" name="email_User">
-                                    <a href="javascript:{}" onclick="document.getElementById('form_ttcn').submit();" ><i class="fa fa-cart-arrow-down"></i> Tin Đang Đăng</a>
-                                  </form>
-                                  
-                                    <form action="/usertheodois" method="post" id="form_info1">
-                                        <input type="hidden"name="id" value="<%=user[0]._id%>">
-                                         <a href="javascript:{}" onclick="document.getElementById('form_info1').submit();" ><i class="fa fa-map-marker"></i>
-                                            Người Theo Dõi</a>
-                                  </form>
+                                    <a href="/tindang"  ><i class="fa fa-upload"></i> Tạo Tin Đăng</a>
+
+                                    <a href="/info/tindadang"  ><i class="fa fa-cart-arrow-down"></i> Tin Đang Đăng</a>
+
+                                    <a href="/info/tinchoduyet"><i class="fa fa-cloud-download"></i> Tin Chờ Duyệt</a>
     
-                                    <a href="/user/mail/<%=user[0]._id%>"><i class="fa fa-user"></i> Nhắn Tin</a>
+                                    <a href="/info/tindaluu"   ><i class="fa fa-credit-card"></i> Tin Đã Lưu</a>
     
-                                    
+                                    <a href="#address"><i class="fa fa-map-marker"></i> Người Theo Dõi</a>
+    
+                                    <a href="/mails" class="active"><i class="fa fa-user"></i> Tin Nhắn</a>
+    
+                                    <a href="/signout"><i class="fa fa-sign-out"></i> Logout</a>
                             </div>
                         </div>
                         <!-- My Account Tab Menu End -->
@@ -367,76 +366,65 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
                                     <div class="myaccount-content">
-                                    <h3>Chi Tiết Tài Khoản </h3>
+                                    <h3>Hộp Thư </h3>
                            
-                                        <div class="account-details-form">
-                                       
-                                            
-                                        <%if(typeof user!=='undefined'){%>
-                                        <!--cơ bản-->
-                                            <span class="col-md-4">
-                                            </span>
-                                            <img src="/upload/<%=user[0].avatar%>" alt="Avatar" style="width:200px; border-radius: 50%">
-                                            <br><br>
-                                            <div class="row">
-                                                <div class="col-md-1">
+                                         <!-- mail Content Start -->
+                                            <div class="login-register-wrapper">
+                                                <!-- Login & Register tab Menu -->
+                                                <nav class="nav login-reg-tab-menu">
+                                                   <a  id="login-tab"  href="/mails_den">Thư Đến</a> 
+                                                    <a id="register-tab"  href="/mails_dagui/">Thư Đã Gửi</a>                                                       
+                                                    <a class="active" id="register-tab"  href="/mail_create">Soạn Thư</a>
+                                                    <a id="register-tab" href="/mails_thungrac">Thùng Rác</a>
+                                                </nav>
+                                                <hr>
+                                                <!-- Login & Register tab Menu -->
+                            
+                                                <div class="tab-content" id="login-reg-tabcontent">
+
+                                                  <!--thư đến-->
+                                                    <div class="tab-pane fade show active" id="login" role="tabpanel">
+                                                        <div class="">
+                                                             
+                                                            <form action="/guimail" method="post">
+
+                                                            
+                                                             <div class="single-input-item">
+                                                                <label for="current-pwd" class="required">người nhận</label>
+                                                                <select name="id_UserNhan">
+                                                                    <%for(i=0;i<userTheoDoi.length;i++){%>
+                                                                    <option value="<%=userTheoDoi[i].id_UserTheoDoi%>"><%=userTheoDoi[i].name%></option>
+                                                                    <%}%>
+                                                                </select>
+                                                               
+                                                             </div>
+                                                              <div class="single-input-item">
+                                                                <label for="current-pwd" class="required">Tiêu Đề</label>
+                                                                <input type="text" id="current-pwd" name="tieuDe" placeholder="."/>
+                                                             </div>
+
+                                                                
+
+                                                                
+                                                                
+                                                               
+                                                                 <div class="single-input-item">
+                                                                    <label for="current-pwd" class="required">Nội Dung</label>
+                                                                <%# <input type="text"name="noiDung" >  %>
+                                                                    <textarea name="noiDung" ><i>Soạn nội dung...</i></textarea>
+                                                                </div>    
+
+                                                                <div class="single-input-item">
+                                                                    <button class="btn-login btn-add-to-cart">Gửi mail</button>
+                                                                </div>
+                                                                
+                                                            </form>
+                                                        </div>
+
+                                                       
                                                 </div>
-                                                <div class="col-md-1">
-                                                    <form action="/usertheodoi" method="post">
-                                                        <input type="hidden" name="id_UserTheoDoi" value="<%=user[0]._id%>">
-                                                         <input type="hidden" name="name" value="<%=user[0].name%>">
-                                                         <input type="hidden" name="sDT" value="<%=user[0].sDT%>">
-                                                         <input type="hidden" name="mail" value="<%=user[0].email%>">
-                                                         <input type="hidden" name="id" value="<%=user[0]._id%>">
-                                                        <span><button type="submit" class="btn btn-add-to-cart"><i class="fa fa-thumbs-up fa-x">Theo Dõi</i></button></span>
-                                                    </form>
-                                                </div>
                                             </div>
-                                                
-                                            
-                                            <div class="single-input-item">
-                                                <label for="display-name" class="required">Tên Hiển Thị</label>
-                                                <input type="text" id="display-name" placeholder="..." value="<%=user[0].name%>" readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Email </label>
-                                                <input type="email" id="email" placeholder="..." value="<%=user[0].email%>"  readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Địa Chỉ Liên Hệ </label>
-                                                <input type="text" id="email" placeholder="..." value="<%=user[0].diaChi%>" readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Số Điện Thoại  </label>
-                                                <input type="number" id="email" placeholder="..." value="<%=user[0].sDT%>" readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Ngày Sinh  </label>
-                                                <input type="text" id="email" placeholder="..." value="<%=user[0].ngaySinh%>" readonly/>
-                                            </div>
-
-                                            <div class="single-input-item">
-                                                <label for="email" class="required">Giới Tính  </label>
-                                                <select name="gioiTinh">
-                                                    <%if (user[0].gioiTinh=='1'){%>
-                                                    <option value="1" selected> Nam</option>
-                                                    <option value="2">Nữ</option>
-                                                    <%}else{%>
-                                                    <option value="1" > Nam</option>
-                                                    <option value="2" selected>Nữ</option>
-                                                    <%}%>
-                                                </select>
-                                                
-                                            </div>
-                                          
-                                        
-                                            <%}%>
-                                            
-                                    </div>
+                                          <!-- mailr Content End -->
                                     </div>
                                 </div>
                                 <!-- Single Tab Content End //end chi tiết tài khoản-->
@@ -799,7 +787,9 @@
 
 <!--=== Active Js ===-->
 <script src="/_assets/js/active.js"></script>
-</body>
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'textarea' });
+</script>
 
-</html>
+
 

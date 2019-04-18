@@ -32,6 +32,7 @@
 
     <!-- Modernizer JS -->
     <script src="/_assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 
 
     <!--[if lt IE 9]>
@@ -370,7 +371,7 @@
                                 <h3>Tin Đã Lưu</h3>
 
                                 <div class="myaccount-table table-responsive text-center">
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered" id="Table_tintheodoi">
                                         <thead class="thead-light">
                                         <tr>
                                             <th>STT</th>
@@ -390,9 +391,9 @@
                                             <td><%=i+1%></td>
                                             <td><%=listIDTin[i].tieuDe%></td>
                                             <td><%=listIDTin[i].nguoiDang%></td>                                         
-                                            <td><a href="/chitiettd/<%=listIDTin[0].id_TinDangTheoDoi%>" class="btn-add-to-cart">Xem</a>
-                                                <a href="cart.html" class="btn-add-to-cart">Sửa</a>
-                                                <a href="cart.html" class="btn-add-to-cart">Xóa</a>
+                                            <td>
+                                                <a href="/chitiettd/<%=listIDTin[0].id_TinDangTheoDoi%>" class="btn-add-to-cart">Xem</a>                                              
+                                                <a href="/info/delete/tindaluu/<%=listIDTin[0]._id%>" class="btn-add-to-cart">Xóa</a>
                                             </td>
                                         </tr>
                                         <%}}%>
@@ -594,6 +595,12 @@
 
 <!--=== Active Js ===-->
 <script src="/_assets/js/active.js"></script>
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script>
+$(document).ready( function () {
+    $('#Table_tintheodoi').DataTable();
+} );
+</script>
 </body>
 
 </html>
