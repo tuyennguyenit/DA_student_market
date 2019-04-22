@@ -69,8 +69,8 @@
                 <div class="page-title-content">
                     <h1>Bảng Điều Khiển</h1>
                     <ul class="breadcrumb">
-                        <li><a href="">Home</a></li>
-                        <li><a href="l" class="active">Thùng Rác</a></li>
+                        <li><a >Home</a></li>
+                        <li><a  class="active">quản lý bình luận</a></li>
                     </ul>
                 </div>
             </div>
@@ -95,11 +95,11 @@
                                     <a href="/dmchas"  ><i class="fa fa-upload"></i> Quản Lý Danh Mục Cha</a>
                                     <a href="/dmcons"  ><i class="fa fa-upload"></i> Quản Lý Danh Mục Con</a>
 
-                                    <a href="/admin/tindangs/daduyet" class="active"  ><i class="fa fa-cart-arrow-down"></i> Quản Lý Tin Đăng</a>
+                                    <a href="/admin/tindangs/daduyet"   ><i class="fa fa-cart-arrow-down"></i> Quản Lý Tin Đăng</a>
 
                                     <a href="/admin/users"><i class="fa fa-cloud-download"></i> Quản Lý User</a>
     
-                                    <a href="/bctindangs"   ><i class="fa fa-credit-card"></i> Quản Lý Bình Luận</a>
+                                    <a href="/bctindangs"  class="active" ><i class="fa fa-credit-card"></i> Quản Lý Bình Luận</a>
     
                                     <a href="#address"><i class="fa fa-map-marker"></i> Quản Lý Thống Kê</a>
 
@@ -119,16 +119,12 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
                                     <div class="myaccount-content">
-                                    <h3>Quản Lý Tin Đăng </h3>
+                                    <h3>Quản Lý Bình Luận Tin Đăng </h3>
                            
                                          <!-- mail Content Start -->
                                             <div class="login-register-wrapper">
                                                 <!-- Login & Register tab Menu -->
-                                                <nav class="nav login-reg-tab-menu">
-                                                    <a  id="login-tab"  href="/admin/tindangs/chuaduyet" >Chưa Duyệt</a> 
-                                                    <a id="register-tab"  href="/admin/tindangs/daduyet" class="active">Đã duyệt</a>                                                       
-                                                    
-                                                </nav>
+                                                
                                                 <hr>
                                                 <!-- Login & Register tab Menu -->
                             
@@ -139,7 +135,7 @@
                                                         <div class="">
                                                            
 
-                                                           <% if(typeof(tindang)!=="undefined" && tindang.length>0){%>
+                                                           <% if(typeof lst_BCTin !== 'undefined' && lst_BCTin.length>0){%>
 
                                                             <br><br><br>
                                                             <div class="cart-table table-responsive">
@@ -147,51 +143,42 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th class="pro-thumbnail">STT</th>
-                                                                        <th class="pro-title">Tên Mail</th>
-                                                                        <th class="pro-title">tiêu đề</th>
+                                                                        <th class="pro-title">Tiêu Đề</th>
+                                                                        <th class="pro-title">Email</th>
+                                                                        <th class="pro-title">Tên</th>
                                                                       
-                                                                        <th class="pro-quantity">&nbsp &nbsp &nbsp &nbsp ảnh sản phẩm</th>
-                                                                        <th class="pro-quantity">&nbsp &nbsp &nbsp &nbsp ảnh sản phẩm</th>
-                                                                         <th class="pro-quantity">&nbsp &nbsp &nbsp &nbsp ảnh sản phẩm</th>
-                                                                        <th class="pro-title">Mô tả</th>
-                                                                        <th class="pro-edit">Ẩn Tin</th>
-                                                                        <th class="pro-remove">Xóa</th>
+                                                                      
+                                                                        
+                                                                       
+                                                                        <th class="pro-title">Xem Bình Luận</th>
+                                                                          <th class="pro-quantity">Xem Tin Đăng</th>
+                                                                        <th class="pro-edit">Duyệt</th>
+                                                                        <th class="pro-remove">Không Duyệt</th>
                                                                     </tr>
                                                                 </thead>
                                                         <tbody>
-                                                        <%   for(i=0;i<tindang.length;i++){%>
+                                                        <%   for(i=0;i<lst_BCTin.length;i++){%>
 
                                                           <tr>
                                                                   <td class="pro-title"><a href="#"><%=i+1%></a></td>                                                             
-                                                                   <td class="pro-quantity"><span class="text-success"><%=tindang[i].email_User%></span></td>
-                                                                  <td class="pro-quantity"><span class="text-success"><%=tindang[i].tieuDe%></span></td>
+                                                                   <td class="pro-quantity"><span class="text-success"><%=lst_BCTin[i].tieuDe%></span></td>
+                                                                   <td class="pro-quantity"><span class="text-success"><%=lst_BCTin[i].email%></span></td>
+                                                                   <td class="pro-quantity"><span class="text-success"><%=lst_BCTin[i].sDT%></span></td>
+                                                                   
 
-                                                                <td class="pro-thumbnail">
-                                                                    <a href="#"><img class="img-fluid" src="/upload/<%=tindang[i].anh1%>" alt="Product"/></a>
-                                                                
-                                                                
-                                                                </td>
-                                                                 <td class="pro-thumbnail">
-                                                                   
-                                                                    <a href="#"><img class="img-fluid" src="/upload/<%=tindang[i].anh2%>" alt="Product"/></a>
-                                                                   
-                                                                
-                                                                </td>
-                                                                 <td class="pro-thumbnail">
-                                                                   
-                                                                    <a href="#"><img class="img-fluid" src="/upload/<%=tindang[i].anh3%>" alt="Product"/></a>
-                                                                
-                                                                </td>
+                                                              
                                                                  
                                                                    <td class="pro-edit"><a href=""  data-toggle="modal" data-target="#modalEdit<%=i+1%>"><i class="fa fa-eye"></i></a></td>
-                                                                 
-                                                                   <form action="/admin/tindang/edit" method="post" id="my_form">
-                                                                        <input type="hidden" name="_id" value="<%=tindang[i]._id%>">
-                                                                        <input type="hidden" name="duyet" value="0">                                                                                                                
-                                                                        <td class="pro-remove"><a href="javascript:{}" onclick="document.getElementById('my_form').submit();"><i class="fa fa-refresh"></i></a></td>
+                                                                    <td class="pro-remove"><a href="/chitiettd/<%=lst_BCTin[i].id_TinDang%>"><i class="fa fa-clone"></i></a></td>
+                                                                   <form action="/bctindang/edit" method="post" id="my_form">
+                                                                        <input type="hidden" name="id_BCTin" value="<%=lst_BCTin[i]._id%>">
+                                                                        <input type="hidden" name="trangThai" value="1">                                                                                                                
+                                                                        <td class="pro-remove"><a href="javascript:{}" onclick="document.getElementById('my_form').submit();"><i class="fa fa-check"></i></a></td>
                                                                     </form>
-                                                                  
-                                                                  <td class="pro-remove"><a href="/admin/tindang/delete/<%=tindang[i]._id%>"><i class="fa fa-trash-o"></i></a></td>
+
+                                                                 
+                                                                                                                                
+                                                                  <td class="pro-remove"><a href="/bctindang/delete/<%=lst_BCTin[i]._id%>"><i class="fa fa-trash-o"></i></a></td>
                                                           </tr>
 
                                                                 
@@ -211,10 +198,10 @@
                                                                             <div class="modal-body">
                                                                                 <div class="form-group">
                                                                                      
-                                                                                     <div>Tiêu Đề:<%=tindang[i].tieuDe%></div>
+                                                                                     <div>Tiêu Đề:<%=lst_BCTin[i].tieuDe%></div>
                                                                                      
                                                                                       <hr>
-                                                                                     <div>mô tả:<%-tindang[i].moTaChiTiet%></div>
+                                                                                     <div>mô tả:<%-lst_BCTin[i].noiDungBaoCao%></div>
                                                                                      <br>
                                                                                      
                                                                                      
@@ -291,9 +278,6 @@ $(document).ready( function () {
     $('#datable').DataTable();
 } );
 </script>
-
-
-
 
 
 

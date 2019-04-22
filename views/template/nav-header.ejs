@@ -1,87 +1,78 @@
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-     <p> <a class="navbar-brand" href="#">Todolist <sub>By Me</sub></a></p>
+<header id="header-area" class="header__3">
+    <div class="ruby-container">
+        <div class="row">
+            <!-- Logo Area Start -->
+            <div class="col-3 col-lg-1 col-xl-2 m-auto">
+                <a href="/" class="logo-area">
+                    <img src="/_assets/img/logo-black.png" alt="Logo" class="img-fluid"/>
+                </a>
+            </div>
+            <!-- Logo Area End -->
+
+            <!-- Navigation Area Start -->
+            <div class="col-3 col-lg-9 col-xl-8 m-auto">
+                <div class="main-menu-wrap">
+                    <nav id="mainmenu">
+                        <ul>
+                            <li class="dropdown-show"><a href="/gallery">Trang Chủ</a>
+                                
+                            </li>
+                            <li class="dropdown-show"><a href="/tindang">Đăng Tin</a>
+                                
+                            </li>
+                            <li class="dropdown-show"><a href="/login-register">Đăng Ký</a>
+                              
+                            </li>
+                            <li class="dropdown-show"><a href="/login-register">Đăng Nhập</a>
+                                
+                            </li>
+                          
+                            <li class="dropdown-show"><a href="/blog">Blog</a>                             
+                            </li>
+                            <li><a href="/contact">Liên Hệ</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- Navigation Area End -->
+
+            <!-- Header Right Meta Start -->
+            <div class="col-6 col-lg-2 m-auto">
+                <div class="header-right-meta text-right">
+                    <ul>
+                        <li><a href="/search" ><i class="fa fa-search"></i></a></li>
+                        <li class="settings"><a href="/info"><i class="fa fa-cog"></i></a>
+                            
+                        </li>
+                        <li class="shop-cart"><a href="#"><i class="fa fa-bell"></i> <span
+                                class="count">1</span></a>
+                            <div class="mini-cart">
+                                <div class="mini-cart-body">
+                                    <div class="single-cart-item d-flex">
+                                        <figure class="product-thumb">
+                                            <a href="#"><img class="img-fluid" src="/_assets/img/product-1.jpg"
+                                                             alt="Products"/></a>
+                                        </figure>
+
+                                        <div class="product-details">
+                                            <h2><a href="#">hi,chào mừng đến với trang web-rao vặt sinh viên</a></h2>
+                                            <div class="cal d-flex align-items-center">
+                                               
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                    
+                                </div>
+                                <div class="mini-cart-footer">
+                                    <a href="" class="btn-add-to-cart">ok</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Header Right Meta End -->
+        </div>
     </div>
-    <% if(typeof(users)=='undefined') { %>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="#" data-toggle="modal" data-target="#signUpModal"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a  href="#" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-    </ul>
-    <%}%>
-       
-  </div>
-</nav>
-  
-
-
-
- <!--Login Modal -->
-  <div class="modal fade" id="loginModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Login</h4>
-        </div>
-        <div class="modal-body">
-          <form role="form">
-  <div class="form-group">
-    <label for="email">Email address:</label>
-    <input type="email" class="form-control" id="email">
-  </div>
-  <div class="form-group">
-    <label for="pwd">Password:</label>
-    <input type="password" class="form-control" id="pwd">
-  </div>
-  <div class="checkbox">
-    <label><input type="checkbox"> Remember me</label>
-  </div>
-  <button type="submit" class="btn btn-default">Login</button>
-</form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div><!--Login Modal>
-
-   <!--SignUp Modal -->
-  <div class="modal fade" id="signUpModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Sign Up</h4>
-        </div>
-        <div class="modal-body">
-          <form role="form">
-  <div class="form-group">
-    <label for="email">Email address:</label>
-    <input type="email" class="form-control" id="email">
-  </div>
-  <div class="form-group">
-    <label for="pwd">Password:</label>
-    <input type="password" class="form-control" id="pwd">
-  </div>
-  <div class="form-group">
-    <label for="pwd">Confirm Password:</label>
-    <input type="password" class="form-control" id="pwd">
-  </div>
- 
-  <button type="submit" class="btn btn-default">Sign up</button>
-</form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div><!--SignUp Modal>
+</header>

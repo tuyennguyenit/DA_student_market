@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="meta description">
 
-    <title>Dashboard :: Ruby - Jewelry Store e-Commerce Bootstrap 4 Template</title>
+    <title>401 Error :: </title>
 
     <!--=== Favicon ===-->
-    <link rel="shortcut icon" href="/_assets/img/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon"/>
 
     <!--== Google Fonts ==-->
     <link rel="stylesheet" type="text/css"
@@ -97,7 +97,7 @@
                                     <li><a href="wishlist.html">Wishlist</a></li>
                                     <li><a href="login-register.html">Login & Register</a></li>
                                     <li><a href="my-account.html">My Account</a></li>
-                                    <li><a href="404.html">404 Error</a></li>
+                                    <li><a href="505.html">505 Error</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown-show"><a href="#">Men</a>
@@ -318,10 +318,10 @@
         <div class="row">
             <div class="col-12 text-center">
                 <div class="page-title-content">
-                    <h1>Dashboard</h1>
+                    <h1>505</h1>
                     <ul class="breadcrumb">
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="login-register.html" class="active">Dashboard</a></li>
+                        <li><a href="login-register.html" class="active">505</a></li>
                     </ul>
                 </div>
             </div>
@@ -334,89 +334,21 @@
 <div id="page-content-wrapper" class="p-9">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <!-- My Account Page Start -->
-                <div class="myaccount-page-wrapper">
-                    <!-- My Account Tab Menu Start -->
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="myaccount-tab-menu nav" role="tablist">
-                                <a href="/info"  ><i class="fa fa-dashboard"></i>
-                                    Thông Tin cá Nhân</a>
-
-                                    <a href="/info/tindadang"  ><i class="fa fa-cart-arrow-down"></i> Tin Đang Đăng</a>
-
-                                    <a href="/info/tinchoduyet"  ><i class="fa fa-cloud-download"></i> Tin Chờ Duyệt</a>
-    
-                                    <a href="/info/tindaluu"  ><i class="fa fa-credit-card"></i> Tin Đã Lưu</a>
-    
-                                    <a href="/usertheodois" class="active"><i class="fa fa-map-marker"></i> Người Theo Dõi</a>
-    
-                                    <a href="#account-info"><i class="fa fa-user"></i> Tin Nhắn</a>
-    
-                                    <a href="/signout"><i class="fa fa-sign-out"></i> Logout</a>
-                            </div>
-                        </div>
-                        <!-- My Account Tab Menu End -->
-
-                        <!-- My Account Tab Content Start -->
-                        <div class="col-lg-9 mt-5 mt-lg-0">
-                            <div class="tab-content" id="myaccountContent">
-                                <!-- Single Tab Content Start -->
-                                <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
-                                <div class="myaccount-content">
-                                <h3>Người Theo dõi</h3>
-
-                                <div class="myaccount-table table-responsive text-center">
-                                    <table class="table table-bordered">
-                                        <thead class="thead-light">
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Tên</th>
-                                            <th>Số Điện thoại</th>
-                                            <th>Hành Động</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <%if(typeof(userTheoDoi)!=='undefined' && userTheoDoi.length>0){
-                                            for(i=0;i<userTheoDoi.length;i++){
-                                        %>
-                                        <tr>
-                                            <td><%=i+1%></td>
-                                            <td><%=userTheoDoi[i].name%></td>
-                                            <td><%=userTheoDoi[i].sDT%></td>
-                                           
-                                            <td>
-                                                 <form action="/info" method="post">
-                                                    <input type="hidden" name="email_User" value="<%=userTheoDoi[i].mail%>">
-                                                    <button type="submit" class="btn btn-add-to-cart">Xem</button>
-                                                </form>
-                                               <br>
-                                                <a href="/usertheodoi/delete/<%=userTheoDoi[i]._id%>" class="btn-add-to-cart">Xóa</a>
-                                            </td>
-                                        </tr>
-                                        <%}}%>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                                   
-                                            
-                                          
-                                    </div>
-                                    </div>
-                              
-                                <!-- Single Tab Content End //end chi tiết tài khoản-->
-
-                                
-                               
-                            </div>
-                        </div>
-                        <!-- My Account Tab Content End -->
+            <div class="col-lg-6  m-auto text-center">
+                <div class="error-page-content-wrap">
+                    <h2>401</h2>
+                    <h3>BẠN CẦN ĐĂNG NHẬP ĐỂ TIẾP TỤC</h3>
+                    
+                    <a>xin lỗi nhưng bạn cần <a href="/login-register">đăng nhập</a> để thực hiện chức năng này.Nếu chưa có tài khoản thì vui lòng đăng ký <a href="/login-register">tại đây</a>
+                    <div class="sidebar-search">
+                        <form action="#">
+                            <input type="search" placeholder="type Keyword"/>
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
                     </div>
+
+                    <a href="index.html" class="btn-add-to-cart">Back to Home Page</a>
                 </div>
-                <!-- My Account Page End -->
             </div>
         </div>
     </div>
@@ -424,148 +356,7 @@
 <!--== Page Content Wrapper End ==-->
 
 <!-- Footer Area Start -->
-<footer id="footer-area">
-    <!-- Footer Call to Action Start -->
-    <div class="footer-callto-action">
-        <div class="ruby-container">
-            <div class="callto-action-wrapper">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <!-- Single Call-to Action Start -->
-                        <div class="single-callto-action d-flex">
-                            <figure class="callto-thumb">
-                                <img src="/_assets/img/air-plane.png" alt="WorldWide Shipping"/>
-                            </figure>
-                            <div class="callto-info">
-                                <h2>Free Shipping Worldwide</h2>
-                                <p>On order over $150 - 7 days a week</p>
-                            </div>
-                        </div>
-                        <!-- Single Call-to Action End -->
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <!-- Single Call-to Action Start -->
-                        <div class="single-callto-action d-flex">
-                            <figure class="callto-thumb">
-                                <img src="/_assets/img/support.png" alt="Support"/>
-                            </figure>
-                            <div class="callto-info">
-                                <h2>24/7 CUSTOMER SERVICE</h2>
-                                <p>Call us 24/7 at 000 - 123 - 456k</p>
-                            </div>
-                        </div>
-                        <!-- Single Call-to Action End -->
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <!-- Single Call-to Action Start -->
-                        <div class="single-callto-action d-flex">
-                            <figure class="callto-thumb">
-                                <img src="/_assets/img/money-back.png" alt="Money Back"/>
-                            </figure>
-                            <div class="callto-info">
-                                <h2>MONEY BACK Guarantee!</h2>
-                                <p>Send within 30 days</p>
-                            </div>
-                        </div>
-                        <!-- Single Call-to Action End -->
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <!-- Single Call-to Action Start -->
-                        <div class="single-callto-action d-flex">
-                            <figure class="callto-thumb">
-                                <img src="/_assets/img/cog.png" alt="Guide"/>
-                            </figure>
-                            <div class="callto-info">
-                                <h2>SHOPPING GUIDE</h2>
-                                <p>Quis Eum Iure Reprehenderit</p>
-                            </div>
-                        </div>
-                        <!-- Single Call-to Action End -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer Call to Action End -->
-
-    <!-- Footer Follow Up Area Start -->
-    <div class="footer-followup-area">
-        <div class="ruby-container">
-            <div class="followup-wrapper">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <div class="follow-content-wrap">
-                            <a href="index.html" class="logo"><img src="/_assets/img/logo.png" alt="logo"/></a>
-                            <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum</p>
-
-                            <div class="footer-social-icons">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-pinterest"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-flickr"></i></a>
-                            </div>
-
-                            <a href="#"><img src="/_assets/img/payment.png" alt="Payment Method"/></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer Follow Up Area End -->
-
-    <!-- Footer Image Gallery Area Start -->
-    <div class="footer-image-gallery">
-        <div class="ruby-container">
-            <div class="image-gallery-wrapper">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="imgage-gallery-carousel owl-carousel">
-                            <div class="gallery-item">
-                                <a href="#"><img src="/_assets/img/gallery-img-1.jpg" alt="Gallery"/></a>
-                            </div>
-                            <div class="gallery-item">
-                                <a href="#"><img src="/_assets/img/gallery-img-2.jpg" alt="Gallery"/></a>
-                            </div>
-                            <div class="gallery-item">
-                                <a href="#"><img src="/_assets/img/gallery-img-3.jpg" alt="Gallery"/></a>
-                            </div>
-                            <div class="gallery-item">
-                                <a href="#"><img src="/_assets/img/gallery-img-4.jpg" alt="Gallery"/></a>
-                            </div>
-                            <div class="gallery-item">
-                                <a href="#"><img src="/_assets/img/gallery-img-3.jpg" alt="Gallery"/></a>
-                            </div>
-                            <div class="gallery-item">
-                                <a href="#"><img src="/_assets/img/gallery-img-2.jpg" alt="Gallery"/></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer Image Gallery Area End -->
-
-    <!-- Copyright Area Start -->
-    <div class="copyright-area">
-        <div class="ruby-container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="copyright-text">
-                        <p><a target="_blank" href="https://www.templatespoint.net/">Templates Point</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Copyright Area End -->
-
-</footer>
+<%include ./template/footer%>
 <!-- Footer Area End -->
 
 <!-- Scroll to Top Start -->
@@ -590,23 +381,3 @@
 </body>
 
 </html>
-
-<h3> User- theo dõi user</h3>
-<h4>read: hiển thị user</h4>
-<% if(typeof userTheoDoi!=='undefined'){
-    for(i=0;i<userTheoDoi.length;i++){
-%>
-    <div>
-        <span><%=userTheoDoi[i].email_User%></span>
-        <span><%=userTheoDoi[i].id_UserTheoDoi%></span>
-        <span><a href="/usertheodoi/delete/<%=userTheoDoi[i]._id%>">xóa</a></span>
-    </div>
-
-<%}}%>
-<h4>create:</h4>
-<form action="/usertheodoi" method="post">
-    idUsser:<input type="text" name="id_UserTheoDoi">
-    <input type="submit" value="add">
-</form>
-<h4>delete:</h4>
-<i>xóa ở trên</i>

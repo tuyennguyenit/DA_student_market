@@ -23,20 +23,24 @@ var cookieParser = require("cookie-parser");
 mongoose.connect(dbConfig.url, { useMongoClient: true });
 var session = require("express-session");
 // router
-router.get("/login1", function(req, res) {
-  res.render("login");
-});
+
 router.get("/login-register", function(req, res) {
   res.render("login-register");
 });
 router.get("/signup", function(req, res) {
   res.render("signup");
 });
-router.get("/index1", function(req, res) {
-  res.render("index1");
-});
+
 router.get("/loginloi", function(req, res) {
   res.render("login", { message: "Login Failed" });
+});
+
+router.get("/blog", function(req, res) {
+  res.render("blog");
+});
+
+router.get("/contact", function(req, res) {
+  res.render("contact");
 });
 
 
@@ -46,23 +50,29 @@ router.get('/404',function(req,res){
 router.get('/505',function(req,res){
   res.render('505');
 })
-router.get('/test0',function(req,res){
-  res.render('tindang1')
-})
+
 /**
  * !USER
  */
 //user:lấy thông tin cá nhân 
 router.get('/info',function(req,res){
   var email=req.session.email
-  if (email != null) {
-    User.find({ email: req.session.email }, function(err, user) {
+   if (req.session.admin != null) {
+       User.find({ email: req.session.email }, function(err, user) {
       if (err) res.render('500');
-      res.render("user", { user: user });
+      res.render("admin_info", { user: user });
     });
-  } else {
-    res.render("404", { message: "Login to continue" });
-  }
+   }else{
+        if (email != null) {
+      User.find({ email: req.session.email }, function(err, user) {
+        if (err) res.render('500');
+        res.render("user", { user: user });
+      });
+      } else {
+        res.render("404", { message: "Login to continue" });
+      }
+   }
+ 
 })
 //user: lấy thông tin cá nhân của user khác
 router.post('/info',function(req,res){
@@ -204,7 +214,9 @@ router.post('/info/khac/tindadang',function(req,res){
     TinDang.find({ email_User: email }, function(err, tindang) {
       if (err) res.render('500');
       if(tindang.n!==0){
-        res.render('user_khac_tindang',{tindang:tindang,email_User:email});
+        User.find({ email:email }, function(err, user) {
+          res.render('user_khac_tindang',{user:user,tindang:tindang,email_User:email});
+        })
       }else    
       res.render('user_khac_tindang',{mes:"không có tin  nào"});
     })
@@ -289,7 +301,7 @@ router.post('/tindaluu', function(req, res) {
     }
    });
   }else
-  res.render("404", { message: "Login to continue" });
+  res.render("401", { message: "Login to continue" });
   });
 
 
@@ -311,14 +323,15 @@ router.get('/gallery',function(req,res){
   DM_Cha.find({},function(err,folders){
     //lấy carousel
     Carousel.find({},function(req,items){
-      res.render('gallery1',{ folders: folders,carousel:items });
+     
+      res.render('gallery1',{ folders: folders,items:items });
     })
   })
 })
 //search
 router.get('/search',function(req,res){
   DM_Cha.find({},function(err,folders){
-      res.render('search',{ folders: folders });
+    res.render('search',{ folders: folders });
   })
 })
 //lấy toàn bộ tin đăng cho theo danh mục cha
@@ -613,16 +626,11 @@ router.get('/chitiettd/:idTinDang',function(req,res){
  */
 //Home
 router.get("/", function(req, res) {
-    TinDang.find({ }, function(err, folders) {
-      if (err) throw err;
-      res.render("tindang", { folders: folders });
-    });
-  
+    res.redirect("/gallery")
 });
 
 //Logout
 router.get("/signout", function(req, res) {
-  console.log("call to index...");
   req.session.destroy();
   res.render("login-register");
 });
@@ -632,7 +640,7 @@ router.post("/signup", function(req, res) {
   console.log("call to signup post");
   var un = req.body.email;
   var pwd = req.body.password;
-
+  var name=req.body.name
   User.findOne({ email: un }, function(err, user) {
     if (err) throw err;
     else {
@@ -640,49 +648,28 @@ router.post("/signup", function(req, res) {
         var newUser = User({
           email: req.body.email,
           password: req.body.password,
-          name: "1",
-          avatar: "1"
+          name: name,
+          avatar: "avdefault.jpg",
+          diaChi:"chưa cập nhật",
+          sDT:"chưa cập nhật",
+          ngaySinh:"chưa cập nhật",
+          gioiTinh:"chưa cập nhật",
+          loaiTaiKhoan:"1",
+          trangThai:"1"
         });
         // save the user
         newUser.save(function(err) {
           if (err) throw err;
-          console.log("User created!");
         });
-        res.render("signup", { message1: "Create User Successfully. Please " });
+        res.render("login-register", { message1: "Tạo tài khoản thành công " });
       } else {
-        console.log("user exists");
-        res.render("signup", { message2: "User already exists." });
+        res.render("login-register", { message2: "Tạo tài khoản thất bại,mail hoặc tên người dùng đã tồn tại." });
       }
     }
   });
 });
 
 
-
-//Sign In
-router.post("/signin", function(req, res) {
-  var un = req.body.email;
-  var pwd = req.body.password;
-  var exists = User.findOne({ email: un, password: pwd }, function(err, user) {
-    if (err) throw err;
-    else {
-      if (user == null) {
-        res.render("login", { message: "Login Failed" });
-      } else {
-        req.session.email = un;
-        console.log("user exists");
-
-        Folder.find({ email: un }, function(err, folders) {
-          if (err) throw err;
-
-          // object of all the users
-          console.log(folders);
-          res.render("folders", { folders: folders });
-        });
-      }
-    }
-  });
-});
 //?login
 router.post("/login", function(req, res) {
   var un = req.body.email;
@@ -744,7 +731,6 @@ var storage = multer.diskStorage({
     //file originalname:tên mặc định trước upload
   }
 });
-
 var upload = multer({ storage: storage });
 
 //? upload image profile
@@ -891,295 +877,6 @@ router.post('/admin/users/edit', function(req, res) {
 );
 });
 
-
-////?
-//Get Folders
-router.get("/folders", function(req, res) {
-  console.log("call to folders.." + req.session.email);
-  if (req.session.email != null) {
-    Folder.find({ email: req.session.email }, function(err, folders) {
-      if (err) throw err;
-
-      // object of all the users
-      console.log(folders);
-      res.render("folders", { folders: folders });
-    });
-  } else {
-    res.render("error", { message: "Login to continue" });
-  }
-});
-
-//Create Folders
-router.post("/folders", function(req, res) {
-  var name = req.body.folderName;
-  var describe = req.body.folderDescribe;
-  if (req.session.email != null) {
-    console.log("call to create folders---------" + req.session.email);
-    var email = req.session.email[0];
-    var newFolder = Folder({
-      name: name,
-      email: email,
-      created: Date(),
-      tasks: [],
-      describe: describe,
-      members: []
-    });
-    // save the user
-    newFolder.save(function(err) {
-      if (err) {
-        console.log(err);
-        throw err;
-      }
-      console.log("Folder created!!");
-    });
-
-    //chuyển router
-    res.redirect("/folders");
-  } else {
-    res.render("error", { message: "Login to continue" });
-  }
-});
-
-//Delete Folder
-router.get("/folders/delete/:folderName", function(req, res) {
-  console.log("call to tasks.." + req.params.folderName);
-
-  if (req.session.email != null) {
-    Folder.remove(
-      { email: req.session.email, name: req.params.folderName },
-      function(err) {
-        if (err) {
-          console.log("Error in delete" + err);
-        } else {
-          //chuyển router
-          res.redirect("/folders");
-        }
-      }
-    );
-  } else {
-    res.redirect("error", { message: "Login to continue" });
-  }
-});
-
-//edit Folder
-router.get("/folders/edit", function(req, res) {
-  var query = require("url").parse(req.url, true).query;
-
-  Folder.update(
-    {
-      email: req.session.email,
-      name: query.folderName
-    },
-    {
-      describe: query.folderDescribe
-    },
-    function(err, folders) {
-      if (err) {
-        return res.status(500).json(err);
-      } else {
-        //chuyển router
-        res.redirect("/folders");
-      }
-    }
-  );
-});
-
-//Get Tasks of a folders
-router.get("/folders/:folderName?", function(req, res) {
-  if (req.session.email != null) {
-    console.log("call to tasks.." + req.params.folderName);
-
-    Folder.findOne(
-      { email: req.session.email, name: req.params.folderName },
-      function(err, folder) {
-        if (err) throw err;
-        console.log(folder);
-        res.render("tasks", { folder: folder });
-      }
-    );
-  } else {
-    res.render("error", { message: "Login to continue" });
-  }
-});
-
-//Create Tasks
-router.post("/tasks/:foldername", function(req, res) {
-  if (req.session.email != null) {
-    var email = req.session.email;
-    console.log(
-      "call to create tasks.." + req.params.foldername + req.body.taskName
-    );
-
-    Folder.findOneAndUpdate(
-      { email: req.session.email, name: req.params.foldername },
-      {
-        $push: {
-          tasks: {
-            tname: req.body.taskName,
-            progress: "0",
-            _idUserMember: req.body._idUserMember,
-            _idUserReviewer: req.body._idUserReviewer,
-            priority: req.body.priority
-          }
-        }
-      },
-      { new: true },
-      function(err, folder) {
-        if (err) {
-          console.log("Error on task save " + err);
-          throw err;
-        }
-        // we have the updated user returned to us
-        console.log("Updated " + folder);
-        res.render("tasks", { folder: folder });
-      }
-    );
-  } else {
-    res.render("error", { message: "Login to continue" });
-  }
-});
-
-//edit Tasks
-router.post("/tasks/edit/:foldername/:_idtask", function(req, res) {
-  if (req.session.email != null) {
-    var email = req.session.email;
-    console.log("call to edit tasks.." + req.params.foldername);
-
-    Folder.update(
-      {
-        email: req.session.email,
-        name: req.params.foldername,
-        "tasks._id": req.params._idtask
-      },
-      {
-        "tasks.$.tname": req.body.taskName,
-        "tasks.$.progress": req.body.progress,
-        "tasks.$._idUserMember": req.body._idUserMember,
-        "tasks.$._idUserReviewer": req.body._idUserReviewer,
-        "tasks.$.priority": req.body.priority
-      },
-      { new: true },
-      function(err, folder) {
-        if (err) {
-          console.log("Error on task save " + err);
-          throw err;
-        }
-
-        //getLoadTasks(req,res)
-        //load lại data folder
-        Folder.findOne(
-          { email: req.session.email, name: req.params.foldername },
-          function(err, folder) {
-            if (err) throw err;
-            console.log("lan 2" + folder);
-            res.render("tasks", { folder: folder });
-          }
-        );
-      }
-    );
-  } else {
-    res.render("error", { message: "Login to continue" });
-  }
-});
-
-//Delete tasks
-router.get("/folders/delete/:folderName/:taskName", function(req, res) {
-  if (req.session.email != null) {
-    var temail = req.session.email;
-    console.log(
-      "call to delte tasks......" +
-        temail +
-        req.params.folderName +
-        req.params.taskName
-    );
-
-    Folder.findOneAndUpdate(
-      { email: temail, name: req.params.folderName },
-      { $pull: { tasks: { tname: req.params.taskName } } },
-      { new: true },
-      function(err, folder) {
-        if (err) {
-          console.log("Error on task save " + err);
-          throw err;
-        }
-        // we have the updated user returned to us
-        console.log("Updated " + folder);
-        res.render("tasks", { folder: folder });
-      }
-    );
-  } else {
-    res.render("error", { message: "Login to continue" });
-  }
-});
-
-// router.get('/folders/delete/:folderName/:taskName', function (req, res) {
-//   if(req.session.email!=null){
-//     var temail =req.session.email;
-//     var task=req.params.taskName
-//     Folder.remove({
-//       email:temail, name:req.params.folderName,tasks:task
-//   }, function (err, folder) {
-//       if (err) {
-//           return res.status(500).json(err);
-//       } else {
-//         res.render('tasks', {folder:folder});
-//       }
-//   })
-//   }
-// });
-
-//add members vào folder
-router.post("/members/add/:foldername", function(req, res) {
-  if (req.session.email != null) {
-    var email = req.session.email;
-    console.log(
-      "call to create tasks.." + req.params.foldername + req.body.taskName
-    );
-
-    Folder.findOneAndUpdate(
-      { email: req.session.email, name: req.params.foldername },
-      {
-        $push: { members: { mName: req.body.mName, address: req.body.address } }
-      },
-      { new: true },
-      function(err, folder) {
-        if (err) {
-          console.log("Error on member add  " + err);
-          throw err;
-        }
-        // we have the updated user returned to us
-        console.log("Updated " + folder);
-        res.render("tasks", { folder: folder });
-      }
-    );
-  } else {
-    res.render("error", { message: "Login to continue" });
-  }
-});
-
-//Delete member
-router.get("/members/delete/:folderName/:id", function(req, res) {
-  if (req.session.email != null) {
-    var temail = req.session.email;
-    console.log("call to delte members......" + temail + req.params.folderName);
-    Folder.findOneAndUpdate(
-      { email: temail, name: req.params.folderName },
-      { $pull: { members: { _id: req.params.id } } },
-      { new: true },
-      function(err, folder) {
-        if (err) {
-          console.log("Error on task save " + err);
-          throw err;
-        }
-        // we have the updated user returned to us
-        console.log("Updated " + folder);
-        res.render("tasks", { folder: folder });
-      }
-    );
-  } else {
-    res.render("error", { message: "Login to continue" });
-  }
-});
 
 /**
  * !bảng tindang: biến TinDang -view: tindang.ejs
@@ -1431,7 +1128,7 @@ router.post("/admin/tindang/edit", function(req, res) {
         });
         // save the user
         newMail.save(function(err) {
-          res.redirect("/admin/tindangs");       
+          res.redirect("/admin/tindangs/daduyet");       
     }
   );
   });
@@ -1727,7 +1424,7 @@ router.get('/bctindangs', function(req, res) {
  
   BC_Tin.find({}, function(err, items) {
  if (err) throw err;
- res.render('bctindang', {lst_BCTin:items}); 
+ res.render('admin_bctindang', {lst_BCTin:items}); 
 });
 });
 
@@ -1767,7 +1464,7 @@ router.get("/usertheodois", function(req, res) {
   if(req.session.email){
     UserTheoDoi.find({email_User:req.session.email}, function(err, folders) {
       if (err) throw err;
-      res.render("usertheodoi", { userTheoDoi: folders });
+      res.render("user_info_theodoi", { userTheoDoi: folders });
     });
     } 
     else{
@@ -2162,11 +1859,15 @@ router.get('/admin/mail/delete', function(req, res) {
   );
 });
 //user gửi mail cho người bất kì khi vào xem trang ng khác
-router.get("/user/mail/:id_UserNhan", function(req,res){
+router.post("/user/khac/mail", function(req,res){
+  var email=req.body.email_User
+  var id=req.body.id
   if(req.session.email){
-    res.render("user_mail_nguoitheodoi",{id_UserNhan:req.params.id_UserNhan})
-  } else
-  res.render("404")
+    User.find({ email: req.session.email }, function(err, user) {
+      res.render("user_mail_nguoitheodoi",{id_UserNhan:id,user: user,email_User:email })
+    })
+    } else
+  res.render("401")
 })
 
 //admin: carosel 
@@ -2174,6 +1875,12 @@ router.get("/user/mail/:id_UserNhan", function(req,res){
 router.get("/admin/carousel",function(req,res){
   Carousel.find({},function(req,items){
     res.render("admin_carousel",{items:items})
+  })
+})
+//user xem carousel
+router.get("/slide",function(req,res){
+  Carousel.find({},function(req,items){
+    res.render("template/slide",{slide:items})
   })
 })
 //thêm 1 ảnh
