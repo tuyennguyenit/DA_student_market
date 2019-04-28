@@ -15,7 +15,7 @@ const fs=require('fs')
 var sessionOptions = {
   secret: "secret",
   cookie:{
-    maxAge: 1000*60*5
+    maxAge: 1000*60*50
   },
   resave : true,
   saveUninitialized : true};

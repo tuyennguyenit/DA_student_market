@@ -3,7 +3,7 @@ var router = express.Router();
 var path = require("path");
 const request = require('request');
 var fs = require('fs');
-
+var nodemailer = require("nodemailer");
 
 //require Model
 var User = require.main.require("./models/user");
@@ -24,6 +24,7 @@ mongoose.connect(dbConfig.url, { useMongoClient: true });
 var session = require("express-session");
 // router
 
+
 router.get("/login-register", function(req, res) {
   res.render("login-register");
 });
@@ -38,6 +39,18 @@ router.get("/loginloi", function(req, res) {
 router.get("/blog", function(req, res) {
   res.render("blog");
 });
+router.get("/blog/noiquy", function(req, res) {
+  res.render("blog_noiquy");
+});
+router.get("/blog/hangcam", function(req, res) {
+  res.render("blog_hangcam");
+});
+router.get("/blog/meomuaban",function(req,res){
+  res.render("blog_meomuaban")
+})
+router.get("/blog/muabanantoan",function(req,res){
+  res.render("blog_muabanantoan")
+})
 
 router.get("/contact", function(req, res) {
   res.render("contact");
@@ -319,12 +332,13 @@ router.post('/tindaluu', function(req, res) {
  * !KHÁCH
  */
 
+
 router.get('/gallery',function(req,res){
   DM_Cha.find({},function(err,folders){
     //lấy carousel
     Carousel.find({},function(req,items){
      
-      res.render('gallery1',{ folders: folders,items:items });
+      res.render('gallery1',{ folders: folders,slide:items });
     })
   })
 })
@@ -349,7 +363,7 @@ router.get('/gallery/:id_DMCha',function(req,res){
 //phân trang thường theo danh mục cha
 router.get('/gallery/:id_DMCha/:page', (req, res, next) => {
     var id_DMCha=req.params.id_DMCha
-    let perPage = 1;
+    let perPage = 9;
     let page = req.params.page || 1;
     DM_Cha.findOne({_id:id_DMCha},function(err,cha){
       DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
@@ -374,7 +388,7 @@ router.get('/gallery/:id_DMCha/:page', (req, res, next) => {
 //sắp xếp tăng dần theo ngày đăng=> chỉ cần dựa vào id .sort({_id:1})
 router.get('/gallery/:id_DMCha/indate/:page', (req, res, next) => {
   var id_DMCha=req.params.id_DMCha
-  let perPage = 1;
+  let perPage = 9;
   let page = req.params.page || 1;
   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
     DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
@@ -398,7 +412,7 @@ router.get('/gallery/:id_DMCha/indate/:page', (req, res, next) => {
 //sắp xếp giảm dần theo ngày đăng
 router.get('/gallery/:id_DMCha/descdate/:page', (req, res, next) => {
   var id_DMCha=req.params.id_DMCha
-  let perPage = 3;
+  let perPage = 9;
   let page = req.params.page || 1;
   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
     DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
@@ -422,7 +436,7 @@ router.get('/gallery/:id_DMCha/descdate/:page', (req, res, next) => {
 //sắp xếp tăng theo giá
 router.get('/gallery/:id_DMCha/ingia/:page', (req, res, next) => {
   var id_DMCha=req.params.id_DMCha
-  let perPage = 1;
+  let perPage = 9;
   let page = req.params.page || 1;
   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
     DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
@@ -446,7 +460,7 @@ router.get('/gallery/:id_DMCha/ingia/:page', (req, res, next) => {
 //sắp xếp giảm theo giá
 router.get('/gallery/:id_DMCha/descgia/:page', (req, res, next) => {
   var id_DMCha=req.params.id_DMCha
-  let perPage = 1;
+  let perPage = 9;
   let page = req.params.page || 1;
   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
     DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
@@ -471,7 +485,7 @@ router.get('/gallery/:id_DMCha/descgia/:page', (req, res, next) => {
 //sắp theo tin bán
 router.get('/gallery/:id_DMCha/tinban/:page', (req, res, next) => {
   var id_DMCha=req.params.id_DMCha
-  let perPage = 1;
+  let perPage = 9;
   let page = req.params.page || 1;
   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
     DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
@@ -495,7 +509,7 @@ router.get('/gallery/:id_DMCha/tinban/:page', (req, res, next) => {
 //sắp xếp theo tin mua
 router.get('/gallery/:id_DMCha/tinmua/:page', (req, res, next) => {
   var id_DMCha=req.params.id_DMCha
-  let perPage = 1;
+  let perPage = 9;
   let page = req.params.page || 1;
   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
     DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
@@ -531,7 +545,7 @@ router.get('/gallery/:id_DMCha/tinmua/:page', (req, res, next) => {
 //theo loai danh muc con
 router.get('/gallery/:id_DMCha/:id_DMCon/:page', (req, res, next) => {
   var id_DMCha=req.params.id_DMCha
-  let perPage = 1;
+  let perPage = 9;
   let page = req.params.page || 1;
   DM_Cha.findOne({_id:id_DMCha},function(err,cha){
     DM_Con.find({tenDMCha:cha.tenDMCha}, function(err, folders) {
@@ -634,6 +648,15 @@ router.get("/signout", function(req, res) {
   req.session.destroy();
   res.render("login-register");
 });
+//gửi mail tự động
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'tuyennvhtam@gmail.com',
+    pass: 'One23456!'
+  }
+});
+
 
 //Sign Up
 router.post("/signup", function(req, res) {
@@ -655,20 +678,82 @@ router.post("/signup", function(req, res) {
           ngaySinh:"chưa cập nhật",
           gioiTinh:"chưa cập nhật",
           loaiTaiKhoan:"1",
-          trangThai:"1"
+          trangThai:"0"
         });
         // save the user
-        newUser.save(function(err) {
+        User.create(newUser,function(err,doc) {
           if (err) throw err;
+          var yes="127.0.0.1:3000/users/xacnhan/1/"+doc._id;
+        
+            var mailOptions = {
+              from: 'tuyennvhtam@gmail.com',
+              to: un,
+              subject: 'XÁC NHẬN ĐĂNG KÝ TẠI RAO VẶT SINH VIÊN',
+              text: '',
+              html:'<p>Hi,bạn hoặc ai đó đã vào web rao vặt sinh viên đăng kí tài khoản .Nếu là bạn xin vui lòng kich hoạt tài khoản tại: </p>'+'<br>'+yes+'<br>'+
+              '.Nếu không vui lòng bỏ qua email này'
+            
+            };
+            transporter.sendMail(mailOptions,function(error,info){
+              if(error){
+                  return console.log("ko gui dc mail"+error);
+              }
+              console.log("Message sent:"+info.response)
+            });
+            res.render("login-register", { message1: "Tạo tài khoản thành công ,vui lòng vào email để kích hoạt tài khoản" });
         });
-        res.render("login-register", { message1: "Tạo tài khoản thành công " });
+       
+
       } else {
         res.render("login-register", { message2: "Tạo tài khoản thất bại,mail hoặc tên người dùng đã tồn tại." });
       }
     }
   });
 });
+//xác nhận mail có tạo tài khoản thành viên
+router.get('/users/xacnhan/:kk/:_id', function(req, res) {
+   User.update({
+      _id:req.params._id
+ }, {
+   trangThai:"1"
+ }, function (err, folders) {
+     if (err) {
+         return res.status(500).json(err);
+     } else {
+       res.render("login-register", { message1: "kích hoạt thành công ,vui lòng đăng nhập" })
+     }
+ }
+ );
+ });
 
+ //lấy lại mật khẩu
+ router.post("/laylaipass",function(req,res){
+ var email=req.body.email;
+ User.findOne({email:email},function(err,user){
+      if(err) res.render("500")
+      else{
+        if(user!=null){
+          //gửi mail
+          var mailOptions = {
+            from: 'tuyennvhtam@gmail.com',
+            to: email,
+            subject: 'LÂY LẠI MẬT KHẨU ĐĂNG NHẬP TẠI WEB RAO VẶT SINH VIÊN',
+            text: 'Hi,bạn hoặc ai đó đã vào web rao vặt sinh viên để lấy lại mật khẩu .mật khẩu của bạn là:'+ user.password
+            +'     nếu không vui lòng bỏ qua email này'
+          };
+          transporter.sendMail(mailOptions,function(error,info){
+            if(error){
+              res.render("login-register", { message2: "email bạn nhập không đúng ,vui lòng kiểm tra lại" });
+            }
+            console.log("Message sent:"+info.response)
+          });
+          res.render("login-register", { message1: "lấy mật khẩu thành công ,vui lòng vào email để lấy lại mật khẩu" });
+        }else{
+          res.render("login-register", { message2: "email bạn nhập không đúng ,vui lòng kiểm tra lại" });
+        }
+      }
+  })
+ })
 
 //?login
 router.post("/login", function(req, res) {
@@ -981,7 +1066,7 @@ router.post("/tindang",upload.any(), function(req, res) {
     gia:req.body.gia,     
     loaiTinDang: req.body.loaiTinDang,
     trangThai:"1",
-    daDuyet:"0", 
+    daDuyet:"1", 
     thoiGianDang:date,
     thoiHan:thoiHan
   });
@@ -1128,7 +1213,7 @@ router.post("/admin/tindang/edit", function(req, res) {
         });
         // save the user
         newMail.save(function(err) {
-          res.redirect("/admin/tindangs/daduyet");       
+          res.redirect("/admin/tindangs/chuaduyet");       
     }
   );
   });
@@ -1164,7 +1249,7 @@ router.get("/admin/tindang/delete/:_idTinDang", function(req, res) {
               });
               // save the user
               newMail.save(function(err) {
-                res.redirect("/admin/tindangs/daduyet");   
+                res.redirect("/admin/tindangs/chuaduyet");   
               })            
             }
           })

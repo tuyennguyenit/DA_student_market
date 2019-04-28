@@ -148,7 +148,7 @@
                 <div class="checkout-billing-details-wrap">
                     <h2>Nội Dung Tin</h2>
                     <div class="billing-form-wrap">
-                        <form action="/tindang" method="POST" enctype="multipart/form-data">
+                        <form action="/tindang" method="POST" enctype="multipart/form-data" onsubmit="return checkBeforeSubmit()">
                             <div class="single-input-item">
                                 <label for="country" class="required">Danh Mục Chính</label>
                                     <select name="dmcha" id="dmcha" onchange="funCha()" class="form-control" >
@@ -192,7 +192,7 @@
 
                             <div class="single-input-item">
                                 <label for="com-name">Số Nhà / Tên Đường</label>
-                                <input type="text" name="soNha" id="soNha" placeholder="vd: 55/Đinh Bộ Lĩnh"/>
+                                <input type="text" name="soNha" id="soNha" placeholder="vd: 55/Đinh Bộ Lĩnh" required/>
                             </div>
 
                             <div class="single-input-item">
@@ -205,17 +205,17 @@
 
                             <div class="single-input-item">
                                 <label for="com-name">Giá cả</label>
-                                <input type="number" id="com-name"name="gia" placeholder="vd:500.000"/>
+                                <input type="number" id="com-name"name="gia" placeholder="vd:500.000" required/>
                             </div>
 
                             <div class="single-input-item">
                                 <label for="com-name">Tiêu Đề</label>
-                                <input type="text" id="com-name" placeholder="Tiêu Đề" name="tieuDe"/>
+                                <input type="text" id="com-name" placeholder="Tiêu Đề" name="tieuDe" required/>
                             </div>
 
                             <div class="single-input-item">
                                 <label for="ordernote">Mô Tả Chi Tiết</label>
-                                <textarea name="moTaChiTiet" id="ordernote" cols="30" rows="3" placeholder="Notes about your order, e.g. special notes for delivery.">
+                                <textarea name="moTaChiTiet" id="ordernote" cols="30" rows="3"  required>
                                 </textarea>
                             </div>
 
@@ -311,8 +311,8 @@
                           </div>
                          
                           <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">&nbspTôi đồng ý với các điều khoảng dịch vụ</label> <br>
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                            <label class="form-check-label" for="exampleCheck1">&nbspTôi đồng ý và tuân thủ với các <a href="/blog/noiquy">điều khoản dịch vụ</a></label> <br>
                           </div>
                           <div>&nbsp</div>
                           <button type="submit" class="btn-add-to-cart"> Đăng Tin</button>
@@ -353,6 +353,9 @@
  <script type="text/javascript" src="/assets/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
 
 <!--=== Active Js === <script src="/_assets/js/active.js"></script>-->
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'textarea' });
+</script>
 
 
 </body>
@@ -387,6 +390,16 @@ function yesnoCheck() {
     }
     else document.getElementById('ifYes').style.display = 'none';
 }
+//chặn gửi nhiều lần
+  var wasSubmitted = false;    
+    function checkBeforeSubmit(){
+      if(!wasSubmitted) {
+        wasSubmitted = true;
+        return wasSubmitted;
+      }
+      return false;
+    }    
+
 </script>
 
 <style>

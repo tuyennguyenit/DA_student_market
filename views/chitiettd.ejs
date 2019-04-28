@@ -127,7 +127,7 @@
                                      <i class="fa fa-star"></i>
                                 </div>
 
-                                <span class="price">Giá:&nbsp<%=tindang.gia%>&nbsp (Nghìn đồng)</span>
+                                <span class="price">Giá:&nbsp<%=tindang.gia%>&nbsp (đ)</span>
 
                                 
 
@@ -180,11 +180,10 @@
                                 <!-- Single Product tab Menu -->
 
                                 <!-- Single Product tab Content -->
-                                <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-content" id="nav-tabContent"> 
+                                <div></div>
                                     <div class="tab-pane fade show active" id="description">
-                                        <p class="products-desc"><%=tindang.moTaChiTiet%>.</p>
-
-                                        
+                                        <span  ><%-tindang.moTaChiTiet%></span>
                                     </div>
 
                                     <div class="tab-pane fade" id="reviews">

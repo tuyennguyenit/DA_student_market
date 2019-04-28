@@ -152,16 +152,16 @@
                 <div id="banner-carousel" class="owl-carousel">
                     <!-- Banner Single Carousel Start -->
                     
-                    <% if(typeof(carousel)!=="undefined"){
-                    for(i=0;i<carousel.length;i++){
-                        if(carousel[i].viTri=="tren")
+                    <% if(typeof(slide)!=="undefined"){
+                    for(i=0;i<slide.length;i++){
+                        if(slide[i].viTri=="tren")
                     {%>
-                    <div class="single-carousel-wrap " style="background-image: url('/upload/<%=carousel[i].carouselIMG1%>') ;">
+                    <div class="single-carousel-wrap " style="background-image: url('/upload/<%=slide[i].carouselIMG1%>') ;">
                         <div class="banner-caption">
-                            <h4><%=carousel[i].theH4%></h4>
-                            <h2><%=carousel[i].theH2%></h2>
-                            <p><%=carousel[i].theP%>.</p>
-                            <a href="<%=carousel[i].theLink%>" class="btn-long-arrow"><%=carousel[i].theA%></a>
+                            <h4><%=slide[i].theH4%></h4>
+                            <h2><%=slide[i].theH2%></h2>
+                            <p><%=slide[i].theP%>.</p>
+                            <a href="<%=slide[i].theLink%>" class="btn-long-arrow"><%=slide[i].theA%></a>
                         </div>
                     </div>
                     <!-- Banner Single Carousel End -->
@@ -172,7 +172,7 @@
                             <h4>New Collection 2017</h4>
                             <h2>Beautiful Earrings</h2>
                             <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                            <a href="#" class="btn-long-arrow">Shop Now</a>
+                            <a href="#" class="btn-long-arrow">Shop Now 1</a>
                         </div>
                     </div>
                     <!-- Banner Single Carousel End -->
@@ -192,15 +192,16 @@
         <div class="single-category-products">
             <div class="row">
                 <div class="col-lg-6 mt-5 mt-lg-0">                                    
-                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp d-flex" style="background-image:url('/upload/<%=folders[i].anh1%>')">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
                     </a>                                     
                 </div>
                 <%if(i+1<folders.length){i=i+1%>
-                <div class="col-lg-6 order-first order-lg-last">
-                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp d-flex">
+                <div class="col-lg-6 order-first order-lg-last" >
+                
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp d-flex" style="background-image:url('/upload/<%=folders[i].anh1%>')">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -217,7 +218,7 @@
             <%if(i+1<folders.length){i=i+1%>
                 <!--begin-->
                 <div class="col-lg-6 mb-5 mb-lg-0">
-                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp women d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp women d-flex" style="background-image:url('/upload/<%=folders[i].anh1%>')">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -227,7 +228,7 @@
             <%}%>    
             <%if(i+1<folders.length){i=i+1%>
                 <div class="col-lg-3 mb-5 mb-lg-0">
-                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp women d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp women d-flex" style="background-image:url('/upload/<%=folders[i].anh1%>')">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -236,7 +237,7 @@
             <%}%> 
             <%if(i+1<folders.length){i=i+1%>   
                 <div class="col-lg-3 mb-5 mb-lg-0">
-                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp women d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp women d-flex" style="background-image:url('/upload/<%=folders[i].anh1%>')">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -254,7 +255,7 @@
                 <div class="col-lg-3 mt-5 mt-lg-0">                  
                 </div>
                 <div class="col-lg-6 order-first order-lg-last">
-                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp clothing d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp clothing d-flex"  style="background-image:url('/upload/<%=folders[i].anh1%>')">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>
@@ -273,7 +274,7 @@
                     <div class="row">
                     <%if(i+1<folders.length){i=i+1%>   
                         <div class="col-lg-6 mb-5 mb-lg-0">
-                            <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp jewelry d-flex">
+                            <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp jewelry d-flex"  style="background-image:url('/upload/<%=folders[i].anh1%>')">
                                 <div class="category-title-box d-flex">
                                     <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                                 </div>
@@ -282,7 +283,7 @@
                         <%}%>
                         <%if(i+1<folders.length){i=i+1%>   
                         <div class="col-lg-6 mb-5 mb-lg-0">
-                            <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp jewelry d-flex">
+                            <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp jewelry d-flex"  style="background-image:url('/upload/<%=folders[i].anh1%>')">
                                 <div class="category-title-box d-flex">
                                     <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                                 </div>
@@ -293,7 +294,7 @@
                 </div>
                 <%if(i+1<folders.length){i=i+1%>   
                 <div class="col-lg-6 mb-5 mb-lg-0">
-                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp jewelry d-flex">
+                    <a href="/gallery/<%=folders[i]._id%>/1" class="product-category-name-warp jewelry d-flex"  style="background-image:url('/upload/<%=folders[i].anh1%>')">
                         <div class="category-title-box d-flex">
                             <h2 class="pro-cate-title"><%=folders[i].tenDMCha%></h2>
                         </div>

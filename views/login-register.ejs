@@ -98,7 +98,7 @@
                                         { %>
                                         <br>
                                         <div class="alert alert-success">
-                                            <b>congratulations,</b> <%=message1%>
+                                            <b>Hi,</b> <%=message1%>
                                             <a href="/login">login now</a>
                                         </div>
                                         <%} %>
@@ -107,7 +107,7 @@
                                         { %>
                                         <br>
                                         <div class="alert alert-warning">
-                                            <b>Oh snap!</b> <%=message2%>
+                                            <b>Hix!</b> <%=message2%>
                                         </div>
                                         <%} %>
 
@@ -129,7 +129,7 @@
                                                 </div>
                                             </div>
 
-                                            <a href="#" class="forget-pwd">Quên mật khẩu?</a>
+                                            <a href="#" class="forget-pwd" data-toggle="modal" data-target="#myModal">Quên mật khẩu?</a>
                                         </div>
                                     </div>
                                     <% if(typeof(mesLog)!='undefined')
@@ -186,15 +186,48 @@
                                         <button class="btn-login">Register</button>
                                     </div>
                                 </form>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
-           
+                   
             </div>
         </div>
     </div>
 </div>
+
+ <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Lấy Lại Mật Khẩu</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+         
+         <form action="/laylaipass" method="post">
+          
+            <div class="single-input-item">
+                <input type="email" placeholder="Nhập vào email của bạn" name="email" required/>
+            </div>
+            <input type="submit" value="Gửi"  class="btn-login">
+         </form>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 <!--== Page Content Wrapper End ==-->
 
 <!-- Footer Area Start -->
