@@ -157,7 +157,7 @@
                                                     </form>
                                                 <%}%>
                                                <br>
-                                                <a href="/tindang/delete/<%=tindang[i]._id%>" class="btn-add-to-cart">Xóa</a>
+                                                <a href="/tindang/delete/<%=tindang[i]._id%>" class="btn-add-to-cart" onclick="return confirm('Bạn có chắc chắn muốn xóa chứ?');">Xóa</a>
                                             </td>
                                         </tr>
                                         <%}}%>
@@ -173,7 +173,7 @@
                                             { %>
                                             <br>
                                             <div class="alert alert-warning">
-                                                <b>Oh snap!</b> <%=mespass%>
+                                                <b>Oh!</b> <%=mespass%>
                                             </div>
                                             <%} %> 
                                     </div>

@@ -128,32 +128,32 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-// var server = app.listen((process.env.PORT || 3000), function () {
+var server = app.listen((process.env.PORT || 3000), function () {
 
-//   var host = server.address().address
-//   var port = server.address().port
+  var host = server.address().address
+  var port = server.address().port
 
-//   console.log("app listening at http://%s:%s", host, port)
+  console.log("app listening at http://%s:%s", host, port)
 
-// });
-//!chat
-var server  = require('http').createServer(app);
-var io      = require('socket.io').listen(server);
-//dùng cái này thì ko chạy đc heroku
-server.listen('3000', () => {
-  console.log('Server listening on Port 3000');
-})
-
-io.on('connection',function(client){
-  console.log('Client connected...');
-  client.on('join',function(data){
-      console.log(data);
-  });
-  client.on('messages',function(data){
-      client.emit('thread',data);
-      client.broadcast.emit('thread',data);
-  })
 });
+//!chat
+// var server  = require('http').createServer(app);
+// var io      = require('socket.io').listen(server);
+// //dùng cái này thì ko chạy đc heroku
+// server.listen('3000', () => {
+//   console.log('Server listening on Port 3000');
+// })
+
+// io.on('connection',function(client){
+//   console.log('Client connected...');
+//   client.on('join',function(data){
+//       console.log(data);
+//   });
+//   client.on('messages',function(data){
+//       client.emit('thread',data);
+//       client.broadcast.emit('thread',data);
+//   })
+// });
 
 //!--end chat
 

@@ -151,7 +151,7 @@
                                                                 <td class="pro-quantity"><span class="text-success"><%=lst_DMCon_R[i].tenDMCha%></span></td>
                                                                
                                                                 <td class="pro-edit"><a href=""  data-toggle="modal" data-target="#modalEdit<%=i+1%>"><i class="fa fa-edit"></i></a></td>
-                                                                <td class="pro-remove"><a href="/dmcon/delete/<%=lst_DMCon_R[i]._id%>"><i class="fa fa-trash-o"></i></a></td>
+                                                                <td class="pro-remove"><a href="/dmcon/delete/<%=lst_DMCon_R[i]._id%>" onclick="return confirm('Bạn có chắc chắn muốn xóa chứ?');"><i class="fa fa-trash-o"></i></a></td>
                                                         </tr>
 
                                                                 <!--modal edit-->
@@ -171,7 +171,7 @@
                                                                                 <form action="/dmcon/edit" method="post">
                                                                                     <div class="form-group">
                                                                                         <label for="usr">Tên danh Mục Con:</label>
-                                                                                        <input type="text" class="form-control" name="tenDMCon" value="<%=lst_DMCon_R[i].tenDMCon%>">
+                                                                                        <input type="text" class="form-control" name="tenDMCon" value="<%=lst_DMCon_R[i].tenDMCon%>" required>
                                                                                     </div>
                                                                                   
                                                                                    <input type="hidden" name="id_DMCon" value="<%=lst_DMCon_R[i]._id%>"> 
@@ -217,14 +217,24 @@
                                             <!-- Modal body -->
                                             <div class="modal-body">
                                             <form action="/dmcon" method="post" >
-                                                Tên danh mục cha: 
-                                                <select name="tenDMCha" >
+                                                 <div class="form-group">
+                                                    <label for="exampleInputPassword1">Tên danh mục cha: </label>
+                                                    <select name="tenDMCha" class="form-control"  required>
                                                     <%for(i =0 ;i<lst_DMCha_R.length;i++){%>
                                                         <option class="form-control"><%=lst_DMCha_R[i].tenDMCha%></option>
                                                     <%}%>
-                                                </select>
+                                                    </select>
+                                                </div>
+                                               
+                                               
                                                 <br>
-                                                Tên danh mục con  <input type="text" name="tenDMCon"  class="form-control"><br>
+
+                                                 <div class="form-group">
+                                                    <label for="exampleInputPassword1">Tên danh mục con: </label>
+                                                    <input type="text" name="tenDMCon"  class="form-control" required>
+                                                </div>
+
+                                              
                                                 <input type="submit" value="Tạo Mới"  class="form-control btn btn-success">
                                             </form>
                                             </div>

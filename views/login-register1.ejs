@@ -85,8 +85,8 @@
                 <div class="login-register-wrapper">
                     <!-- Login & Register tab Menu -->
                     <nav class="nav login-reg-tab-menu">
-                        <a class="active" id="login-tab" data-toggle="tab" href="#login">Đăng Nhập</a>
-                        <a id="register-tab" href="/register">Đăng Ký</a>
+                        <a  id="login-tab" href="/login-register">Đăng Nhập</a>
+                        <a class="active" id="register-tab"  href="#register">Đăng Ký</a>
                     </nav>
                     <!-- Login & Register tab Menu -->
 
@@ -110,45 +110,8 @@
                                             <b>Hix!</b> <%=message2%>
                                         </div>
                                         <%} %>
-                                        <% if(typeof(mesLog)!='undefined')
-                                    { %>
-                                    <br>
-                                    <div class="alert alert-warning">
-                                        <b>Oh!</b> <%=mesLog%>
-                                    </div>
-                                    <%} %>
 
-                                <form action="/login" method="post">
-                                    <div class="single-input-item">
-                                        <input type="email" placeholder="Nhập Email của bạn" name="email" required/>
-                                    </div>
-
-                                    <div class="single-input-item">
-                                        <input type="password" placeholder="Nhập Password của bạn" name="password" required/>
-                                    </div>
-
-                                    <div class="single-input-item">
-                                        <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
-                                            <div class="remember-meta">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="rememberMe">
-                                                    <label class="custom-control-label" for="rememberMe">Nhớ mật khẩu</label>
-                                                </div>
-                                            </div>
-
-                                            <a href="#" class="forget-pwd" data-toggle="modal" data-target="#myModal">Quên mật khẩu?</a>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="single-input-item">
-                                        <button class="btn-login">Login</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="register" role="tabpanel">
-                            <div class="login-reg-form-wrap">
-                                <form action="/signup" method="post">
+                               <form action="/signup" method="post">
                                     <div class="single-input-item">
                                         <input type="text" placeholder="Full Tên" name="name"required/>
                                     </div>
@@ -160,13 +123,13 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="single-input-item">
-                                                <input type="password" placeholder="Nhập Password" name="password"required/>
+                                                <input type="password" placeholder="Nhập Password" name="password" id="password" required/>
                                             </div>
                                         </div>
 
                                         <div class="col-lg-6">
                                             <div class="single-input-item">
-                                                <input type="password" placeholder="Xác nhận lại Password" required/>
+                                                <input type="password" placeholder="Xác nhận lại Password" id="confirm_password" required/>
                                             </div>
                                         </div>
                                     </div>
@@ -175,9 +138,8 @@
                                         <div class="login-reg-form-meta">
                                             <div class="remember-meta">
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                           id="subnewsletter">
-                                                    <label class="custom-control-label" for="subnewsletter">Tôi Đồng ý với các điều khoản dịch vụ</label>
+                                                    <input type="checkbox" class="custom-control-input" id="subnewsletter" required/>
+                                                    <label class="custom-control-label" for="subnewsletter">Tôi Đồng ý với các <a href="/blog/noiquy" style="color:red">điều khoản</a> dịch vụ</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -187,6 +149,11 @@
                                         <button class="btn-login">Register</button>
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="register" role="tabpanel">
+                            <div class="login-reg-form-wrap">
+                                
                                 
                             </div>
                         </div>
@@ -198,38 +165,6 @@
     </div>
 </div>
 
- <!-- The Modal -->
-  <div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Lấy Lại Mật Khẩu</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-         
-         <form action="/laylaipass" method="post">
-          
-            <div class="single-input-item">
-                <input type="email" placeholder="Nhập vào email của bạn" name="email" required/>
-            </div>
-            <input type="submit" value="Gửi"  class="btn-login">
-         </form>
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-<!--== Page Content Wrapper End ==-->
 
 <!-- Footer Area Start -->
 <% include ./template/footer %>
@@ -255,5 +190,19 @@
 <!--=== Active Js ===-->
 <script src="/_assets/js/active.js"></script>
 </body>
+<script>
+var password = document.getElementById("password")
+  , confirm_password = document.getElementById("confirm_password");
 
+function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Passwords không Khớp");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+</script>
 </html>

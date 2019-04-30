@@ -31,7 +31,7 @@
     <!-- Modernizer JS -->
     <script src="/_assets/js/vendor/modernizr-2.8.3.min.js"></script>
     <!--uploadfile-->
-    <link rel="stylesheet" type="text/css" href="/assets/lib/bootstrap-fileupload/bootstrap-fileupload.css" />
+    <link rel="stylesheet" type="text/css" href="/_assets/lib/bootstrap-fileupload/bootstrap-fileupload.css" />
    
      
 
@@ -148,12 +148,21 @@
                 <div class="checkout-billing-details-wrap">
                     <h2>Nội Dung Tin</h2>
                     <div class="billing-form-wrap">
+                    <!--thông báo-->
+                     <% if(typeof(mesno)!='undefined')
+                            { %>
+                            <br>
+                            <div class="alert alert-warning">
+                                <b>Oh!</b> <%=mesno%> <a href="/tindang">quay lại</a>
+                            </div>
+                     <%} %> 
+                      <% if(typeof lst_DMCha_R!=='undefined'){%>
                         <form action="/tindang" method="POST" enctype="multipart/form-data" onsubmit="return checkBeforeSubmit()">
                             <div class="single-input-item">
                                 <label for="country" class="required">Danh Mục Chính</label>
-                                    <select name="dmcha" id="dmcha" onchange="funCha()" class="form-control" >
+                                    <select name="dmcha" id="dmcha" onchange="funCha()" class="form-control"  required>
                                     <!--danh mục-->
-                                    <option>danh mục</option>
+                                    <option></option>
                                     <% if(typeof lst_DMCha_R!=='undefined'){
                                         for(i=0;i<lst_DMCha_R.length;i++){%>
                                         <option value="<%=lst_DMCha_R[i]._id%>"><%=lst_DMCha_R[i].tenDMCha%></option>         
@@ -163,30 +172,30 @@
                     
                              <div class="single-input-item">
                                 <label for="country" class="required">Danh Mục Con</label>
-                                <select name="dmCon" id="dmCon" class="form-control" >
-                                    <option>danh mục con</option>                               
+                                <select name="dmCon" id="dmCon" class="form-control"  required>
+                                    <option></option>                               
                                 </select>
                             </div>
 
                            
                             <div class="single-input-item">
                                 <label for="country" class="required">Tỉnh Thành</label>
-                                <select name="tinh" id="tinh" onchange="funHuyen()" class="form-control">
-                                    <option value="">-</option>                                   
+                                <select name="tinh" id="tinh" onchange="funHuyen()" class="form-control" required>
+                                    <option value=""></option>                                   
                                 </select>
                             </div>
 
                             <div class="single-input-item">
                                 <label for="country" class="required">Quận / Huyện</label>
-                                <select  name="huyen" id="huyen" onchange="funXa()"class="form-control">
+                                <select  name="huyen" id="huyen" onchange="funXa()"class="form-control" required>
                                     <option value="">-</option>                                   
                                 </select>
                             </div>
 
                             <div class="single-input-item">
                                 <label for="country" class="required">Phường / Xã</label>
-                                <select name="xa" id="xa"class="form-control">
-                                    <option value="">-</option>                                   
+                                <select name="xa" id="xa"class="form-control" required>
+                                    <option value=""></option>                                   
                                 </select>
                             </div>
 
@@ -197,20 +206,20 @@
 
                             <div class="single-input-item">
                                 <label for="country" class="required">Loại Tin Đăng</label>
-                                <select name="loaiTinDang" id="country" class="form-control">
+                                <select name="loaiTinDang" id="country" class="form-control" required>
                                     <option value="1">Tin Bán</option>     
-                                    <option value="2">Tin Mua</option>                                                          
+                                    <option value="0">Tin Mua</option>                                                          
                                 </select>
                             </div>
 
                             <div class="single-input-item">
                                 <label for="com-name">Giá cả</label>
-                                <input type="number" id="com-name"name="gia" placeholder="vd:500.000" required/>
+                                <input type="number" id="com-name"name="gia" placeholder="vd:500.000" min=10000 max=10000000000 required/>
                             </div>
 
                             <div class="single-input-item">
                                 <label for="com-name">Tiêu Đề</label>
-                                <input type="text" id="com-name" placeholder="Tiêu Đề" name="tieuDe" required/>
+                                <input type="text" id="com-name" placeholder="Tiêu Đề" name="tieuDe" maxlength=60 required/>
                             </div>
 
                             <div class="single-input-item">
@@ -221,7 +230,11 @@
 
                            
                        
-                    </div>
+                    
+                    
+                    
+                    
+                      </div>
                 </div>
             </div>
 
@@ -244,11 +257,11 @@
                       <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                       <div>
                         <span class="btn btn-theme02 btn-file">
-                          <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select image</span>
-                        <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-                        <input type="file" class="default" name="file" />
+                          <span class="fileupload-new"><i class="fa fa-paperclip"></i> chọn ảnh</span>
+                        <span class="fileupload-exists"><i class="fa fa-undo"></i> Thay đổi</span>
+                        <input type="file" class="default" name="file" required/>
                         </span>
-                        <a href="advanced_form_components.html#" class="btn btn-theme04 fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
+                        <a href="advanced_form_components.html#" class="btn btn-theme04 fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Xóa</a>
                       </div>
                     </div>
                         <!--end-->
@@ -260,11 +273,11 @@
                       <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                       <div>
                         <span class="btn btn-theme02 btn-file">
-                          <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select image</span>
-                        <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-                        <input type="file" class="default" name="file1" />
+                          <span class="fileupload-new"><i class="fa fa-paperclip"></i> chọn ảnh</span>
+                        <span class="fileupload-exists"><i class="fa fa-undo"></i> Thay đổi</span>
+                        <input type="file" class="default" name="file1" required/>
                         </span>
-                        <a href="advanced_form_components.html#" class="btn btn-theme04 fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
+                        <a href="advanced_form_components.html#" class="btn btn-theme04 fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Xóa</a>
                       </div>
                     </div>
                         <!--end-->
@@ -276,11 +289,11 @@
                       <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                       <div>
                         <span class="btn btn-theme02 btn-file">
-                          <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select image</span>
-                        <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-                        <input type="file" class="default" name="file3" />
+                          <span class="fileupload-new"><i class="fa fa-paperclip"></i> chọn ảnh</span>
+                        <span class="fileupload-exists"><i class="fa fa-undo"></i> Thay đổi</span>
+                        <input type="file" class="default" name="file3" required/>
                         </span>
-                        <a href="advanced_form_components.html#" class="btn btn-theme04 fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Remove</a>
+                        <a href="advanced_form_components.html#" class="btn btn-theme04 fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> Xóa</a>
                       </div>
                     </div>
                         <!--end-->
@@ -319,6 +332,7 @@
                         </div>
 
                         </form>
+                        <%}%>
                     </div>
                 </div>
             </div>
@@ -326,6 +340,7 @@
         <!--== Checkout Page Content End ==-->
     </div>
 </div>
+ 
 <!--== Page Content Wrapper End ==-->
 
 <!-- Footer Area Start -->
@@ -350,7 +365,7 @@
 <script src="/_assets/js/plugins.js"></script>
 
 <!--uploadfile-->
- <script type="text/javascript" src="/assets/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+ <script type="text/javascript" src="/_assets/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
 
 <!--=== Active Js === <script src="/_assets/js/active.js"></script>-->
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>

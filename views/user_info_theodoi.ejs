@@ -145,7 +145,7 @@
                                                     <button type="submit" class="btn btn-add-to-cart">Xem</button>
                                                 </form>
                                                <br>
-                                                <a href="/usertheodoi/delete/<%=userTheoDoi[i]._id%>" class="btn-add-to-cart">Xóa</a>
+                                                <a href="/usertheodoi/delete/<%=userTheoDoi[i]._id%>" class="btn-add-to-cart" onclick="return confirm('Bạn có chắc chắn muốn xóa chứ?');">Xóa</a>
                                             </td>
                                         </tr>
                                         <%}}%>

@@ -1,0 +1,34 @@
+<script
+  src="https://code.jquery.com/jquery-3.4.0.js"
+  integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="
+  crossorigin="anonymous"></script>
+  
+ 
+
+<script type="text/javascript" charset="utf8" src="https://pagination.js.org/dist/2.1.4/pagination.js"></script>
+
+
+<div id="demo">ahizz
+
+</div>
+<script>
+$('#demo').pagination({
+
+    dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
+    locator: 'items',
+    totalNumber: 120,
+    pageSize: 20,
+    ajax: {
+        beforeSend: function() {
+			alert("hii");
+             $("#test").html('Loading data from flickr.com ...');
+        }
+    },
+    callback: function(data, pagination) {
+        // template method of yourself
+		alert(data)
+        //var html = template(data);
+        dataContainer.html(html);
+    }
+})
+</script>

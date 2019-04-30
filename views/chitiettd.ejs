@@ -204,9 +204,15 @@
                                                             <div class="ratting-author">
                                                                 <h3><%=lst_BCTin[i].sDT%></h3>
                                                                 <div class="ratting-star">
-                                                                    <i class="fa fa-flag"></i>                                                                  
+                                                                    
+                                                                    <%if(lst_BCTin[i].tieuDe=="luadao"){%>
+                                                                       <i class="fa fa-flag"></i> 
+                                                                    <%}else{%>
+                                                                        <i class="fa fa-comments-o" style="color:green"></i> 
+                                                                    <%}%>
+                                                                                                                                  
                                                                     <span>
-                                                                        <%=lst_BCTin[i].tieuDe=="luadao"?"lừa đảo":lst_BCTin[i].tieuDe=="trunglap"?"Trùng Lặp":"khác"%>
+                                                                        <%=lst_BCTin[i].tieuDe=="luadao"?"lừa đảo":lst_BCTin[i].tieuDe=="trunglap"?"Trùng Lặp":""%>
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -222,7 +228,8 @@
                                                             <div class="ratting-form row">
                                                                 <div class="col-12 mb-4">
                                                                     <h5>Tiêu Đề:</h5>
-                                                                    <select name="tieuDe">
+                                                                    <select name="tieuDe" class="form-control">
+                                                                        <option  value="binhluan">Bình Luận</option>
                                                                         <option  value="luadao">Lừa Đảo</option>
                                                                         <option  value="trunglap">Trùng Lặp</option>
                                                                         <option  value="hangdaban">Hàng đã Bán</option>
@@ -232,16 +239,16 @@
                                                                 </div>
                                                                 <div class="col-md-6 col-12 mb-4">
                                                                     <label for="name">Tên :</label>
-                                                                    <input id="name" placeholder="Name" type="text" name="sDT">
+                                                                    <input id="name" placeholder="Name" type="text" name="sDT" required>
                                                                 </div>
                                                                 <div class="col-md-6 col-12 mb-4">
                                                                     <label for="email">Email:</label>
-                                                                    <input id="email" placeholder="Email" type="text" name="email">
+                                                                    <input id="email" placeholder="Email" type="email" name="email" required>
                                                                 </div>
                                                                 <div class="col-12 mb-4">
                                                                     <label for="your-review">Đánh giá của bạn:</label>
-                                                                    <textarea  id="your-review"
-                                                                              placeholder="Write a review" name="noiDungBaoCao"></textarea>
+                                                                    <textarea  id="your-review" 
+                                                                              placeholder="Viết Đánh giá của bạn" name="noiDungBaoCao" maxlength="100" required></textarea>
                                                                 </div>
                                                                 <input type="hidden" name="id_TinDang" value="<%=tindang._id%>">
                                                                 <div class="col-12">

@@ -140,7 +140,7 @@
                                             <td><%=listIDTin[i].nguoiDang%></td>                                         
                                             <td>
                                                 <a href="/chitiettd/<%=listIDTin[0].id_TinDangTheoDoi%>" class="btn-add-to-cart">Xem</a>                                              
-                                                <a href="/info/delete/tindaluu/<%=listIDTin[0]._id%>" class="btn-add-to-cart">Xóa</a>
+                                                <a href="/info/delete/tindaluu/<%=listIDTin[0]._id%>" onclick="return confirm('Bạn có chắc chắn muốn xóa chứ?'); " class="btn-add-to-cart">Xóa</a>
                                             </td>
                                         </tr>
                                         <%}}%>
@@ -156,7 +156,7 @@
                                             { %>
                                             <br>
                                             <div class="alert alert-warning">
-                                                <b>Oh snap!</b> <%=mespass%>
+                                                <b>Oh!</b> <%=mespass%>
                                             </div>
                                             <%} %> 
                                     </div>

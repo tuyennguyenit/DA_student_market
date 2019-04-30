@@ -140,7 +140,7 @@
                                                             
                                                              <div class="single-input-item">
                                                                 <label for="current-pwd" class="required">người nhận</label>
-                                                                <select name="id_UserNhan">
+                                                                <select name="id_UserNhan" required>
                                                                     <%for(i=0;i<userTheoDoi.length;i++){%>
                                                                     <option value="<%=userTheoDoi[i].id_UserTheoDoi%>"><%=userTheoDoi[i].name%></option>
                                                                     <%}%>
@@ -149,7 +149,7 @@
                                                              </div>
                                                               <div class="single-input-item">
                                                                 <label for="current-pwd" class="required">Tiêu Đề</label>
-                                                                <input type="text" id="current-pwd" name="tieuDe" placeholder=""/>
+                                                                <input type="text" id="current-pwd" name="tieuDe" placeholder="" required maxlength=30/>
                                                              </div>
 
                                                                 
@@ -160,7 +160,7 @@
                                                                  <div class="single-input-item">
                                                                     <label for="current-pwd" class="required">Nội Dung</label>
                                                                 <%# <input type="text"name="noiDung" >  %>
-                                                                    <textarea name="noiDung" ><i>Soạn nội dung...</i></textarea>
+                                                                    <textarea name="noiDung" required><i>Soạn nội dung...</i></textarea>
                                                                 </div>    
 
                                                                 <div class="single-input-item">

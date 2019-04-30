@@ -67,8 +67,8 @@
                 <div class="page-title-content">
                     <h1>Bảng Điều Khiển</h1>
                     <ul class="breadcrumb">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="login-register.html" class="active">danh Mục Cha</a></li>
+                        <li><a href="">Home</a></li>
+                        <li><a href="" class="active">danh Mục Cha</a></li>
                     </ul>
                 </div>
             </div>
@@ -152,7 +152,7 @@
                                                                 <td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="/upload/<%=lst_DMCha_R[i].anh1%>"
                                                                 alt="Product"/></a></td>
                                                                 <td class="pro-edit"><a href=""  data-toggle="modal" data-target="#modalEdit<%=i+1%>"><i class="fa fa-edit"></i></a></td>
-                                                                <td class="pro-remove"><a href="/dmcha/delete/<%=lst_DMCha_R[i]._id%>"><i class="fa fa-trash-o"></i></a></td>
+                                                                <td class="pro-remove"><a href="/dmcha/delete/<%=lst_DMCha_R[i]._id%>"onclick="return confirm('Bạn có chắc chắn muốn xóa chứ?');"><i class="fa fa-trash-o"></i></a></td>
                                                         </tr>
 
                                                                 <!--modal edit-->
@@ -172,11 +172,11 @@
                                                                                 <form action="/dmcha/edit" method="post">
                                                                                     <div class="form-group">
                                                                                         <label for="usr">Tên Cũ:</label>
-                                                                                        <input type="text" class="form-control" name="tenDMCha" value="<%=lst_DMCha_R[i].tenDMCha%>">
+                                                                                        <input type="text" class="form-control" name="tenDMCha" value="<%=lst_DMCha_R[i].tenDMCha%>" required>
                                                                                     </div>
                                                                                    <input type="hidden" name="id_DMCha" value="<%=lst_DMCha_R[i]._id%>"> 
                                                                                     
-                                                                                    <input type="submit" value="Lưu Lại">
+                                                                                    <input type="submit" value="Lưu Lại" class="btn btn-success">
                                                                                 </form>
 
                                                                             </div>
@@ -212,15 +212,22 @@
                                             <!-- Modal Header -->
                                             <div class="modal-header">
                                             <h4 class="modal-title">Tạo Mới Danh Mục Cha</h4>
+
+                                             
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             </div>
 
                                             <!-- Modal body -->
                                             <div class="modal-body">
                                             <form action="/dmcha" method="post"  enctype="multipart/form-data">
-                                                Tên danh mục cha: <input type="text" class="form-group"name="tenDMCha">
-                                                ảnh: <h4>choose file:</h4> <input type="file" name="file"  class="form-control-file border"> <br>
-                                                <input type="submit" value="adđ">
+                                                
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Tên danh mục cha: </label>
+                                                    <input type="text" class="form-control" id="exampleInputPassword1" name="tenDMCha" required >
+                                                </div>
+
+                                                 <h5>Chọn Ảnh:</h5> <input type="file" name="file"  class="form-control-file border" required> <br>
+                                                <input type="submit" class="btn btn-success"value="Thêm">
                                             </form>
                                             </div>
 

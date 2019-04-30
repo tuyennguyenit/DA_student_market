@@ -163,7 +163,7 @@
                                                                   <td class="pro-quantity"><span class="text-success"><%=mailgui[i].thoigianGui%></span></td>
                                                                   <td class="pro-quantity"><span class="text-success"><%=mailgui[i].nameUserNhan%></span></td>
                                                                   <td class="pro-edit"><a href="/mail/read/<%=mailgui[i]._id%>"  data-toggle="modal" data-target="#modalEdit<%=i+1%>"><i class="fa fa-eye"></i></a></td>
-                                                                  <td class="pro-remove"><a href="/mail/editden_vao/<%=mailgui[i]._id%>"><i class="fa fa-trash-o"></i></a></td>
+                                                                  <td class="pro-remove"><a href="/mail/editgui_vao/<%=mailgui[i]._id%>" onclick="return confirm('Bạn có chắc chắn muốn xóa chứ?');"><i class="fa fa-trash-o"></i></a></td>
                                                           </tr>
 
                                                               <!--modal xem mail-->
@@ -285,72 +285,4 @@ $(document).ready( function () {
 
 
 
-
-<head>
-  <script src="https://cloud.tinymce.com/5/tinymce.min.js"></script>
-  <script>tinymce.init({ selector:'textarea' });</script>
-</head>
-
-----
-read -mail đến
-<hr>
-
-<%if(typeof(mailgui)!=="undefined" && mailgui.length>0){
-    for(i=0;i<mailgui.length;i++){
-%>
-    <span><%=mailgui[i].tieuDe%></span>
-    <span><%-mailgui[i].noiDung%></span>
-    <span><%=mailgui[i].thoigianGui%></span>
-    <span><%=mailgui[i].thoiGianDoc%></span>
-    <span><a href="/mail/read/<%=mailgui[i]._id%>">đọc</></span>
-    <span><a href="/mail/editden_vao/<%=mailgui[i]._id%>">xóa</a></span>
-    <br>
-<%}}%>
-<br><br>
-read-mail gửi
-<hr>
-<%if(typeof(mailgui)!=="undefined" && mailgui.length>0){
-    for(i=0;i<mailgui.length;i++){
-%>
-    <span><%=mailgui[i].tieuDe%></span>
-    <span><%-mailgui[i].noiDung%></span>
-    <span><%=mailgui[i].thoiGianGui%></span>
-    <span><a href="/mail/editgui_vao/<%=mailgui[i]._id%>">xóa</a></span>
-    <br>
-<%}}%>
-<br><br>
-read-thùng rác
-<hr>
-<%if(typeof(thungrac)!=="undefined" && thungrac.length>0){
-    for(i=0;i<thungrac.length;i++){
-%>
-    <span><%=thungrac[i].tieuDe%></span>
-    <span><%-thungrac[i].noiDung%></span>
-    <span><%=thungrac[i].thoiGianGui%></span>
-    <span><a href="/mail/edit_xoa/<%=thungrac[i]._id%>">xóa</a></span>
-    <span><a href="/mail/edit_ra/<%=thungrac[i]._id%>">phục hồi</a></span>
-    <br>
-<%}}%>
-<hr>
-Create
-
-<form action="/guimail" method="post">
-
-id Người gữi
-<input type="text" name="id_UserGui">
-id người nhận
-<input type="text" name="id_UserNhan">
-tiêu đề
-<input type="text" name="tieuDe">
-nội dung
-<input type="text"name="noiDung" > 
- <textarea1  >nhập vào...!</textarea1>
-<input type="submit" value="Gửi mail">
-</form>
-
-tin nhắn đến
-
-
-
-delete- xóa theo link
 

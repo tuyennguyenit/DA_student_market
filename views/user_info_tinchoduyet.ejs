@@ -124,7 +124,7 @@
                                             <th>STT</th>
                                             <th>Tiêu Đề</th>
                                             <th>Ngày Đăng</th>
-                                            <th>Trạng Thái</th>
+                                          
                                             <th>Hành Động</th>
                                         </tr>
                                         </thead>
@@ -137,10 +137,10 @@
                                             <td><%=i+1%></td>
                                             <td><%=tindang[i].tieuDe%></td>
                                             <td><%=tindang[i].thoiGianDang%></td>
-                                            <td><%=tindang[i].trangThai%></td>
-                                            <td><a href="cart.html" class="btn-add-to-cart">Xem</a>
-                                                <a href="cart.html" class="btn-add-to-cart">Sửa</a>
-                                                <a href="cart.html" class="btn-add-to-cart">Xóa</a>
+                                            
+                                            <td>
+                                               
+                                                <a href="/tindang/delete/<%=tindang[i]._id%>" class="btn-add-to-cart" onclick="return confirm('Bạn có chắc chắn muốn xóa chứ?');">Xóa</a>
                                             </td>
                                         </tr>
                                         <%}}%>
