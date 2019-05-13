@@ -101,11 +101,11 @@
     
                                     <a href="/bctindangs"   ><i class="fa fa-credit-card"></i> Quản Lý Bình Luận</a>
     
-                                    <a href="#address"><i class="fa fa-map-marker"></i> Quản Lý Thống Kê</a>
+                                    <a href="#address"><i class="fa fa-map-marker"></i> Quản Lý Góp Ý</a>
 
                                     <a href="/admin/carousel"><i class="fa fa-cog"></i> Cài Đặt Cấu Hình</a>
     
-                                    <a href="/mails_den"><i class="fa fa-user"></i> Tin Nhắn</a>
+                                   
     
                                     <a href="/signout"><i class="fa fa-sign-out"></i> Logout</a>
                             
@@ -187,6 +187,7 @@
                                                                  
                                                                    <form action="/admin/tindang/edit" method="post" id="my_form">
                                                                         <input type="hidden" name="_id" value="<%=tindang[i]._id%>">
+                                                                         <input type="hidden" name="id_User" value="<%=tindang[i].id_User%>">
                                                                         <input type="hidden" name="duyet" value="1">                                                                                                                
                                                                         <td class="pro-remove"><a href="javascript:{}" onclick="document.getElementById('my_form').submit();"><i class="fa fa-check"></i></a></td>
                                                                     </form>

@@ -156,7 +156,8 @@
                     for(i=0;i<slide.length;i++){
                         if(slide[i].viTri=="tren")
                     {%>
-                    <div class="single-carousel-wrap " style="background-image: url('/upload/<%=slide[i].carouselIMG1%>') ;">
+                    <div class="single-carousel-wrap" style="background-image: url('/upload/<%=slide[i].carouselIMG1%>') ; max-height: 350px;
+  overflow-y: hidden;">
                         <div class="banner-caption">
                             <h4><%=slide[i].theH4%></h4>
                             <h2><%=slide[i].theH2%></h2>
@@ -166,16 +167,7 @@
                     </div>
                     <!-- Banner Single Carousel End -->
                     <%}}}%>
-                    <!-- Banner Single Carousel Start -->
-                    <div class="single-carousel-wrap home_4_slide_2">
-                        <div class="banner-caption">
-                            <h4>New Collection 2017</h4>
-                            <h2>Beautiful Earrings</h2>
-                            <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                            <a href="#" class="btn-long-arrow">Shop Now 1</a>
-                        </div>
-                    </div>
-                    <!-- Banner Single Carousel End -->
+                   
                 </div>
             </div>
         </div>

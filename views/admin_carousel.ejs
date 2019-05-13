@@ -99,11 +99,11 @@
     
                                     <a href="/bctindangs"   ><i class="fa fa-credit-card"></i> Quản Lý Bình Luận</a>
     
-                                    <a href="#address"><i class="fa fa-map-marker"></i> Quản Lý Thống Kê</a>
+                                    <a href="/gopy"><i class="fa fa-map-marker"></i> Quản Lý Góp Ý</a>
 
                                     <a href="/admin/carousel" class="active"><i class="fa fa-cog"></i> Cài Đặt Cấu Hình</a>
     
-                                    <a href="/mails_den"><i class="fa fa-user"></i> Tin Nhắn</a>
+                                   
     
                                     <a href="/signout"><i class="fa fa-sign-out"></i> Logout</a>
                             
@@ -139,6 +139,7 @@
                                                                 <th class="pro-quantity">Thẻ H2</th>
                                                                  <th class="pro-quantity">Thẻ P</th>
                                                                  <th class="pro-quantity">Ảnh</th>
+                                                                  <th class="pro-quantity">Vị Trí</th>
                                                                 <th class="pro-edit">sửa</th>
                                                                 <th class="pro-remove">xóa</th>
                                                             </tr>
@@ -154,8 +155,10 @@
                                                                 <td class="pro-quantity"><span class="text-success"><%=items[i].theH4%></span></td>
                                                                 <td class="pro-quantity"><span class="text-success"><%=items[i].theH2%></span></td>
                                                                   <td class="pro-quantity"><span class="text-success"><%=items[i].theP%></span></td>
+                                                                  
                                                                 <td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="/upload/<%=items[i].carouselIMG1%>"
                                                                 alt="Product"/></a></td>
+                                                                  <td class="pro-quantity"><span class="text-success"><%=items[i].viTri%></span></td>
                                                                 <td class="pro-edit"><a href=""  data-toggle="modal" data-target="#modalEdit<%=i+1%>"><i class="fa fa-edit"></i></a></td>
                                                                 <td class="pro-remove"><a href="/admin/carousel/delete/<%=items[i]._id%>"><i class="fa fa-trash-o"></i></a></td>
                                                         </tr>
@@ -167,7 +170,7 @@
 
                                                                             <!-- Modal Header -->
                                                                             <div class="modal-header">
-                                                                            <h4 class="modal-title">Chỉnh Sửa Danh Mục Cha</h4>
+                                                                            <h4 class="modal-title">Chỉnh Sửa </h4>
                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                             </div>
 

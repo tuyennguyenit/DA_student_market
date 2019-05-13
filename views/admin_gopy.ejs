@@ -30,7 +30,7 @@
 
     <!-- Modernizer JS -->
     <script src="/_assets/js/vendor/modernizr-2.8.3.min.js"></script>
-    <!--datable-->
+ <!--datable-->
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 
 
@@ -69,8 +69,8 @@
                 <div class="page-title-content">
                     <h1>Bảng Điều Khiển</h1>
                     <ul class="breadcrumb">
-                        <li><a href="">Home</a></li>
-                        <li><a href="" class="active">Hộp Thư Đến</a></li>
+                        <li><a >Home</a></li>
+                        <li><a  class="active">quản lý bình luận</a></li>
                     </ul>
                 </div>
             </div>
@@ -90,21 +90,25 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="myaccount-tab-menu nav" role="tablist">
-                                <a href="/info"  ><i class="fa fa-dashboard"></i>
-                                    Thông Tin cá Nhân</a>
-                                    <a href="/tindang"  ><i class="fa fa-upload"></i> Tạo Tin Đăng</a>
+                              <a href="/admin/info"  ><i class="fa fa-dashboard"></i> Thông Tin cá Nhân</a>
 
-                                    <a href="/info/tindadang"  ><i class="fa fa-cart-arrow-down"></i> Tin Đang Đăng</a>
+                                    <a href="/dmchas"  ><i class="fa fa-upload"></i> Quản Lý Danh Mục Cha</a>
+                                    <a href="/dmcons"  ><i class="fa fa-upload"></i> Quản Lý Danh Mục Con</a>
 
-                                    <a href="/info/tinchoduyet"><i class="fa fa-cloud-download"></i> Tin Chờ Duyệt</a>
+                                    <a href="/admin/tindangs/daduyet"   ><i class="fa fa-cart-arrow-down"></i> Quản Lý Tin Đăng</a>
+
+                                    <a href="/admin/users"><i class="fa fa-cloud-download"></i> Quản Lý User</a>
     
-                                    <a href="/info/tindaluu"   ><i class="fa fa-credit-card"></i> Tin Đã Lưu</a>
+                                    <a href="/bctindangs"   ><i class="fa fa-credit-card"></i> Quản Lý Bình Luận</a>
     
-                                    <a href="/usertheodois"><i class="fa fa-map-marker"></i> Người Theo Dõi</a>
+                                    <a href="/gopy" class="active"><i class="fa fa-map-marker"></i> Quản Lý Góp Ý</a>
+
+                                    <a href="/admin/carousel"><i class="fa fa-cog"></i> Cài Đặt Cấu Hình</a>
     
-                                    <a href="/mails_den" class="active"><i class="fa fa-user"></i> Tin Nhắn</a>
+                                   
     
                                     <a href="/signout"><i class="fa fa-sign-out"></i> Logout</a>
+                            
                             </div>
                         </div>
                         <!-- My Account Tab Menu End -->
@@ -115,17 +119,12 @@
                                 <!-- Single Tab Content Start -->
                                 <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
                                     <div class="myaccount-content">
-                                    <h3>Hộp Thư </h3>
+                                    <h3>Quản Lý Góp Ý </h3>
                            
                                          <!-- mail Content Start -->
                                             <div class="login-register-wrapper">
                                                 <!-- Login & Register tab Menu -->
-                                                <nav class="nav login-reg-tab-menu">
-                                                    <a class="active" id="login-tab"  href="/mails_den">Thư Đến</a> 
-                                                    <a id="register-tab"  href="/mails_dagui/">Thư Đã Gửi</a>                                                       
-                                                    <a id="register-tab"  href="/mail_create">Soạn Thư</a>
-                                                    <a id="register-tab" href="/mails_thungrac">Thùng Rác</a>
-                                                </nav>
+                                                
                                                 <hr>
                                                 <!-- Login & Register tab Menu -->
                             
@@ -136,7 +135,7 @@
                                                         <div class="">
                                                            
 
-                                                           <% if(typeof mailden !== 'undefined'){%>
+                                                           <% if(typeof items !== 'undefined' && items.length>0){%>
 
                                                             <br><br><br>
                                                             <div class="cart-table table-responsive">
@@ -144,53 +143,40 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th class="pro-thumbnail">STT</th>
-                                                                        <th class="pro-title">Tên Mail</th>
-                                                                        <th class="pro-title">Thời điểm đọc</th>
-                                                                        <th class="pro-quantity">thời điểm gửi</th>
-                                                                        <th class="pro-quantity">người gửi</th>
-                                                                         <th class="pro-quantity">trả Lời</th>
-                                                                        <th class="pro-edit">xem</th>
-                                                                        <th class="pro-remove">xóa</th>
+                                                                        <th class="pro-title">Tên</th>
+                                                                        <th class="pro-title">Email</th>
+                                                                        <th class="pro-title">Tiêu Đề</th>
+                                                                      
+                                                                      
+                                                                        
+                                                                       
+                                                                        <th class="pro-title">Xem </th>
+                                                                       
+                                                                        <th class="pro-remove">Xóa</th>
                                                                     </tr>
                                                                 </thead>
                                                         <tbody>
-                                                        <%   for(i=0;i<mailden.length;i++){%>
+                                                        <%   for(i=0;i<items.length;i++){%>
 
                                                           <tr>
                                                                   <td class="pro-title"><a href="#"><%=i+1%></a></td>                                                             
-                                                                  <%if(mailden[i].id_UserGui=="ADMIN"){%>
-                                                                  <td class="pro-quantity"><span class=" alert alert-danger"><%=mailden[i].tieuDe%></span></td>
-                                                                    <%}else{%>
-                                                                   <td class="pro-quantity"><span class="text-success"><%=mailden[i].tieuDe%></span></td>
-                                                                    <%}%>
-                                                                  <td class="pro-quantity"><span class="text-success"><%=mailden[i].thoiGianDoc=="0"?"chưa đọc":mailden[i].thoiGianDoc%></span></td>
-                                                                  <td class="pro-quantity"><span class="text-success"><%=mailden[i].thoigianGui%></span></td>
+                                                                   <td class="pro-quantity"><span class="text-success"><%=items[i].ten%></span></td>
+                                                                   <td class="pro-quantity"><span class="text-success"><%=items[i].diaChiMail%></span></td>
+                                                                   <td class="pro-quantity"><span class="text-success"><%=items[i].tieuDe%></span></td>
+                                                                 
+
+                                                              
+                                                                 
+                                                                   <td class="pro-edit"><a href=""  data-toggle="modal" data-target="#modalEdit<%=i+1%>"><i class="fa fa-eye"></i></a></td>
+                                                                 
                                                                    
 
-                                                                     <%if(mailden[i].id_UserGui!=="ADMIN"){%>
-                                                                     <td class="pro-quantity">
-                                                                        <form action="/info11" method="post" >
-                                                                                <input type="hidden" name="idz" value="<%=mailden[i].id_UserGui%>">
-                                                                              
-                                                                                <input type="submit" class="btn btn-add-to-cart btn-whislist" value="<%=mailden[i].nameUserGui%>">
-                                                                        </form>
-                                                                    </td>
-
-                                                                      </form>
-                                                                    <td class="pro-quantity"><span class="text-success">
-                                                                        <form  action="/user/khac/mail" method="post">
-                                                                            <input type="hidden" value="" name="email_User">
-                                                                            <input type="hidden" value="<%=mailden[i].id_UserGui%>" name="id">
-                                                                            <input type="submit" class="btn btn-add-to-cart btn-whislist"  value="reply"> 
-                                                                        </form>
-                                                                    </td>
-                                                                        <%}else{%>
-                                                                         <td>_</td>
-                                                                            <td>_</td>
-                                                                        <%}%>
-                                                                  <td class="pro-edit"><a href="/mail/read/<%=mailden[i]._id%>"  data-toggle="modal" data-target="#modalEdit<%=i+1%>"><i class="fa fa-eye"></i></a></td>
-                                                                  <td class="pro-remove"><a href="/mail/editden_vao/<%=mailden[i]._id%>" onclick="return confirm('Bạn có chắc chắn muốn xóa chứ?');"><i class="fa fa-trash-o"></i></a></td>
+                                                                 
+                                                                                                                                
+                                                                  <td class="pro-remove"><a href="/gopy/delete/<%=items[i]._id%>" onclick="return confirm('Bạn có chắc chắn muốn xóa chứ?');"><i class="fa fa-trash-o"></i></a></td>
                                                           </tr>
+
+                                                                
 
                                                               <!--modal xem mail-->
                                                                 <div class="modal" id="modalEdit<%=i+1%>">
@@ -199,7 +185,7 @@
 
                                                                             <!-- Modal Header -->
                                                                             <div class="modal-header">
-                                                                            <h4 class="modal-title">Nội Dung Thư</h4>
+                                                                            <h4 class="modal-title">Nội Dung Góp Ý</h4>
                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                             </div>
 
@@ -207,13 +193,12 @@
                                                                             <div class="modal-body">
                                                                                 <div class="form-group">
                                                                                      
-                                                                                     <div>Tiêu Đề:<%=mailden[i].tieuDe%></div>
-                                                                                     <div><i><%=mailden[i].thoigianGui%></i></div>
+                                                                                     <div>Tiêu Đề:<%=items[i].tieuDe%></div>
+                                                                                     
                                                                                       <hr>
-                                                                                     <div>Nội Dung:<%-mailden[i].noiDung%></div>
+                                                                                     <div>mô tả:<%-items[i].gopY%></div>
                                                                                      <br>
                                                                                      
-                                                                                      <div>Người Gửi:<%=mailden[i].nameUserGui%></div>
                                                                                      
                                                                                     
 
@@ -221,8 +206,7 @@
 
                                                                             <!-- Modal footer -->
                                                                             <div class="modal-footer">
-                                                                            <%if(mailden[i].thoiGianDoc=="0"){%><button type="button" class="btn btn-danger" ><a href="/mail/read/<%=mailden[i]._id%>" style="color:white">Đọc Thư</a></button><%}else{%>
-                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng Lại</button><%}%>
+                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng Lại</button>
                                                                         </div>
 
                                                                     </div>
@@ -246,7 +230,7 @@
                                 </div>
                                 <!-- Single Tab Content End //end chi tiết tài khoản-->
 
-                               
+                                
                             </div>
                         </div>
                         <!-- My Account Tab Content End -->
@@ -289,9 +273,12 @@ $(document).ready( function () {
     $('#datable').DataTable();
 } );
 </script>
-</body>
 
-</html>
+
+
+
+
+
 
 
 

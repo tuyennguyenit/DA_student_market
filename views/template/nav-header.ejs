@@ -14,20 +14,13 @@
                 <div class="main-menu-wrap">
                     <nav id="mainmenu">
                         <ul>
-                            <li class="dropdown-show"><a href="/gallery">Trang Chủ</a>
+                            <li class=""><a href="/gallery">Trang Chủ</a>
                                 
                             </li>
-                            <li class="dropdown-show"><a href="/tindang">Đăng Tin</a>
+                            <li class=""><a href="/tindang">Đăng Tin</a>
                                 
                             </li>
-                            <li class="dropdown-show"><a href="/login-register">Đăng Ký</a>
-                              
-                            </li>
-                            <li class="dropdown-show"><a href="/login-register">Đăng Nhập</a>
-                                
-                            </li>
-                          
-                            <li class="dropdown-show"><a href="#">Blog</a>
+                             <li class="dropdown-show"><a href="#">Blog</a>
                                 <ul class="dropdown-nav">
                                     <li><a href="/blog/noiquy">Quy Định Chung</a></li>
                                     <li><a href="/blog/hangcam">Hàng Cấm Mua Bán</a></li>
@@ -36,6 +29,19 @@
                                 </ul>
                             </li>
                             <li><a href="/contact">Liên Hệ</a></li>
+                            <%if(typeof sess=="undefined"){%>
+                            <li class="dropdown-show"><a href="/register">Đăng Ký</a>
+                              
+                            </li>
+                            <li class="dropdown-show"><a href="/login-register">Đăng Nhập</a>
+                                
+                            </li>
+                          <%}else{%>
+                            
+                            <li class=""><a href="/signout">Đăng Xuất</a>
+                             </li>
+                          <%}%>
+                           
                         </ul>
                     </nav>
                 </div>
@@ -66,7 +72,17 @@
                                                
                                             </div>
                                         </div>
-                                       
+                                        
+                                        <%if(typeof(ThongBao)!=="undefined"){%>
+                                            <%=ThongBao[0].noiDung%>
+
+                                             <div class="product-details">
+                                            <h2><a href="#">hi,chào mừng đến với trang web-rao vặt sinh viên</a></h2>
+                                            <div class="cal d-flex align-items-center">
+                                               
+                                            </div>
+                                        </div>
+                                        <%}%>
                                     </div>
                                     
                                 </div>
